@@ -13,3 +13,6 @@ github.com/fatih/structs
 ```
 GOOS=linux gopherjs build
 ```
+
+# Run
+Simply open the index.html file with your favorite browser !
