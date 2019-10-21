@@ -75,7 +75,7 @@ class EntireCube():
             K_l: (0, 0, -1), K_r: (0, 2, -1), K_d: (1, 0, -1), K_u: (1, 2, -1), K_b: (2, 0, -1), K_f: (2, 2, -1),
         }
         ang_x, ang_y, rot_cube = 0, 0, (0, 0)
-        animate_rot, animate, animate_rot_ang, animate_ang, animate_speed = False, False, 0, 0, 5
+        animate_rot, animate, animate_ang, animate_speed = False, False, 0, 5
         action = (0, 0, 0)
 
         counter = 0
@@ -127,15 +127,12 @@ class EntireCube():
                             animate, action = True, rot_slice_map[event.key]
                         elif not animate and event.key in rot_slice_map_prime:
                             animate, action = True, rot_slice_map_prime[event.key]
-                    """if event.type == KEYUP:
-                        if event.key in rot_cube_map:
-                            rot_cube = (0, 0)"""
 
             if animate_rot:
                 ang_x += rot_cube[0]*animate_speed
                 ang_y += rot_cube[1]*animate_speed
                 if ang_x % 90 == 0 and ang_y % 90 == 0:
-                    animate_rot, animate_rot_ang = False, 0
+                    animate_rot = False
 
             glMatrixMode(GL_MODELVIEW)
             glLoadIdentity()
@@ -195,9 +192,9 @@ def main(mix):
     glMatrixMode(GL_PROJECTION)
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
 
-    glTranslatef(-15, -15, 0)
+    glTranslatef(-20, -15, 0)
     glRotatef(25, 1, 0, 0)
-    glRotatef(-25, 0, 1, 0)
+    glRotatef(-30, 0, 1, 0)
 
     NewEntireCube = EntireCube(3, 1.5) 
     NewEntireCube.mainloop(mix)
