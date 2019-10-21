@@ -1,6 +1,8 @@
 import click
-import pygame
+
 import random
+
+import pygame
 from pygame.locals import *
 
 from OpenGL.GL import *
@@ -26,14 +28,11 @@ class Cube():
         return self.current_i[axis] == slice
 
     def update(self, axis, slice, dir):
-
         if not self.isAffected(axis, slice, dir):
             return
-
         i, j = (axis+1) % 3, (axis+2) % 3
         for k in range(3):
             self.rot[k][i], self.rot[k][j] = -self.rot[k][j]*dir, self.rot[k][i]*dir
-
         self.current_i[i], self.current_i[j] = (
             self.current_i[j] if dir < 0 else self.N - 1 - self.current_i[j],
             self.current_i[i] if dir > 0 else self.N - 1 - self.current_i[i] )
@@ -44,19 +43,16 @@ class Cube():
         return [*scaleA[0], 0, *scaleA[1], 0, *scaleA[2], 0, *scaleT, 1]
 
     def draw(self, col, surf, vert, animate, angle, axis, slice, dir):
-
         glPushMatrix()
         if animate and self.isAffected(axis, slice, dir):
             glRotatef( angle*dir, *[1 if i==axis else 0 for i in range(3)] )
         glMultMatrixf( self.transformMat() )
-
         glBegin(GL_QUADS)
         for i in range(len(surf)):
             glColor3fv(colors[i])
             for j in surf[i]:
                 glVertex3fv(vertices[j])
         glEnd()
-
         glPopMatrix()
 
 class EntireCube():
@@ -66,7 +62,6 @@ class EntireCube():
         self.cubes = [Cube((x, y, z), self.N, scale) for x in cr for y in cr for z in cr]
 
     def mainloop(self, mix):
-
         rot_cube_map  = { K_UP: (-1, 0), K_DOWN: (1, 0), K_LEFT: (0, -1), K_RIGHT: (0, 1)}
         rot_slice_map = {
             K_l: (0, 0, 1), K_r: (0, 2, 1), K_d: (1, 0, 1),K_u: (1, 2, 1), K_b: (2, 0, 1), K_f: (2, 2, 1),
@@ -77,16 +72,12 @@ class EntireCube():
         ang_x, ang_y, rot_cube = 0, 0, (0, 0)
         animate_rot, animate, animate_ang, animate_speed = False, False, 0, 5
         action = (0, 0, 0)
-
         counter = 0
         arg = ""
         while True:
-            
             if not animate and len(mix):
-
                 if not "2" in arg:
                     print("Step %d : %s" % (counter, mix[0]))
-
                 curr = mix[0]
                 arg = ""
                 if curr[0] == "F":
@@ -103,18 +94,15 @@ class EntireCube():
                     key = K_d
                 if len(curr) >= 2:
                     arg = curr[1:]
-                    
                 if key in rot_slice_map and "'" in arg:
                     animate, action = True, rot_slice_map[key]
                 elif key in rot_slice_map_prime:
                     animate, action = True, rot_slice_map_prime[key]
-                
                 if "2" in arg:
                     mix[0] = curr[0] + arg.replace("2", "")
                 else:
                     mix.pop(0)
                     counter += 1
-
             else:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -178,7 +166,6 @@ def parse_mix(mix):
 @click.command()
 @click.argument("mix", default="")
 def main(mix):
-
     if len(mix):
         mix = parse_mix(mix)
     else:
