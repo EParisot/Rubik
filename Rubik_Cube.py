@@ -75,7 +75,7 @@ class EntireCube():
             K_l: (0, 0, -1), K_r: (0, 2, -1), K_d: (1, 0, -1), K_u: (1, 2, -1), K_b: (2, 0, -1), K_f: (2, 2, -1),
         }
         ang_x, ang_y, rot_cube = 0, 0, (0, 0)
-        animate, animate_ang, animate_speed = False, 0, 5
+        animate_rot, animate, animate_rot_ang, animate_ang, animate_speed = False, False, 0, 0, 5
         action = (0, 0, 0)
 
         counter = 0
@@ -121,18 +121,21 @@ class EntireCube():
                         pygame.quit()
                         quit()
                     if event.type == KEYDOWN:
-                        if event.key in rot_cube_map:
-                            rot_cube = rot_cube_map[event.key]
+                        if not animate_rot and event.key in rot_cube_map:
+                            animate_rot, rot_cube = True, rot_cube_map[event.key]
                         if not animate and event.key in rot_slice_map and pygame.key.get_mods() & KMOD_CTRL:
                             animate, action = True, rot_slice_map[event.key]
                         elif not animate and event.key in rot_slice_map_prime:
                             animate, action = True, rot_slice_map_prime[event.key]
-                    if event.type == KEYUP:
+                    """if event.type == KEYUP:
                         if event.key in rot_cube_map:
-                            rot_cube = (0, 0)
+                            rot_cube = (0, 0)"""
 
-            ang_x += rot_cube[0]*2
-            ang_y += rot_cube[1]*2
+            if animate_rot:
+                ang_x += rot_cube[0]*animate_speed
+                ang_y += rot_cube[1]*animate_speed
+                if ang_x % 90 == 0 and ang_y % 90 == 0:
+                    animate_rot, animate_rot_ang = False, 0
 
             glMatrixMode(GL_MODELVIEW)
             glLoadIdentity()
@@ -179,7 +182,10 @@ def parse_mix(mix):
 @click.argument("mix", default="")
 def main(mix):
 
-    mix = parse_mix(mix)
+    if len(mix):
+        mix = parse_mix(mix)
+    else:
+        mix = []
 
     pygame.init()
     display = (800,600)
@@ -189,8 +195,9 @@ def main(mix):
     glMatrixMode(GL_PROJECTION)
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
 
-    glTranslatef(-20, -15, 0)
-    glRotatef(35, 2, -3, 0)
+    glTranslatef(-15, -15, 0)
+    glRotatef(25, 1, 0, 0)
+    glRotatef(-25, 0, 1, 0)
 
     NewEntireCube = EntireCube(3, 1.5) 
     NewEntireCube.mainloop(mix)
