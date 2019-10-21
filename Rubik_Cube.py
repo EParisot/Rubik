@@ -1,3 +1,4 @@
+import click
 import pygame
 import random
 from pygame.locals import *
@@ -64,7 +65,7 @@ class EntireCube():
         cr = range(self.N)
         self.cubes = [Cube((x, y, z), self.N, scale) for x in cr for y in cr for z in cr]
 
-    def mainloop(self):
+    def mainloop(self, mix):
 
         rot_cube_map  = { K_UP: (-1, 0), K_DOWN: (1, 0), K_LEFT: (0, -1), K_RIGHT: (0, 1)}
         rot_slice_map = {
@@ -76,22 +77,59 @@ class EntireCube():
         ang_x, ang_y, rot_cube = 0, 0, (0, 0)
         animate, animate_ang, animate_speed = False, 0, 5
         action = (0, 0, 0)
-        while True:
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
-                if event.type == KEYDOWN:
-                    if event.key in rot_cube_map:
-                        rot_cube = rot_cube_map[event.key]
-                    if not animate and event.key in rot_slice_map and pygame.key.get_mods() & KMOD_CTRL:
-                        animate, action = True, rot_slice_map[event.key]
-                    elif not animate and event.key in rot_slice_map_prime:
-                        animate, action = True, rot_slice_map_prime[event.key]
-                if event.type == KEYUP:
-                    if event.key in rot_cube_map:
-                        rot_cube = (0, 0)
+        counter = 0
+        arg = ""
+        while True:
+            
+            if not animate and len(mix):
+
+                if not "2" in arg:
+                    print("Step %d : %s" % (counter, mix[0]))
+
+                curr = mix[0]
+                arg = ""
+                if curr[0] == "F":
+                    key = K_f
+                elif curr[0] == "R":
+                    key = K_r
+                elif curr[0] == "U":
+                    key = K_u
+                elif curr[0] == "B":
+                    key = K_b
+                elif curr[0] == "L":
+                    key = K_l
+                elif curr[0] == "D":
+                    key = K_d
+                if len(curr) >= 2:
+                    arg = curr[1:]
+                    
+                if key in rot_slice_map and "'" in arg:
+                    animate, action = True, rot_slice_map[key]
+                elif key in rot_slice_map_prime:
+                    animate, action = True, rot_slice_map_prime[key]
+                
+                if "2" in arg:
+                    mix[0] = curr[0] + arg.replace("2", "")
+                else:
+                    mix.pop(0)
+                    counter += 1
+
+            else:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        quit()
+                    if event.type == KEYDOWN:
+                        if event.key in rot_cube_map:
+                            rot_cube = rot_cube_map[event.key]
+                        if not animate and event.key in rot_slice_map and pygame.key.get_mods() & KMOD_CTRL:
+                            animate, action = True, rot_slice_map[event.key]
+                        elif not animate and event.key in rot_slice_map_prime:
+                            animate, action = True, rot_slice_map_prime[event.key]
+                    if event.type == KEYUP:
+                        if event.key in rot_cube_map:
+                            rot_cube = (0, 0)
 
             ang_x += rot_cube[0]*2
             ang_y += rot_cube[1]*2
@@ -118,7 +156,30 @@ class EntireCube():
             pygame.display.flip()
             pygame.time.wait(10)
 
-def main():
+def parse_mix(mix):
+    mix_list = []
+    for step in mix.split(" "):
+        if len(step) > 0 and len(step) <= 3 and step[0] in "FRUBLD":
+            if len(step) >= 2 and len(step) <= 3:
+                if len(step) == 2 and step[1] in "'’2":
+                    mix_list.append(step)
+                elif len(step) == 3 and step[1] in "'’2" and step[2] in "'’2":
+                    mix_list.append(step)
+                else:
+                    print("Error : Invalid step arg")
+                    return []
+            else:
+                mix_list.append(step)
+        else:
+            print("Error : Invalid step name")
+            return []
+    return mix_list
+
+@click.command()
+@click.argument("mix", default="")
+def main(mix):
+
+    mix = parse_mix(mix)
 
     pygame.init()
     display = (800,600)
@@ -132,7 +193,7 @@ def main():
     glRotatef(35, 2, -3, 0)
 
     NewEntireCube = EntireCube(3, 1.5) 
-    NewEntireCube.mainloop()
+    NewEntireCube.mainloop(mix)
 
 if __name__ == '__main__':
     main()
