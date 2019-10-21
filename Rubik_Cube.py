@@ -128,8 +128,8 @@ def main():
     glMatrixMode(GL_PROJECTION)
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
 
-    glTranslatef(-15, -15, 0)
-    glRotatef(30, 1, -1, 0)
+    glTranslatef(-20, -15, 0)
+    glRotatef(35, 2, -3, 0)
 
     NewEntireCube = EntireCube(3, 1.5) 
     NewEntireCube.mainloop()
