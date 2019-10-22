@@ -87,12 +87,16 @@ class EntireCube():
         res_counter = 0
         arg = ""
         curr = ""
+        last = ""
+
+        if len(mix):
+            print("Applying mix...")
         
         while True:
             # Clean screen
             glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
-            # handle commands
+            # handle mix
             if not animate and len(mix):
                 if not "2" in arg:
                     print("Step %d : %s" % (mix_counter, mix[0]))
@@ -117,10 +121,14 @@ class EntireCube():
                 elif key in rot_slice_map_prime:
                     animate, action = True, rot_slice_map_prime[key]
                 if "2" in arg:
+                    last = curr
                     mix[0] = curr[0] + arg.replace("2", "")
                 else:
                     mix.pop(0)
                     mix_counter += 1
+                    if len(last):
+                        curr = last
+                    last = ""
             else:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -232,7 +240,7 @@ def main(mix):
     glRotatef(25, 1, 0, 0)
     glRotatef(-30, 0, 1, 0)
 
-    # Modern OpenGL API
+    # Modern OpenGL API :
 
     # enable depth test (less or equal)
     glEnable( GL_DEPTH_TEST )
@@ -296,6 +304,9 @@ def main(mix):
     NewEntireCube.mainloop(mix)
 
 if __name__ == '__main__':
+    print("\n" + "#" * 27 + "\n| Actions : | Options :   |\n" + "#" * 27 + \
+     "\n| F : Front | ' : reverse |\n| R : Right | 2 : double  |\n| U : Up    |" + "#" * 14 + "\n| B : Back  |\n| L : Left  |\n| D : Down  |\n" + \
+         "#" * 13 + "\n")
     main()
     pygame.quit()
     quit()
