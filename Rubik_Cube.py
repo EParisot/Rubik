@@ -4,6 +4,8 @@ import numpy as np
 
 import random
 
+import time
+
 import pygame
 from pygame.locals import *
 
@@ -163,6 +165,9 @@ class EntireCube():
                             print("Step %d : %s" % (res_counter, "".join(curr_tab)))
                             curr = "".join(curr_tab)
             
+            # Show button
+            button("Solve", -24.5, 9.5, action=solve)
+
             # animate rotations
             if animate_rot:
                 ang_x += rot_cube[0]*animate_speed
@@ -176,7 +181,7 @@ class EntireCube():
             glRotatef(ang_x, 1, 0, 0)
             
             # Print on screen
-            drawText((-1, 10, 0), curr)
+            drawText((-1, 8, 0), curr)
 
             # step animation
             if animate:
@@ -212,12 +217,33 @@ def parse_mix(mix):
             return []
     return mix_list
 
-def drawText(position, textString):
+def drawText(position, textString, fore=(255,255,255,255), back=(0,0,0,255)):
     font = pygame.font.Font (None, 64)
-    textSurface = font.render(textString, True, (255,255,255,255), (0,0,0,255))
+    textSurface = font.render(textString, True, fore, back)
     textData = pygame.image.tostring(textSurface, "RGBA", True)
     glRasterPos3d(*position)
+    glDisable(GL_TEXTURE_2D)
     glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
+    return textSurface.get_width(), textSurface.get_height()
+
+def button(msg,x,y,action=None):
+    global solving
+    w, h = drawText((x, y, 0), msg, back=(50,50,50,255))
+    mouse = pygame.mouse.get_pos()
+    clicked = pygame.mouse.get_pressed()
+    if w > mouse[0] > 0 and h > mouse[1] > 0:
+        if clicked[0] == 1 and action != None and solving == False:
+            solving = True
+            action()
+            
+def solve():
+    global solving
+    print("Solving...")
+    # Exec Go Algo and grab output
+    time.sleep(2) # TMP
+    # Exec ouput steps
+    print("Done")
+    solving = False
 
 @click.command()
 @click.argument("mix", default="")
@@ -226,6 +252,9 @@ def main(mix):
         mix = parse_mix(mix)
     else:
         mix = []
+
+    global solving
+    solving = False
 
     # Init
     pygame.init()
@@ -305,8 +334,9 @@ def main(mix):
 
 if __name__ == '__main__':
     print("\n" + "#" * 27 + "\n| Actions : | Options :   |\n" + "#" * 27 + \
-     "\n| F : Front | ' : reverse |\n| R : Right | 2 : double  |\n| U : Up    |" + "#" * 14 + "\n| B : Back  |\n| L : Left  |\n| D : Down  |\n" + \
-         "#" * 13 + "\n")
+        "\n| F : Front | ' : reverse |\n| R : Right | 2 : double  |\n| U : Up    |" + \
+        "#" * 14 + "\n| B : Back  |\n| L : Left  |\n| D : Down  |\n" + \
+        "#" * 13 + "\n")
     main()
     pygame.quit()
     quit()
