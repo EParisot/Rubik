@@ -89,6 +89,10 @@ class EntireCube():
         curr = ""
         
         while True:
+            # Clean screen
+            glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+
+            # handle commands
             if not animate and len(mix):
                 if not "2" in arg:
                     print("Step %d : %s" % (mix_counter, mix[0]))
@@ -150,34 +154,34 @@ class EntireCube():
                             res_counter += 1
                             print("Step %d : %s" % (res_counter, "".join(curr_tab)))
                             curr = "".join(curr_tab)
-
+            
+            # animate rotations
             if animate_rot:
                 ang_x += rot_cube[0]*animate_speed
                 ang_y += rot_cube[1]*animate_speed
                 if ang_x % 90 == 0 and ang_y % 90 == 0:
                     animate_rot = False
-
             glMatrixMode(GL_MODELVIEW)
             glLoadIdentity()
             glTranslatef(0, 0, -40)
             glRotatef(ang_y, 0, 1, 0)
             glRotatef(ang_x, 1, 0, 0)
-
-            glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-
+            
+            # Print on screen
             drawText((-1, 10, 0), curr)
 
+            # step animation
             if animate:
                 if animate_ang >= 90:
                     for cube in self.cubes:
                         cube.update(*action)
                     animate, animate_ang = False, 0
-
             for cube in self.cubes:
                 cube.draw(colors, surfaces, vertices, animate, animate_ang, *action)
             if animate:
                 animate_ang += animate_speed
 
+            # Draw screen
             pygame.display.flip()
             pygame.time.wait(10)
 
