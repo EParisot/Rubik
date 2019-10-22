@@ -14,7 +14,6 @@ vertices = (( 1, -1, -1), ( 1,  1, -1), (-1,  1, -1), (-1, -1, -1), ( 1, -1,  1)
 edges = ((0,1),(0,3),(0,4),(2,1),(2,3),(2,7),(6,3),(6,4),(6,7),(5,1),(5,4),(5,7))
 surfaces = ((0, 1, 2, 3), (3, 2, 7, 6), (6, 7, 5, 4), (4, 5, 1, 0), (1, 5, 7, 2), (4, 0, 3, 6))
 colors = ((0.8, 0, 0), (0, 0, 0.8), (1, 0.5, 0), (0, 0.8, 0), (1, 1, 1), (1, 1, 0))
-
 moves = ("F", "R", "U", "B", "L", "D", "F'", "R'", "U'", "B'", "L'", "D'","F2", "R2", "U2", "B2", "L2", "D2", "F'2", "R'2", "U'2", "B'2", "L'2", "D'2")
 
 class Cube():
@@ -245,18 +244,14 @@ def drawText(x, y, textString, fore=(255,255,255,255), back=(0,0,0,255)):
     return glGetFloatv(GL_CURRENT_RASTER_POSITION), textSurface.get_width(), textSurface.get_height()
 
 def button(msg,x,y,action=None):
-    global solving
     pos, w, h = drawText(x, y, msg, back=(50,50,50,255))
     x = pos[0]
     y = display[1] - pos[1] - h
     mouse = pygame.mouse.get_pos()
     clicked = pygame.mouse.get_pressed()
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
-        if clicked[0] == 1 and action != None and solving == False:
-            if action == EntireCube.solve:
-                solving = True
+        if clicked[0] == 1 and action != None:
             action()
-            solving = False
 
 @click.command()
 @click.argument("steps", default="")
@@ -265,9 +260,6 @@ def main(steps):
         steps = parse_steps(steps)
     else:
         steps = []
-
-    global solving
-    solving = False
 
     # Init
     pygame.init()
