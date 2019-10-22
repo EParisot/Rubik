@@ -86,13 +86,15 @@ class EntireCube():
         animate_rot, animate, animate_ang, animate_speed = False, False, 0, 5
         action = (0, 0, 0)
         mix_counter = 1
-        res_counter = 0
+        res_counter = 1
         arg = ""
         curr = ""
         last = ""
-
+        got_mix = False
+            
         if len(mix):
             print("Applying mix...")
+            got_mix = True
         
         while True:
             # Clean screen
@@ -166,7 +168,10 @@ class EntireCube():
                             curr = "".join(curr_tab)
             
             # Show button
-            button("Solve", -24.5, 9.5, action=solve)
+            if len(mix) == 0:
+                button("Solve", -25.4, 7, action=solve)
+            if got_mix == False:
+                button("Shuffle", -24.5, 9.5, action=shuffle)
 
             # animate rotations
             if animate_rot:
@@ -235,16 +240,23 @@ def button(msg,x,y,action=None):
     clicked = pygame.mouse.get_pressed()
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
         if clicked[0] == 1 and action != None and solving == False:
-            solving = True
+            if action == solve:
+                solving = True
             action()
-            
+
+def shuffle():
+    print("\nApplying shuffle...")
+    time.sleep(2) # TMP
+    # Exec shuffle
+    print("Done\n")
+
 def solve():
     global solving
-    print("Solving...")
+    print("\nSolving...")
     # Exec Go Algo and grab output
     time.sleep(2) # TMP
     # Exec ouput steps
-    print("Done")
+    print("Done\n")
     solving = False
 
 @click.command()
