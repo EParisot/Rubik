@@ -181,7 +181,7 @@ class EntireCube():
             glRotatef(ang_x, 1, 0, 0)
             
             # Print on screen
-            drawText((-1, 8, 0), curr)
+            drawText(-1, 8, curr)
 
             # step animation
             if animate:
@@ -217,21 +217,23 @@ def parse_mix(mix):
             return []
     return mix_list
 
-def drawText(position, textString, fore=(255,255,255,255), back=(0,0,0,255)):
+def drawText(x, y, textString, fore=(255,255,255,255), back=(0,0,0,255)):
+    global display
     font = pygame.font.Font (None, 64)
     textSurface = font.render(textString, True, fore, back)
     textData = pygame.image.tostring(textSurface, "RGBA", True)
-    glRasterPos3d(*position)
-    glDisable(GL_TEXTURE_2D)
+    glRasterPos2d(x, y)
     glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
-    return textSurface.get_width(), textSurface.get_height()
+    return glGetFloatv(GL_CURRENT_RASTER_POSITION), textSurface.get_width(), textSurface.get_height()
 
 def button(msg,x,y,action=None):
     global solving
-    w, h = drawText((x, y, 0), msg, back=(50,50,50,255))
+    pos, w, h = drawText(x, y, msg, back=(50,50,50,255))
+    x = pos[0]
+    y = display[1] - pos[1] - h
     mouse = pygame.mouse.get_pos()
     clicked = pygame.mouse.get_pressed()
-    if w > mouse[0] > 0 and h > mouse[1] > 0:
+    if x+w > mouse[0] > x and y+h > mouse[1] > y:
         if clicked[0] == 1 and action != None and solving == False:
             solving = True
             action()
@@ -258,6 +260,7 @@ def main(mix):
 
     # Init
     pygame.init()
+    global display
     display = (800,600)
     pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
 
