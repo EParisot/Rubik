@@ -1,9 +1,6 @@
 import click
-
 import numpy as np
-
 import random
-
 import time
 
 import pygame
@@ -12,14 +9,13 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
- 
-vertices = (
-    ( 1, -1, -1), ( 1,  1, -1), (-1,  1, -1), (-1, -1, -1),
-    ( 1, -1,  1), ( 1,  1,  1), (-1, -1,  1), (-1,  1,  1)
-)
+
+vertices = (( 1, -1, -1), ( 1,  1, -1), (-1,  1, -1), (-1, -1, -1), ( 1, -1,  1), ( 1,  1,  1), (-1, -1,  1), (-1,  1,  1))
 edges = ((0,1),(0,3),(0,4),(2,1),(2,3),(2,7),(6,3),(6,4),(6,7),(5,1),(5,4),(5,7))
 surfaces = ((0, 1, 2, 3), (3, 2, 7, 6), (6, 7, 5, 4), (4, 5, 1, 0), (1, 5, 7, 2), (4, 0, 3, 6))
 colors = ((0.8, 0, 0), (0, 0, 0.8), (1, 0.5, 0), (0, 0.8, 0), (1, 1, 1), (1, 1, 0))
+
+moves = ("F", "R", "U", "B", "L", "D", "F'", "R'", "U'", "B'", "L'", "D'","F2", "R2", "U2", "B2", "L2", "D2", "F'2", "R'2", "U'2", "B'2", "L'2", "D'2")
 
 class Cube():
     def __init__(self, id, N, scale):
@@ -69,42 +65,56 @@ class Cube():
         glPopMatrix()
 
 class EntireCube():
-    def __init__(self, N, scale):
+    def __init__(self, N, scale, steps):
         self.N = N
         cr = range(self.N)
         self.cubes = [Cube((x, y, z), self.N, scale) for x in cr for y in cr for z in cr]
+        self.steps = steps
+        self.hist = ""
+        self.reset = False
+        if len(self.steps):
+            print("\nSuffling...")
 
-    def mainloop(self, mix):
-        rot_cube_map  = { K_UP: (-1, 0), K_DOWN: (1, 0), K_LEFT: (0, -1), K_RIGHT: (0, 1)}
-        rot_slice_map = {
-            K_l: (0, 0, 1), K_r: (0, 2, 1), K_d: (1, 0, 1),K_u: (1, 2, 1), K_b: (2, 0, 1), K_f: (2, 2, 1),
-        }  
-        rot_slice_map_prime = {
-            K_l: (0, 0, -1), K_r: (0, 2, -1), K_d: (1, 0, -1), K_u: (1, 2, -1), K_b: (2, 0, -1), K_f: (2, 2, -1),
-        }
+    def shuffle(self):
+        print("\nSuffling...")
+        # build steps
+        steps_idx = [random.randint(0, len(moves)-1) for _ in range(20)]
+        self.steps = [moves[idx] for idx in steps_idx]
+        self.reset = True
+
+    def solve(self):
+        print("\nSolving...")
+        # Exec Go Algo with self.hist as param and grab output
+        self.steps = parse_steps("D D'2 D") # example
+        self.reset = True
+        print("Done\n")
+
+    def mainloop(self):
+        rot_cube_map  = {K_UP: (-1, 0), K_DOWN: (1, 0), K_LEFT: (0, -1), K_RIGHT: (0, 1)}
+        rot_slice_map = {K_l: (0, 0, 1), K_r: (0, 2, 1), K_d: (1, 0, 1),K_u: (1, 2, 1), K_b: (2, 0, 1), K_f: (2, 2, 1)}  
+        rot_slice_map_prime = {K_l: (0, 0, -1), K_r: (0, 2, -1), K_d: (1, 0, -1), K_u: (1, 2, -1), K_b: (2, 0, -1), K_f: (2, 2, -1)}
         ang_x, ang_y, rot_cube = 0, 0, (0, 0)
         animate_rot, animate, animate_ang, animate_speed = False, False, 0, 5
         action = (0, 0, 0)
-        mix_counter = 1
-        res_counter = 1
+        steps_counter = 1
         arg = ""
         curr = ""
         last = ""
-        got_mix = False
-            
-        if len(mix):
-            print("Applying mix...")
-            got_mix = True
         
         while True:
             # Clean screen
             glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
-            # handle mix
-            if not animate and len(mix):
+            # reset counter after solved
+            if self.reset:
+                steps_counter = 1
+                self.reset = False
+
+            # handle steps
+            if not animate and len(self.steps):
                 if not "2" in arg:
-                    print("Step %d : %s" % (mix_counter, mix[0]))
-                curr = mix[0]
+                    print("Step %d : %s" % (steps_counter, self.steps[0]))
+                curr = self.steps[0]
                 arg = ""
                 if curr[0] == "F":
                     key = K_f
@@ -126,17 +136,20 @@ class EntireCube():
                     animate, action = True, rot_slice_map_prime[key]
                 if "2" in arg:
                     last = curr
-                    mix[0] = curr[0] + arg.replace("2", "")
+                    self.steps[0] = curr[0] + arg.replace("2", "")
                 else:
-                    mix.pop(0)
-                    mix_counter += 1
+                    self.steps.pop(0)
+                    steps_counter += 1
                     if len(last):
                         curr = last
                     last = ""
+                    self.hist += curr + " "
+            # handle events
             else:
                 for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
+                    if event.type == pygame.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                         pygame.quit()
+                        print("GoodBye !")
                         quit()
                     if event.type == KEYDOWN:
                         curr_tab = [" ", " "]
@@ -163,15 +176,15 @@ class EntireCube():
                                 curr_tab[0] = "L"
                             elif event.key == K_d:
                                 curr_tab[0] = "D"
-                            res_counter += 1
-                            print("Step %d : %s" % (res_counter, "".join(curr_tab)))
+                            print("Step %d : %s" % (steps_counter, "".join(curr_tab)))
+                            steps_counter += 1
                             curr = "".join(curr_tab)
+                            self.hist += curr + (" " if "'" in curr_tab[1] else "")
             
-            # Show button
-            if len(mix) == 0:
-                button("Solve", -25.4, 7, action=solve)
-            if got_mix == False:
-                button("Shuffle", -24.5, 9.5, action=shuffle)
+            # Show buttons
+            if len(self.steps) == 0:
+                button("Solve", -25.4, 7, action=self.solve)
+                button("Shuffle", -24.5, 9.5, action=self.shuffle)
 
             # animate rotations
             if animate_rot:
@@ -185,7 +198,7 @@ class EntireCube():
             glRotatef(ang_y, 0, 1, 0)
             glRotatef(ang_x, 1, 0, 0)
             
-            # Print on screen
+            # Print action on screen
             drawText(-1, 8, curr)
 
             # step animation
@@ -203,24 +216,24 @@ class EntireCube():
             pygame.display.flip()
             pygame.time.wait(10)
 
-def parse_mix(mix):
-    mix_list = []
-    for step in mix.split(" "):
+def parse_steps(steps):
+    steps_list = []
+    for step in steps.split(" "):
         if len(step) > 0 and len(step) <= 3 and step[0] in "FRUBLD":
             if len(step) >= 2 and len(step) <= 3:
                 if len(step) == 2 and step[1] in "'’2":
-                    mix_list.append(step)
+                    steps_list.append(step)
                 elif len(step) == 3 and step[1] in "'’2" and step[2] in "'’2":
-                    mix_list.append(step)
+                    steps_list.append(step)
                 else:
                     print("Error : Invalid step arg")
                     return []
             else:
-                mix_list.append(step)
+                steps_list.append(step)
         else:
             print("Error : Invalid step name")
             return []
-    return mix_list
+    return steps_list
 
 def drawText(x, y, textString, fore=(255,255,255,255), back=(0,0,0,255)):
     global display
@@ -240,32 +253,18 @@ def button(msg,x,y,action=None):
     clicked = pygame.mouse.get_pressed()
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
         if clicked[0] == 1 and action != None and solving == False:
-            if action == solve:
+            if action == EntireCube.solve:
                 solving = True
             action()
-
-def shuffle():
-    print("\nApplying shuffle...")
-    time.sleep(2) # TMP
-    # Exec shuffle
-    print("Done\n")
-
-def solve():
-    global solving
-    print("\nSolving...")
-    # Exec Go Algo and grab output
-    time.sleep(2) # TMP
-    # Exec ouput steps
-    print("Done\n")
-    solving = False
+            solving = False
 
 @click.command()
-@click.argument("mix", default="")
-def main(mix):
-    if len(mix):
-        mix = parse_mix(mix)
+@click.argument("steps", default="")
+def main(steps):
+    if len(steps):
+        steps = parse_steps(steps)
     else:
-        mix = []
+        steps = []
 
     global solving
     solving = False
@@ -344,8 +343,8 @@ def main(mix):
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 )
 
     # Build Rubik's Cube and run loop
-    NewEntireCube = EntireCube(3, 1.5) 
-    NewEntireCube.mainloop(mix)
+    NewEntireCube = EntireCube(3, 1.5, steps)
+    NewEntireCube.mainloop()
 
 if __name__ == '__main__':
     print("\n" + "#" * 27 + "\n| Actions : | Options :   |\n" + "#" * 27 + \
