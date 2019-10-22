@@ -186,6 +186,8 @@ def main(mix):
     display = (800,600)
     pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
     glEnable(GL_DEPTH_TEST) 
+    glDepthFunc(GL_LESS)
+    
     # Camera
     glMatrixMode(GL_PROJECTION)
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
@@ -209,7 +211,7 @@ def main(mix):
     # define the vertex buffers vor the faces
     attribute_array = []
     for face in range(len(surfaces)):
-        for vertex in surfaces[face ]:
+        for vertex in surfaces[face]:
             attribute_array.append( vertices[vertex] )
             attribute_array.append( colors[face] )
 
