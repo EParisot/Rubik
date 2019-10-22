@@ -148,7 +148,7 @@ class EntireCube():
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                         pygame.quit()
-                        print("GoodBye !")
+                        print("\nGoodBye !")
                         quit()
                     if event.type == KEYDOWN:
                         curr_tab = [" ", " "]
