@@ -10,6 +10,7 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
+ 
 vertices = (
     ( 1, -1, -1), ( 1,  1, -1), (-1,  1, -1), (-1, -1, -1),
     ( 1, -1,  1), ( 1,  1,  1), (-1, -1,  1), (-1,  1,  1)
@@ -82,12 +83,15 @@ class EntireCube():
         ang_x, ang_y, rot_cube = 0, 0, (0, 0)
         animate_rot, animate, animate_ang, animate_speed = False, False, 0, 5
         action = (0, 0, 0)
-        counter = 0
+        mix_counter = 1
+        res_counter = 0
         arg = ""
+        curr = ""
+        
         while True:
             if not animate and len(mix):
                 if not "2" in arg:
-                    print("Step %d : %s" % (counter, mix[0]))
+                    print("Step %d : %s" % (mix_counter, mix[0]))
                 curr = mix[0]
                 arg = ""
                 if curr[0] == "F":
@@ -112,19 +116,40 @@ class EntireCube():
                     mix[0] = curr[0] + arg.replace("2", "")
                 else:
                     mix.pop(0)
-                    counter += 1
+                    mix_counter += 1
             else:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         quit()
                     if event.type == KEYDOWN:
+                        curr_tab = [" ", " "]
+                        edited = False
                         if not animate_rot and event.key in rot_cube_map:
                             animate_rot, rot_cube = True, rot_cube_map[event.key]
                         if not animate and event.key in rot_slice_map and pygame.key.get_mods() & KMOD_CTRL:
                             animate, action = True, rot_slice_map[event.key]
+                            curr_tab[1] = "'"
+                            edited = True
                         elif not animate and event.key in rot_slice_map_prime:
                             animate, action = True, rot_slice_map_prime[event.key]
+                            edited = True
+                        if edited:
+                            if event.key == K_f:
+                                curr_tab[0] = "F"
+                            elif event.key == K_r:
+                                curr_tab[0] = "R"
+                            elif event.key == K_u:
+                                curr_tab[0] = "U"
+                            elif event.key == K_b:
+                                curr_tab[0] = "B"
+                            elif event.key == K_l:
+                                curr_tab[0] = "L"
+                            elif event.key == K_d:
+                                curr_tab[0] = "D"
+                            res_counter += 1
+                            print("Step %d : %s" % (res_counter, "".join(curr_tab)))
+                            curr = "".join(curr_tab)
 
             if animate_rot:
                 ang_x += rot_cube[0]*animate_speed
@@ -139,6 +164,8 @@ class EntireCube():
             glRotatef(ang_x, 1, 0, 0)
 
             glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+
+            drawText((-1, 10, 0), curr)
 
             if animate:
                 if animate_ang >= 90:
@@ -172,6 +199,13 @@ def parse_mix(mix):
             print("Error : Invalid step name")
             return []
     return mix_list
+
+def drawText(position, textString):
+    font = pygame.font.Font (None, 64)
+    textSurface = font.render(textString, True, (255,255,255,255), (0,0,0,255))
+    textData = pygame.image.tostring(textSurface, "RGBA", True)
+    glRasterPos3d(*position)
+    glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
 
 @click.command()
 @click.argument("mix", default="")
