@@ -66,6 +66,7 @@ func (env *Env) execStep(step string) {
 	} else if step[0] == 'D' {
 		stepID = 4
 	}
+	// exec rotations
 	env.cube = env.rotate(stepID, way)
 	if nb == 2 {
 		env.cube = env.rotate(stepID, way)
