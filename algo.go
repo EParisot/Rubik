@@ -70,6 +70,7 @@ func (env *Env) execStep(step string) {
 	if nb == 2 {
 		env.cube = env.rotate(stepID, way)
 	}
+	// DEBUG
 	fmt.Println(env.cube)
 }
 
