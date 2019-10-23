@@ -99,24 +99,27 @@ func (env *Env) rotate(face, way int) [6][3][3]int {
 			}
 		}
 	}
-	mem := cube[face][0][0]
 	if way == 0 {
-		cube[face][0][0] = cube[face][1][0]
-		cube[face][1][0] = cube[face][2][0]
-		cube[face][2][0] = cube[face][2][1]
-		cube[face][2][1] = cube[face][2][2]
-		cube[face][2][2] = cube[face][1][2]
-		cube[face][1][2] = cube[face][0][2]
-		cube[face][0][2] = cube[face][0][1]
-		cube[face][0][1] = mem
+		mem := cube[face][0][0]
+		cube[face][0][0] = cube[face][2][0]
+		cube[face][2][0] = cube[face][2][2]
+		cube[face][2][2] = cube[face][0][2]
+		cube[face][0][2] = mem
+		mem = cube[face][0][1]
+		cube[face][0][1] = cube[face][1][0]
+		cube[face][1][0] = cube[face][2][1]
+		cube[face][2][1] = cube[face][1][2]
+		cube[face][1][2] = mem
 	} else {
-		cube[face][0][0] = cube[face][0][1]
-		cube[face][0][1] = cube[face][0][2]
-		cube[face][0][2] = cube[face][1][2]
-		cube[face][1][2] = cube[face][2][2]
-		cube[face][2][2] = cube[face][2][1]
-		cube[face][2][1] = cube[face][2][0]
-		cube[face][2][0] = cube[face][1][0]
+		mem := cube[face][0][0]
+		cube[face][0][0] = cube[face][0][2]
+		cube[face][0][2] = cube[face][2][2]
+		cube[face][2][2] = cube[face][2][0]
+		cube[face][2][0] = mem
+		mem = cube[face][0][1]
+		cube[face][0][1] = cube[face][1][2]
+		cube[face][1][2] = cube[face][2][1]
+		cube[face][2][1] = cube[face][1][0]
 		cube[face][1][0] = mem
 	}
 	env.rotSides(&cube, face, way)
@@ -158,7 +161,7 @@ func (env *Env) execStep(step string) {
 	if nb == 2 {
 		env.cube = env.rotate(stepID, way)
 	}
-	//fmt.Println(env.cube)
+	fmt.Println(env.cube)
 }
 
 func (env *Env) shuffle() {
