@@ -373,11 +373,14 @@ func main() {
 		arg := string(args[0])
 		env := Env{}
 		env.setCube()
+		// parsing
 		err := env.parseArgs(arg)
 		if err != nil {
 			fmt.Println(err)
 		} else {
+			// Shuffling
 			env.shuffle()
+			// Solve HERE
 		}
 	} else {
 		fmt.Println("Error : No args")
