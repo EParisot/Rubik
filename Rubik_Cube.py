@@ -2,6 +2,7 @@
 
 import click
 import numpy as np
+import os
 import random
 import subprocess
 import time
@@ -11,7 +12,6 @@ from pygame.locals import *
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
-
 
 vertices = (( 1, -1, -1), ( 1,  1, -1), (-1,  1, -1), (-1, -1, -1), ( 1, -1,  1), ( 1,  1,  1), (-1, -1,  1), (-1,  1,  1))
 edges = ((0,1),(0,3),(0,4),(2,1),(2,3),(2,7),(6,3),(6,4),(6,7),(5,1),(5,4),(5,7))
@@ -359,6 +359,11 @@ if __name__ == '__main__':
         "\n| F : Front | ' : reverse |\n| R : Right | 2 : double  |\n| U : Up    |" + \
         "#" * 14 + "\n| B : Back  |\n| L : Left  |\n| D : Down  |\n" + \
         "#" * 13 + "\n")
+    # Compile solver
+    if not os.path.exists("Rubik") or not os.path.exists("Rubik.exe"):
+        args = ("go", "build")
+        popen = subprocess.Popen(args)
+    # Run
     main()
     pygame.quit()
     quit()
