@@ -383,5 +383,5 @@ func main() {
 		fmt.Println("Error : No args")
 	}
 	// TEST
-	fmt.Println("F F")
+	//fmt.Println("F F")
 }
