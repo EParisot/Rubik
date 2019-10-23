@@ -1,6 +1,9 @@
+# coding utf-8
+
 import click
 import numpy as np
 import random
+import subprocess
 import time
 
 import pygame
@@ -86,14 +89,18 @@ class EntireCube():
 
     def solve(self):
         print("\nSolving...")
-        # Exec Go Algo with self.hist as param and grab output
-        output = "D D'2 D"
-        self.steps = parse_steps(output)
-        ##################################
-        self.hist = ""
-        self.reset = True
-        self.solving = True
-        print("Done\n")
+        args = ("./Rubik.exe", self.hist)
+        popen = subprocess.Popen(args, stdout=subprocess.PIPE)
+        popen.wait()
+        output = popen.stdout.read().decode()
+        self.steps = parse_steps(str(output).replace("\n", ""))
+        if len(self.steps):
+            self.hist = ""
+            self.reset = True
+            self.solving = True
+            print("Done\n")
+        else:
+            time.sleep(0.1)
         
 
     def mainloop(self):
@@ -195,7 +202,8 @@ class EntireCube():
             
             # Show buttons
             if len(self.steps) == 0:
-                button("Solve", -25.4, 7, action=self.solve)
+                if len(self.hist):
+                    button("Solve", -25.4, 7, action=self.solve)
                 button("Shuffle", -24.5, 9.5, action=self.shuffle)
 
             # animate rotations
