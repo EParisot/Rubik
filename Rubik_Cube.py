@@ -89,17 +89,21 @@ class EntireCube():
 
     def solve(self):
         print("\nSolving...")
-        args = ("./Rubik.exe", self.hist)
+        args = ("./Rubik.exe", self.hist) 
         popen = subprocess.Popen(args, stdout=subprocess.PIPE)
         popen.wait()
         output = popen.stdout.read().decode()
-        self.steps = parse_steps(str(output).replace("\n", ""))
-        if len(self.steps):
-            self.hist = ""
-            self.reset = True
-            self.solving = True
-            print("Done\n")
+        if len(output):
+            self.steps = parse_steps(str(output).replace("\n", ""))
+            if len(self.steps):
+                self.hist = ""
+                self.reset = True
+                self.solving = True
+                print("Done\n")
+            else:
+                time.sleep(0.1)
         else:
+            print("Error : No Solution")
             time.sleep(0.1)
         
 

@@ -7,17 +7,18 @@ import (
 	"strings"
 )
 
-type Cube struct {
-}
-
 type Env struct {
 	mix  []string
-	cube Cube
+	cube [6][3][3]int
 	res  string
 }
 
 func (env *Env) parseArgs(arg string) error {
-	steps := strings.Split(arg[0:len(arg)-1], " ")
+	arg = strings.Replace(arg, "\n", "", -1)
+	if arg[len(arg)-1] == ' ' {
+		arg = arg[0 : len(arg)-1]
+	}
+	steps := strings.Split(arg, " ")
 	for step := range steps {
 		if len(steps[step]) == 0 || len(steps[step]) > 3 || len(steps[step]) > 0 &&
 			!strings.Contains("FRUBLD", steps[step][0:1]) {
@@ -38,6 +39,17 @@ func (env *Env) shuffle() {
 		fmt.Println(env.mix[step])
 		TODO exec step
 	}*/
+	//fmt.Print(env.cube)
+}
+
+func (env *Env) setCube() {
+	for face := range env.cube {
+		for line := range env.cube[face] {
+			for col := range env.cube[face][line] {
+				env.cube[face][line][col] = face
+			}
+		}
+	}
 }
 
 func main() {
@@ -45,6 +57,7 @@ func main() {
 	if len(args) >= 1 {
 		arg := string(args[0])
 		env := Env{}
+		env.setCube()
 		err := env.parseArgs(arg)
 		if err != nil {
 			fmt.Println(err)
@@ -54,6 +67,6 @@ func main() {
 	} else {
 		fmt.Println("Error : No args")
 	}
-	// testing
+	// TEST
 	fmt.Println("D D'2 D")
 }
