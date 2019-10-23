@@ -87,7 +87,9 @@ class EntireCube():
     def solve(self):
         print("\nSolving...")
         # Exec Go Algo with self.hist as param and grab output
-        self.steps = parse_steps("D D'2 D") # example
+        output = "D D'2 D"
+        self.steps = parse_steps(output)
+        ##################################
         self.hist = ""
         self.reset = True
         self.solving = True
