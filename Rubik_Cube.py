@@ -229,21 +229,16 @@ class EntireCube():
             pygame.time.wait(10)
 
 def parse_steps(steps):
-    steps_list = []
-    for step in steps.split(" "):
-        if len(step) > 0 and len(step) <= 3 and step[0] in "FRUBLD":
-            if len(step) >= 2 and len(step) <= 3:
-                if len(step) == 2 and step[1] in "'’2":
-                    steps_list.append(step)
-                elif len(step) == 3 and step[1] in "'’2" and step[2] in "'’2":
-                    steps_list.append(step)
-                else:
-                    print("Error : Invalid step arg")
-                    return []
-            else:
-                steps_list.append(step)
-        else:
+    steps_list = steps.split(" ")
+    for step in steps_list:
+        if len(step) == 0 or len(step) > 3 or step[0] not in "FRUBLD":
             print("Error : Invalid step name")
+            return []
+        elif len(step) == 2 and step[1] not in "'’2":
+            print("Error : Invalid step arg")
+            return []
+        elif len(step) == 3 and (step[1] not in "'’2" or step[2] not in "2"):
+            print("Error : Invalid step arg")
             return []
     return steps_list
 
