@@ -71,6 +71,7 @@ class EntireCube():
         self.steps = steps
         self.hist = ""
         self.reset = False
+        self.solving = False
         if len(self.steps):
             print("\nSuffling...")
 
@@ -79,14 +80,19 @@ class EntireCube():
         # build steps
         steps_idx = [random.randint(0, len(moves)-1) for _ in range(20)]
         self.steps = [moves[idx] for idx in steps_idx]
-        self.reset = True
+        if len(self.hist) == 0:
+            self.reset = True
+        self.solving = False
 
     def solve(self):
         print("\nSolving...")
         # Exec Go Algo with self.hist as param and grab output
         self.steps = parse_steps("D D'2 D") # example
+        self.hist = ""
         self.reset = True
+        self.solving = True
         print("Done\n")
+        
 
     def mainloop(self):
         rot_cube_map  = {K_UP: (-1, 0), K_DOWN: (1, 0), K_LEFT: (0, -1), K_RIGHT: (0, 1)}
@@ -142,7 +148,8 @@ class EntireCube():
                     if len(last):
                         curr = last
                     last = ""
-                    self.hist += curr + " "
+                    if self.solving == False:
+                        self.hist += curr + " "
             # handle events
             else:
                 for event in pygame.event.get():
@@ -175,6 +182,10 @@ class EntireCube():
                                 curr_tab[0] = "L"
                             elif event.key == K_d:
                                 curr_tab[0] = "D"
+                            if self.solving == True:
+                                steps_counter = 1
+                                self.solving = False
+                                print("\n")
                             print("Step %d : %s" % (steps_counter, "".join(curr_tab)))
                             steps_counter += 1
                             curr = "".join(curr_tab)
