@@ -7,11 +7,12 @@ import (
 	"strings"
 )
 
+// Game environnement
 type Env struct {
-	mix        []string
-	cube       [6][3][3]int
-	solvedCube [6][3][3]int
-	res        string
+	mix        []string     //shuffling list
+	cube       [6][3][3]int //current cube
+	solvedCube [6][3][3]int //finished cube (const)
+	res        string       //result list
 }
 
 func (env *Env) parseArgs(arg string) error {
