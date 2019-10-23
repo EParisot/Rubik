@@ -239,14 +239,7 @@ func (env *Env) rotSides(cube *[6][3][3]int, face, way int) {
 }
 
 func (env *Env) rotate(face, way int) [6][3][3]int {
-	var cube [6][3][3]int
-	for i := range env.cube {
-		for j := range env.cube[i] {
-			for k := range env.cube[i][j] {
-				cube[i][j][k] = env.cube[i][j][k]
-			}
-		}
-	}
+	cube := env.cube
 	if way == 0 {
 		mem := cube[face][0][0]
 		cube[face][0][0] = cube[face][2][0]
