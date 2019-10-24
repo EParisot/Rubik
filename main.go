@@ -73,7 +73,7 @@ func (env *Env) execStep(step string) {
 		env.cube = env.rotate(stepID, way)
 	}
 	// DEBUG
-	fmt.Println(env.cube)
+	//fmt.Println(env.cube)
 }
 
 func (env *Env) shuffle() {
@@ -115,5 +115,5 @@ func main() {
 		fmt.Println("Error : No args")
 	}
 	// TEST
-	//fmt.Println("F F")
+	fmt.Println("U U'2 U")
 }

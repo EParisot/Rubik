@@ -6,6 +6,7 @@ import os
 import random
 import subprocess
 import time
+import sys
 
 import pygame
 from pygame.locals import *
@@ -89,7 +90,10 @@ class EntireCube():
 
     def solve(self):
         print("\nSolving...")
-        args = ("./Rubik.exe", self.hist) 
+        if sys.platform == "win32":
+            args = ("./Rubik.exe", self.hist)
+        else:
+            args = ("./Rubik", self.hist)
         popen = subprocess.Popen(args, stdout=subprocess.PIPE)
         popen.wait()
         output = popen.stdout.read().decode()
