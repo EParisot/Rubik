@@ -207,12 +207,6 @@ class EntireCube():
                             steps_counter += 1
                             curr = "".join(curr_tab)
                             self.hist += curr + (" " if "'" in curr_tab[1] else "")
-            
-            # Show buttons
-            if len(self.steps) == 0:
-                if len(self.hist):
-                    button("Solve", -25.4, 7, action=self.solve)
-                button("Shuffle", -24.5, 9.5, action=self.shuffle)
 
             # animate rotations
             if animate_rot:
@@ -226,6 +220,11 @@ class EntireCube():
             glRotatef(ang_y, 0, 1, 0)
             glRotatef(ang_x, 1, 0, 0)
             
+            # Show buttons
+            if len(self.steps) == 0 and ang_x % 360 == 0 and ang_y % 360 == 0:
+                if len(self.hist):
+                    button("Solve", -25.4, 7, action=self.solve)
+                button("Shuffle", -24.5, 9.5, action=self.shuffle)
             # Print action on screen
             drawText(-1, 8, curr)
 
