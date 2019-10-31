@@ -17,22 +17,26 @@ type Env struct {
 
 func (env *Env) parseArgs(arg string) error {
 	arg = strings.Replace(arg, "\n", "", -1)
-	if arg[len(arg)-1] == ' ' {
-		arg = arg[0 : len(arg)-1]
-	}
-	steps := strings.Split(arg, " ")
-	for step := range steps {
-		if len(steps[step]) == 0 || len(steps[step]) > 3 || len(steps[step]) > 0 &&
-			!strings.Contains("FRUBLD", steps[step][0:1]) {
-			return errors.New("Error : Invalid step name")
-		} else if len(steps[step]) == 2 && !strings.Contains("'’2", steps[step][1:2]) {
-			return errors.New("Error : Invalid step arg")
-		} else if len(steps[step]) == 3 &&
-			(!strings.Contains("'’2", steps[step][1:2]) || !strings.Contains("2", steps[step][2:3])) {
-			return errors.New("Error : Invalid step arg")
+	if len(arg) != 0 {
+		if arg[len(arg)-1] == ' ' {
+			arg = arg[0 : len(arg)-1]
 		}
+		steps := strings.Split(arg, " ")
+		for step := range steps {
+			if len(steps[step]) == 0 || len(steps[step]) > 3 || len(steps[step]) > 0 &&
+				!strings.Contains("FRUBLD", steps[step][0:1]) {
+				return errors.New("Error : Invalid step name")
+			} else if len(steps[step]) == 2 && !strings.Contains("'’2", steps[step][1:2]) {
+				return errors.New("Error : Invalid step arg")
+			} else if len(steps[step]) == 3 &&
+				(!strings.Contains("'’2", steps[step][1:2]) || !strings.Contains("2", steps[step][2:3])) {
+				return errors.New("Error : Invalid step arg")
+			}
+		}
+		env.mix = steps
+	} else {
+		return errors.New("Error : No arg")
 	}
-	env.mix = steps
 	return nil
 }
 
@@ -73,7 +77,49 @@ func (env *Env) execStep(step string) {
 		env.cube = env.rotate(stepID, way)
 	}
 	// DEBUG
-	//fmt.Println(env.cube)
+	env.debugPrint()
+}
+
+func (env *Env) debugPrint() {
+	for i := range env.cube[5] {
+		fmt.Print("\t\t")
+		for _, val := range env.cube[5][i] {
+			fmt.Printf("%.2d ", val)
+		}
+		fmt.Println()
+	}
+	fmt.Println()
+	for i := range env.cube[3] {
+		fmt.Print("\t\t")
+		for _, val := range env.cube[3][i] {
+			fmt.Printf("%.2d ", val)
+		}
+		fmt.Println()
+	}
+	fmt.Println()
+	for i := range env.cube[2] {
+		for _, val := range env.cube[2][i] {
+			fmt.Printf("%.2d ", val)
+		}
+		fmt.Print("\t")
+		for _, val := range env.cube[0][i] {
+			fmt.Printf("%.2d ", val)
+		}
+		fmt.Print("\t")
+		for _, val := range env.cube[1][i] {
+			fmt.Printf("%.2d ", val)
+		}
+		fmt.Println()
+	}
+	fmt.Println()
+	for i := range env.cube[4] {
+		fmt.Print("\t\t")
+		for _, val := range env.cube[4][i] {
+			fmt.Printf("%.2d ", val)
+		}
+		fmt.Println()
+	}
+	fmt.Println()
 }
 
 func (env *Env) shuffle() {
@@ -98,22 +144,19 @@ func (env *Env) setCube() {
 
 func main() {
 	args := os.Args[1:]
-	if len(args) >= 1 {
-		arg := string(args[0])
-		env := Env{}
-		env.setCube()
-		// parsing
-		err := env.parseArgs(arg)
-		if err != nil {
-			fmt.Println(err)
-		} else {
-			// Shuffling
-			env.shuffle()
-			// Solve HERE
-		}
-	} else {
-		fmt.Println("Error : No args")
+	arg := string(args[0])
+	env := Env{}
+	env.setCube()
+	// parsing
+	err := env.parseArgs(arg)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
+	// Shuffling
+	env.shuffle()
+	// Solve HERE
+
 	// TEST
 	fmt.Println("U U'2 U")
 }

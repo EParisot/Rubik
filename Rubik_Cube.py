@@ -297,7 +297,7 @@ def main(steps):
     glTranslatef(-20, -15, 0)
     glRotatef(25, 1, 0, 0)
     glRotatef(-30, 0, 1, 0)
-
+   
     # Modern OpenGL API :
 
     # enable depth test (less or equal)
@@ -310,6 +310,7 @@ def main(steps):
     glFrontFace( GL_CW )
 
     global face_vao, edge_vao
+    
     # define the vertex buffers vor the faces
     attribute_array = []
     for face in range(len(surfaces)):
@@ -332,7 +333,6 @@ def main(steps):
     glColorPointer( 3, GL_FLOAT, 6*4, ctypes.cast(3*4, ctypes.c_void_p) )
     glEnableClientState( GL_COLOR_ARRAY ) 
     glBindBuffer(GL_ARRAY_BUFFER, 0) 
-
     glBindVertexArray( 0 )
 
     # define the vertex buffer for the edges
