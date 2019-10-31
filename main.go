@@ -77,10 +77,11 @@ func (env *Env) execStep(step string) {
 		env.cube = env.rotate(stepID, way)
 	}
 	// DEBUG
-	env.debugPrint()
+	env.debugPrint(step)
 }
 
-func (env *Env) debugPrint() {
+func (env *Env) debugPrint(step string) {
+	fmt.Printf("step : %s\n", step)
 	for i := range env.cube[5] {
 		fmt.Print("\t\t")
 		for _, val := range env.cube[5][i] {
