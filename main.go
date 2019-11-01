@@ -145,6 +145,10 @@ func (env *Env) setCube() {
 
 func main() {
 	args := os.Args[1:]
+	if len(args) == 0 {
+		fmt.Println("Error : No arg")
+		return
+	}
 	arg := string(args[0])
 	env := Env{}
 	env.setCube()
@@ -159,5 +163,5 @@ func main() {
 	// Solve HERE
 
 	// TEST
-	fmt.Println("U U'2 U")
+	//fmt.Println("U U'2 U")
 }
