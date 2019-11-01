@@ -245,14 +245,16 @@ class EntireCube():
 
 def parse_steps(steps):
     steps_list = steps.split(" ")
-    for step in steps_list:
+    for i, step in enumerate(steps_list):
+        step = step.replace("’", "'")
+        steps_list[i] = step
         if len(step) == 0 or len(step) > 3 or step[0] not in "FRUBLD":
             print("Error : Invalid step name")
             return []
-        elif len(step) == 2 and step[1] not in "'’2":
+        elif len(step) == 2 and step[1] not in "'2":
             print("Error : Invalid step arg")
             return []
-        elif len(step) == 3 and (step[1] not in "'’2" or step[2] not in "2"):
+        elif len(step) == 3 and (step[1] not in "'2" or step[2] not in "2"):
             print("Error : Invalid step arg")
             return []
     return steps_list
