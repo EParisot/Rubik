@@ -162,5 +162,5 @@ func main() {
 	// Shuffling
 	env.shuffle()
 	// Solve HERE
-	env.humanAlgo()
+	//env.humanAlgo()
 }
