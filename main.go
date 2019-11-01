@@ -23,13 +23,14 @@ func (env *Env) parseArgs(arg string) error {
 		}
 		steps := strings.Split(arg, " ")
 		for step := range steps {
-			if len(steps[step]) == 0 || len(steps[step]) > 3 || len(steps[step]) > 0 &&
-				!strings.Contains("FRUBLD", steps[step][0:1]) {
+			steps[step] = strings.ReplaceAll(steps[step], "’", "'")
+			if len(steps[step]) == 0 || len(steps[step]) > 3 || (len(steps[step]) > 0 &&
+				!strings.Contains("FRUBLD", steps[step][0:1])) {
 				return errors.New("Error : Invalid step name")
-			} else if len(steps[step]) == 2 && !strings.Contains("'’2", steps[step][1:2]) {
+			} else if len(steps[step]) == 2 && !strings.Contains("'2", steps[step][1:2]) {
 				return errors.New("Error : Invalid step arg")
 			} else if len(steps[step]) == 3 &&
-				(!strings.Contains("'’2", steps[step][1:2]) || !strings.Contains("2", steps[step][2:3])) {
+				(!strings.Contains("'2", steps[step][1:2]) || !strings.Contains("2", steps[step][2:3])) {
 				return errors.New("Error : Invalid step arg")
 			}
 		}
@@ -161,7 +162,5 @@ func main() {
 	// Shuffling
 	env.shuffle()
 	// Solve HERE
-
-	// TEST
-	//fmt.Println("U U'2 U")
+	env.humanAlgo()
 }
