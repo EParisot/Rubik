@@ -113,8 +113,8 @@ class EntireCube():
 
     def mainloop(self):
         rot_cube_map  = {K_UP: (-1, 0), K_DOWN: (1, 0), K_LEFT: (0, -1), K_RIGHT: (0, 1)}
-        rot_slice_map = {K_l: (0, 0, 1), K_r: (0, 2, 1), K_d: (1, 0, 1),K_u: (1, 2, 1), K_b: (2, 0, 1), K_f: (2, 2, 1)}  
-        rot_slice_map_prime = {K_l: (0, 0, -1), K_r: (0, 2, -1), K_d: (1, 0, -1), K_u: (1, 2, -1), K_b: (2, 0, -1), K_f: (2, 2, -1)}
+        rot_slice_map = {K_l: (0, 0, -1), K_r: (0, 2, 1), K_d: (1, 0, -1),K_u: (1, 2, 1), K_b: (2, 0, -1), K_f: (2, 2, 1)}  
+        rot_slice_map_prime = {K_l: (0, 0, 1), K_r: (0, 2, -1), K_d: (1, 0, 1), K_u: (1, 2, -1), K_b: (2, 0, 1), K_f: (2, 2, -1)}
         ang_x, ang_y, rot_cube = 0, 0, (0, 0)
         animate_rot, animate, animate_ang, animate_speed = False, False, 0, 5
         action = (0, 0, 0)
