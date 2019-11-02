@@ -238,8 +238,7 @@ func (env *Env) rotSides(cube *[6][3][3]int, face, way int) {
 	}
 }
 
-func (env *Env) rotate(face, way int) [6][3][3]int {
-	cube := env.cube
+func (env *Env) rotate(face, way int, cube [6][3][3]int) [6][3][3]int {
 	if way == 0 {
 		mem := cube[face][0][0]
 		cube[face][0][0] = cube[face][2][0]
