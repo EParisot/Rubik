@@ -31,6 +31,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv) (int, *[]CubeEnv) {
 	if env.isFinished(currCube) {
 		return -1, closedList
 	}
+	min := 100000
 	childsList := env.getMoves(currCube)
 	for _, child := range childsList {
 		if !existInClosedList(child, *closedList) {
@@ -39,14 +40,17 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv) (int, *[]CubeEnv) {
 			if result == -1 {
 				return -1, closedList
 			}
+			if result < min {
+				min = result
+			}
 			if len(*closedList) > 1 {
 				*closedList = (*closedList)[:len(*closedList)-1]
 			} else {
-				return 0, closedList
+				return result, closedList
 			}
 		}
 	}
-	return 0, closedList
+	return min, closedList
 }
 
 func (env *Env) getMoves(currCube CubeEnv) []CubeEnv {
