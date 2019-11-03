@@ -174,6 +174,8 @@ class EntireCube():
                         pygame.quit()
                         print("\nGoodBye !")
                         quit()
+                    if event.type == KEYDOWN and event.key == K_RETURN:
+                        self.solve()
                     if event.type == KEYDOWN:
                         curr_tab = [" ", " "]
                         edited = False
