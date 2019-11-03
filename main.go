@@ -7,12 +7,19 @@ import (
 	"strings"
 )
 
+type CubeEnv struct {
+	cube              [6][3][3]int
+	cost              int
+	heuristic         int
+	internationalMove string
+}
+
 // Game environnement
 type Env struct {
-	mix        []string     //shuffling list
-	cube       [6][3][3]int //current cube
-	solvedCube [6][3][3]int //finished cube (const)
-	res        string       //result list
+	mix         []string     //shuffling list
+	currentCube CubeEnv      //current cube
+	solvedCube  [6][3][3]int //finished cube (const)
+	res         string       //result list
 }
 
 func (env *Env) parseArgs(arg string) error {
@@ -73,75 +80,13 @@ func (env *Env) execStep(step string) {
 		stepID = 4
 	}
 	// exec rotations
-	env.cube = env.rotate(stepID, way)
+	oldCube := env.currentCube.cube
+	env.currentCube.cube = env.rotate(stepID, way, oldCube)
 	if nb == 2 {
-		env.cube = env.rotate(stepID, way)
+		env.currentCube.cube = env.rotate(stepID, way, oldCube)
 	}
 	// DEBUG
-	env.debugPrint(step)
-}
-
-func (env *Env) debugPrint(step string) {
-	fmt.Printf("step : %s\n", step)
-	for i := range env.cube[5] {
-		fmt.Print("\t\t")
-		for _, val := range env.cube[5][i] {
-			fmt.Printf("%.2d ", val)
-		}
-		fmt.Println()
-	}
-	fmt.Println()
-	for i := range env.cube[3] {
-		fmt.Print("\t\t")
-		for _, val := range env.cube[3][i] {
-			fmt.Printf("%.2d ", val)
-		}
-		fmt.Println()
-	}
-	fmt.Println()
-	for i := range env.cube[2] {
-		for _, val := range env.cube[2][i] {
-			fmt.Printf("%.2d ", val)
-		}
-		fmt.Print("\t")
-		for _, val := range env.cube[0][i] {
-			fmt.Printf("%.2d ", val)
-		}
-		fmt.Print("\t")
-		for _, val := range env.cube[1][i] {
-			fmt.Printf("%.2d ", val)
-		}
-		fmt.Println()
-	}
-	fmt.Println()
-	for i := range env.cube[4] {
-		fmt.Print("\t\t")
-		for _, val := range env.cube[4][i] {
-			fmt.Printf("%.2d ", val)
-		}
-		fmt.Println()
-	}
-	fmt.Println()
-}
-
-func (env *Env) shuffle() {
-	for step := range env.mix {
-		// exec step
-		env.execStep(env.mix[step])
-	}
-}
-
-func (env *Env) setCube() {
-	i := 0
-	for face := range env.cube {
-		for line := range env.cube[face] {
-			for col := range env.cube[face][line] {
-				env.cube[face][line][col] = i
-				env.solvedCube[face][line][col] = i
-				i++
-			}
-		}
-	}
+	//env.debugPrint(step, env.currentCube.cube)
 }
 
 func main() {
@@ -162,4 +107,5 @@ func main() {
 	// Shuffling
 	env.shuffle()
 	// Solve HERE
+	env.idAstar()
 }
