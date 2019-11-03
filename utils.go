@@ -20,7 +20,7 @@ func (env *Env) isFinished(currCube CubeEnv) bool {
 }
 
 func existInClosedList(currCube CubeEnv, closedList []CubeEnv) bool {
-	for i := 0; i < len(closedList); i++ {
+	for i := range closedList {
 		if closedList[i].cube == currCube.cube {
 			return true
 		}
