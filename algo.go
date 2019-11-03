@@ -55,7 +55,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv) (int, *[]CubeEnv) {
 
 func (env *Env) getMoves(currCube CubeEnv) []CubeEnv {
 	var gridList []CubeEnv
-	for rotate := 0; rotate < 5; rotate++ {
+	for rotate := 0; rotate <= 5; rotate++ {
 		for way := 0; way < 2; way++ {
 			copyCube := env.copyCube(currCube.cube)
 			newCube := env.rotate(rotate, way, copyCube)
@@ -81,7 +81,7 @@ func (env *Env) getMoves(currCube CubeEnv) []CubeEnv {
 			newEnvCube.cost = currCube.cost + 1
 			newEnvCube.heuristic = newEnvCube.cost
 
-			//env.debugPrint(newEnvCube.internationalMove, newEnvCube.cube)
+			// env.debugPrint(newEnvCube.internationalMove, newEnvCube.cube)
 			gridList = append(gridList, newEnvCube)
 		}
 	}
