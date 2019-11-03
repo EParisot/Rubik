@@ -5,18 +5,18 @@ import (
 )
 
 func (env *Env) idAstar() {
-	fmt.Println("Begin IDAstar")
+	//fmt.Println("Begin IDAstar")
 	threshold := env.globalHeuristic(env.currentCube)
 	var closedList []CubeEnv
 	closedList = append(closedList, env.currentCube)
 	for {
 		tmpThres, closedList := env.search(threshold, &closedList)
 		if tmpThres == -1 {
-			fmt.Println("IDAstar Done")
+			//fmt.Println("IDAstar Done")
 			env.reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
 			return
 		} else if tmpThres >= 10000 {
-			fmt.Println("IDAstar returned no solution")
+			//fmt.Println("IDAstar returned no solution")
 			return
 		}
 		threshold = tmpThres
@@ -89,11 +89,14 @@ func (env *Env) getMoves(currCube CubeEnv) []CubeEnv {
 }
 
 func (env *Env) reconstructPathIDA(closedList []CubeEnv, endGrid CubeEnv) {
-	fmt.Println("Ordered sequence of states that make up the solution : ")
-	for _, step := range closedList {
-		fmt.Println(step.internationalMove)
+	//fmt.Println("Ordered sequence of states that make up the solution : ")
+	for i, step := range closedList[1:len(closedList)] {
+		fmt.Print(step.internationalMove)
+		if i < len(closedList)-2 {
+			fmt.Print(" ")
+		}
 	}
-	fmt.Println("Number of moves required : ", len(closedList)-1)
+	//fmt.Println("Number of moves required : ", len(closedList)-1)
 }
 
 func (env *Env) globalHeuristic(currCube CubeEnv) int {
