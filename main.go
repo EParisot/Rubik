@@ -8,7 +8,7 @@ import (
 )
 
 type CubeEnv struct {
-	cube              [6][3][3]int
+	cube              [6]int32
 	cost              int
 	heuristic         int
 	internationalMove string
@@ -16,10 +16,10 @@ type CubeEnv struct {
 
 // Game environnement
 type Env struct {
-	mix         []string     //shuffling list
-	currentCube CubeEnv      //current cube
-	solvedCube  [6][3][3]int //finished cube (const)
-	res         string       //result list
+	mix         []string //shuffling list
+	currentCube CubeEnv  //current cube
+	solvedCube  [6]int32 //finished cube (const)
+	res         string   //result list
 }
 
 func (env *Env) parseArgs(arg string) error {
@@ -86,7 +86,7 @@ func (env *Env) execStep(step string) {
 		env.currentCube.cube = env.rotate(stepID, way, oldCube)
 	}
 	// DEBUG
-	//env.debugPrint(step, env.currentCube.cube)
+	env.debugPrint(step, env.currentCube.cube)
 }
 
 func main() {
@@ -107,5 +107,5 @@ func main() {
 	// Shuffling
 	env.shuffle()
 	// Solve HERE
-	env.idAstar()
+	//env.idAstar()
 }

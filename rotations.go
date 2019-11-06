@@ -1,6 +1,6 @@
 package main
 
-func (env *Env) rotSide0(cube *[6][3][3]int, way int) {
+/*func (env *Env) rotSide0(cube *[6][3][3]int, way int) {
 	sides := [4]int{3, 2, 4, 1}
 	if way == 0 {
 		mem := cube[sides[0]][2][0]
@@ -236,32 +236,18 @@ func (env *Env) rotSides(cube *[6][3][3]int, face, way int) {
 	} else if face == 5 {
 		env.rotSide5(cube, way)
 	}
-}
+}*/
 
-func (env *Env) rotate(face, way int, cube [6][3][3]int) [6][3][3]int {
+func (env *Env) rotate(face, way int, cube [6]int32) [6]int32 {
 	if way == 0 {
-		mem := cube[face][0][0]
-		cube[face][0][0] = cube[face][2][0]
-		cube[face][2][0] = cube[face][2][2]
-		cube[face][2][2] = cube[face][0][2]
-		cube[face][0][2] = mem
-		mem = cube[face][0][1]
-		cube[face][0][1] = cube[face][1][0]
-		cube[face][1][0] = cube[face][2][1]
-		cube[face][2][1] = cube[face][1][2]
-		cube[face][1][2] = mem
+		mem := cube[face] - cube[face]<<8
+		cube[face] = cube[face] >> 8
+		cube[face] = mem + cube[face]
 	} else {
-		mem := cube[face][0][0]
-		cube[face][0][0] = cube[face][0][2]
-		cube[face][0][2] = cube[face][2][2]
-		cube[face][2][2] = cube[face][2][0]
-		cube[face][2][0] = mem
-		mem = cube[face][0][1]
-		cube[face][0][1] = cube[face][1][2]
-		cube[face][1][2] = cube[face][2][1]
-		cube[face][2][1] = cube[face][1][0]
-		cube[face][1][0] = mem
+		mem := cube[face] - cube[face]>>8
+		cube[face] = cube[face] << 8
+		cube[face] = mem + cube[face]
 	}
-	env.rotSides(&cube, face, way)
+	//env.rotSides(&cube, face, way)
 	return cube
 }

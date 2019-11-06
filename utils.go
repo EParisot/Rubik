@@ -1,13 +1,9 @@
 package main
 
-func (env *Env) copyCube(cube [6][3][3]int) [6][3][3]int {
-	var copyCube [6][3][3]int
+func (env *Env) copyCube(cube [6]int32) [6]int32 {
+	var copyCube [6]int32
 	for face := range cube {
-		for line := range cube[face] {
-			for col := range cube[face][line] {
-				copyCube[face][line][col] = cube[face][line][col]
-			}
-		}
+		copyCube[face] = cube[face]
 	}
 	return copyCube
 }
@@ -29,16 +25,13 @@ func existInClosedList(currCube CubeEnv, closedList []CubeEnv) bool {
 }
 
 func (env *Env) setCube() {
-	i := 0
-	for face := range env.currentCube.cube {
-		for line := range env.currentCube.cube[face] {
-			for col := range env.currentCube.cube[face][line] {
-				env.currentCube.cube[face][line][col] = i
-				env.solvedCube[face][line][col] = i
-				i++
-			}
-		}
-	}
+	env.currentCube.cube[0] = 0b0000000000000000
+	env.currentCube.cube[1] = 0b0001000100010001
+	env.currentCube.cube[2] = 0b0010001000100010
+	env.currentCube.cube[3] = 0b0011001100110011
+	env.currentCube.cube[4] = 0b0100010001000100
+	env.currentCube.cube[5] = 0b0101010101010101
+	env.solvedCube = env.copyCube(env.currentCube.cube)
 }
 
 func (env *Env) shuffle() {
