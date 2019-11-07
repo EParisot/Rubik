@@ -30,12 +30,13 @@ func (env *Env) printcolor(str string) {
 
 func (env *Env) printVerticalCube(tmpface [9]string) {
 	i := 0
+	order := [9]int{0, 1, 2, 7, 8, 3, 6, 5, 4}
 	for x := 0; x < 3; x++ {
 		for o := 0; o < 4; o++ {
 			fmt.Print(" ")
 		}
 		for o := 0; o < 3; o++ {
-			env.printcolor(tmpface[i])
+			env.printcolor(tmpface[order[i]])
 			i += 1
 		}
 		fmt.Println()
@@ -44,9 +45,10 @@ func (env *Env) printVerticalCube(tmpface [9]string) {
 }
 
 func (env *Env) printMiddleCube(tmpStockface [3][9]string) {
+	order := [9]int{0, 1, 2, 7, 8, 3, 6, 5, 4}
 	for x := 0; x < 3; x++ {
 		for o := 0; o < 3; o++ {
-			env.printcolor(tmpStockface[x][o])
+			env.printcolor(tmpStockface[x][order[o]])
 		}
 		fmt.Print(" ")
 	}
@@ -64,14 +66,14 @@ func (env *Env) printMiddleCube(tmpStockface [3][9]string) {
 					env.printcolor("R")
 				}
 			}
-			env.printcolor(tmpStockface[x][o])
+			env.printcolor(tmpStockface[x][order[o]])
 		}
 		fmt.Print(" ")
 	}
 	fmt.Println()
 	for x := 0; x < 3; x++ {
 		for o := 5; o < 8; o++ {
-			env.printcolor(tmpStockface[x][o])
+			env.printcolor(tmpStockface[x][order[o]])
 		}
 		fmt.Print(" ")
 	}
@@ -88,11 +90,8 @@ func (env *Env) debugPrint(step string, cube [6]int32) {
 	for _, j := range order {
 		face := cube[j]
 		var tmpface [9]string
-		for i := 8; i >= 0; i-- {
-			if i == 4 {
-				tmpface[4] = string(str[j])
-				continue
-			}
+		tmpface[8] = string(str[j])
+		for i := 7; i >= 0; i-- {
 			var nbr int32
 			nbr = face & 15
 			tmpface[i] = string(str[nbr])

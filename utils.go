@@ -26,7 +26,7 @@ func existInClosedList(currCube CubeEnv, closedList []CubeEnv) bool {
 }
 
 func (env *Env) setCube() {
-	env.currentCube.cube[0] = 0b00000000000000000000000000000000 // White
+	env.currentCube.cube[0] = 0b00000000000000000000000000000000// White
 	env.currentCube.cube[1] = 0b00010001000100010001000100010001 // Red
 	env.currentCube.cube[2] = 0b00100010001000100010001000100010 // Orange
 	env.currentCube.cube[3] = 0b00110011001100110011001100110011 // Blue
