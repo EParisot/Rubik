@@ -10,24 +10,19 @@ func (env *Env) printcolor(str string) {
 	if str == "W" {
 		c := color.New(color.FgWhite)
 		c.Print("W")
-	}
-	if str == "R" {
+	} else if str == "R" {
 		c := color.New(color.FgRed)
 		c.Print("R")
-	}
-	if str == "O" {
+	} else if str == "O" {
 		c := color.New(color.FgMagenta)
 		c.Print("O")
-	}
-	if str == "B" {
+	} else if str == "B" {
 		c := color.New(color.FgBlue)
 		c.Print("B")
-	}
-	if str == "G" {
+	} else if str == "G" {
 		c := color.New(color.FgGreen)
 		c.Print("G")
-	}
-	if str == "Y" {
+	} else if str == "Y" {
 		c := color.New(color.FgYellow)
 		c.Print("Y")
 	}
