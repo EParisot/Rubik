@@ -79,7 +79,7 @@ func (env *Env) printMiddleCube(tmpStockface [3][9]string) {
 	fmt.Println()
 }
 
-func (env *Env) debugPrint(step string, cube [6]int32) {
+func (env *Env) debugPrint(cube [6]int32) {
 	str := "WROBGY"
 	order := [6]int{5, 3, 2, 0, 1, 4}
 	var tmpStockface [3][9]string

@@ -33,7 +33,6 @@ func (env *Env) setCube() {
 	env.currentCube.cube[4] = 0b01000100010001000100010001000100 // Green
 	env.currentCube.cube[5] = 0b01010101010101010101010101010101 // Yellow (appear Magenta)
 	env.solvedCube = env.copyCube(env.currentCube.cube)
-	env.debugPrint("ok", env.currentCube.cube)
 }
 
 func (env *Env) shuffle() {
