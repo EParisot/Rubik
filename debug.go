@@ -54,25 +54,14 @@ func (env *Env) printMiddleCube(tmpStockface [3][9]string) {
 	}
 	fmt.Println()
 	for x := 0; x < 3; x++ {
-		for o := 3; o < 5; o++ {
-			if o == 4 {
-				if x == 0 {
-					env.printcolor("O")
-				}
-				if x == 1 {
-					env.printcolor("W")
-				}
-				if x == 2 {
-					env.printcolor("R")
-				}
-			}
+		for o := 3; o < 6; o++ {
 			env.printcolor(tmpStockface[x][order[o]])
 		}
 		fmt.Print(" ")
 	}
 	fmt.Println()
 	for x := 0; x < 3; x++ {
-		for o := 5; o < 8; o++ {
+		for o := 6; o < 9; o++ {
 			env.printcolor(tmpStockface[x][order[o]])
 		}
 		fmt.Print(" ")
