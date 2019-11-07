@@ -81,7 +81,7 @@ func (env *Env) getMoves(currCube CubeEnv) []CubeEnv {
 			newEnvCube.cost = currCube.cost + 1
 			newEnvCube.heuristic = newEnvCube.cost
 
-			env.debugPrint(newEnvCube.internationalMove, newEnvCube.cube)
+			//	env.debugPrint(newEnvCube.internationalMove, newEnvCube.cube)
 			gridList = append(gridList, newEnvCube)
 		}
 	}
