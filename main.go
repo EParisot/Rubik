@@ -83,7 +83,7 @@ func (env *Env) execStep(step string) {
 	oldCube := env.currentCube.cube
 	env.currentCube.cube = env.rotate(stepID, way, oldCube)
 	if nb == 2 {
-		env.currentCube.cube = env.rotate(stepID, way, oldCube)
+		env.currentCube.cube = env.rotate(stepID, way, env.currentCube.cube)
 	}
 	// DEBUG
 	env.debugPrint(env.currentCube.cube)
