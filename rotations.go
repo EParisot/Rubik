@@ -271,9 +271,9 @@ func (env *Env) rotSide4(cube *[6]int32, way int) {
 		//cube[sides[0]][2][2] = cube[sides[1]][2][2]
 		cube[sides[0]] = replaceBits(cube[sides[1]], 12, cube[sides[0]], 12)
 		//cube[sides[1]][2][2] = cube[sides[2]][0][0]
-		cube[sides[1]] = replaceBits(cube[sides[2]], 4, cube[sides[1]], 12)
+		cube[sides[1]] = replaceBits(cube[sides[2]], 28, cube[sides[1]], 12)
 		//cube[sides[2]][0][0] = cube[sides[3]][2][2]
-		cube[sides[2]] = replaceBits(cube[sides[3]], 12, cube[sides[2]], 4)
+		cube[sides[2]] = replaceBits(cube[sides[3]], 12, cube[sides[2]], 28)
 		//cube[sides[3]][2][2] = mem
 		cube[sides[3]] = replaceBits(mem, 12, cube[sides[3]], 12)
 	} else {
