@@ -31,20 +31,26 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 	}
 	if *phase == 1 && isInG1(currCube) == 0 &&
 		(currCube.internationalMove == "R" ||
-			currCube.internationalMove == "L" ||
-			currCube.internationalMove == "F" ||
-			currCube.internationalMove == "B") {
+			currCube.internationalMove == "L") {
 		*phase = 2
 		currCube.cost = 0
 		fmt.Println("Phase1 DONE")
 		env.debugPrint(currCube.cube)
 		//return -1, closedList
 	} else if *phase == 2 && isInG2(currCube) == 0 &&
-		(currCube.internationalMove == "U" ||
-			currCube.internationalMove == "D") {
+		(currCube.internationalMove == "R" ||
+			currCube.internationalMove == "L" ||
+			currCube.internationalMove == "F" ||
+			currCube.internationalMove == "B") {
 		*phase = 3
 		currCube.cost = 0
 		fmt.Println("Phase2 DONE")
+		env.debugPrint(currCube.cube)
+		//return -1, closedList
+	} else if *phase == 3 && isInG3(currCube) == 0 {
+		*phase = 4
+		currCube.cost = 0
+		fmt.Println("Phase3 DONE")
 		env.debugPrint(currCube.cube)
 		//return -1, closedList
 	}
@@ -82,7 +88,7 @@ func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
 			copyCube := env.copyCube(currCube.cube) // Check if needed
 			newCube := env.rotate(rotate, way, copyCube)
 			var nb string
-			if phase == 3 || (phase == 2 && (rotate == 0 || rotate == 1 || rotate == 5 || rotate == 2)) {
+			if (phase == 2 && (rotate == 2 || rotate == 1)) || (phase == 3 && (rotate == 0 || rotate == 1 || rotate == 5 || rotate == 2)) || phase == 4 {
 				newCube = env.rotate(rotate, way, newCube)
 				nb = "2"
 			}
@@ -108,9 +114,7 @@ func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
 			//tmp
 			newEnvCube.cost = currCube.cost + 1
 			newEnvCube.heuristic = newEnvCube.cost + env.globalHeuristic(newEnvCube, phase)
-			/*if phase == 2 {
-				fmt.Println(phase, newEnvCube.cost, env.globalHeuristic(newEnvCube, phase))
-			}*/
+			//fmt.Println(phase, newEnvCube.cost, env.globalHeuristic(newEnvCube, phase))
 			//env.debugPrint(newEnvCube.internationalMove, newEnvCube.cube)
 			gridList = append(gridList, newEnvCube)
 		}
@@ -135,6 +139,8 @@ func (env *Env) globalHeuristic(currCube CubeEnv, phase int) int {
 		gHeur = isInG1(currCube)
 	} else if phase == 2 {
 		gHeur = isInG2(currCube)
+	} else if phase == 3 {
+		gHeur = isInG3(currCube)
 	} else {
 		gHeur = isInGc(currCube)
 	}
@@ -197,16 +203,41 @@ func sagEdgeIsGood(currCube CubeEnv, facelet int32, nextFacelet int32) bool {
 }
 
 func isInG1(currCube CubeEnv) int {
-	var corners int
-	var midEdges int
-	var topDownEdges int
-	for _, face := range []int{3, 4} {
-		for _, facelet := range []int{1, 3, 5, 7} {
-			if cornerIsOriented(currCube, face, (currCube.cube[face]>>uint(facelet*4))&15) {
-				corners++
+	var latEdges int
+	var faceEdges int
+	for _, face := range []int{1, 2} {
+		for _, facelet := range []int{0, 2, 4, 6} {
+			var oppositeFace int
+			if face == 1 {
+				oppositeFace = 2
+			} else {
+				oppositeFace = 1
+			}
+			if (int(currCube.cube[face]>>uint(facelet*4))&15) == face || (int(currCube.cube[face]>>uint(facelet*4))&15) == oppositeFace {
+				latEdges++
 			}
 		}
 	}
+	for _, face := range []int{0, 5} {
+		for _, facelet := range []int{0, 2, 4, 6} {
+			var oppositeFace int
+			if face == 0 {
+				oppositeFace = 5
+			} else {
+				oppositeFace = 0
+			}
+			if (int(currCube.cube[face]>>uint(facelet*4))&15) == face || (int(currCube.cube[face]>>uint(facelet*4))&15) == oppositeFace {
+				faceEdges++
+			}
+		}
+	}
+	return 16 - (latEdges + faceEdges)
+}
+
+func isInG2(currCube CubeEnv) int {
+	var corners int
+	var midEdges int
+	/*var topDownEdges int
 	for _, face := range []int{3, 4} {
 		for _, facelet := range []int{0, 2, 4, 6} {
 			var oppositeFace int
@@ -219,7 +250,15 @@ func isInG1(currCube CubeEnv) int {
 				topDownEdges++
 			}
 		}
+	}*/
+	for _, face := range []int{3, 4} {
+		for _, facelet := range []int{1, 3, 5, 7} {
+			if cornerIsOriented(currCube, face, (currCube.cube[face]>>uint(facelet*4))&15) {
+				corners++
+			}
+		}
 	}
+
 	faces := []int{0, 1, 5, 2}
 	for i, face := range faces {
 		for _, facelet := range []int{0, 4} {
@@ -263,10 +302,10 @@ func isInG1(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 20 - (corners + midEdges/2 + topDownEdges)
+	return 12 - (corners + midEdges/2)
 }
 
-func isInG2(currCube CubeEnv) int {
+func isInG3(currCube CubeEnv) int {
 	var corners int
 	var edges int
 	for _, face := range []int{0, 1, 2, 5} {
