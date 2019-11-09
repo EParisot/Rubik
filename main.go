@@ -86,7 +86,7 @@ func (env *Env) execStep(step string) {
 		env.currentCube.cube = env.rotate(stepID, way, env.currentCube.cube)
 	}
 	// DEBUG
-	//env.debugPrint(env.currentCube.cube)
+	//	env.debugPrint(env.currentCube.cube)
 }
 
 func main() {
@@ -107,5 +107,6 @@ func main() {
 	// Shuffling
 	env.shuffle()
 	// Solve HERE
-	env.idAstar()
+	//env.idAstar()
+	env.cfop()
 }
