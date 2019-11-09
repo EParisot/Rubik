@@ -28,7 +28,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv) (int, *[]CubeEnv) {
 	if currCube.heuristic > threshold {
 		return currCube.heuristic, closedList
 	}
-	if env.isFinished(currCube) {
+	if isInG1(currCube) == 0 { //env.isFinished(currCube) {
 		return -1, closedList
 	}
 	min := 100000
@@ -79,7 +79,7 @@ func (env *Env) getMoves(currCube CubeEnv) []CubeEnv {
 			newEnvCube.cube = newCube
 			//tmp
 			newEnvCube.cost = currCube.cost + 1
-			newEnvCube.heuristic = newEnvCube.cost
+			newEnvCube.heuristic = newEnvCube.cost + env.globalHeuristic(newEnvCube)
 
 			//	env.debugPrint(newEnvCube.internationalMove, newEnvCube.cube)
 			gridList = append(gridList, newEnvCube)
@@ -100,6 +100,88 @@ func (env *Env) reconstructPathIDA(closedList []CubeEnv, endGrid CubeEnv) {
 }
 
 func (env *Env) globalHeuristic(currCube CubeEnv) int {
-	gHeur := 0
+	gHeur := isInG1(currCube)
 	return gHeur
+}
+
+func cornerIsOriented(currCube CubeEnv, face int, facelet int32) bool {
+	oppositeFace := 0
+	if face == 3 {
+		oppositeFace = 4
+	} else {
+		oppositeFace = 3
+	}
+	if int(facelet) == face || int(facelet) == oppositeFace {
+		return true
+	}
+	return false
+}
+
+func edgeIsGood(currCube CubeEnv, facelet int32, nextFacelet int32) bool {
+	for _, face := range []int{5, 0, 1, 2} {
+		if int(facelet) == face {
+			for _, nextFace := range []int{5, 0, 1, 2} {
+				if nextFace != face && int(nextFacelet) == nextFace {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
+
+func isInG1(currCube CubeEnv) int {
+	corners := 0
+	midEdges := 0
+	for _, face := range []int{3, 4} {
+		for _, facelet := range []int{1, 3, 5, 7} {
+			if cornerIsOriented(currCube, face, (currCube.cube[face]>>uint(facelet*4))&15) {
+				corners++
+			}
+		}
+	}
+	faces := []int{0, 1, 5, 2}
+	for i, face := range faces {
+		for _, facelet := range []int{0, 4} {
+			var nextFace int
+			nextFacelet := 0
+			if face == 5 {
+				if facelet == 0 {
+					nextFace = 2
+					nextFacelet = 0
+				} else {
+					nextFace = 1
+					nextFacelet = 4
+				}
+			} else {
+				if facelet == 0 {
+					idx := i - 1
+					if idx == -1 {
+						idx = 3
+					}
+					nextFace = faces[idx]
+					if nextFace == 5 {
+						nextFacelet = 0
+					} else {
+						nextFacelet = 4
+					}
+				} else {
+					idx := i + 1
+					if idx == 4 {
+						idx = 0
+					}
+					nextFace = faces[idx]
+					if nextFace == 5 {
+						nextFacelet = 4
+					} else {
+						nextFacelet = 0
+					}
+				}
+			}
+			if edgeIsGood(currCube, (currCube.cube[face]>>uint(facelet*4))&15, (currCube.cube[nextFace]>>uint(nextFacelet*4))&15) {
+				midEdges++
+			}
+		}
+	}
+	return 16 - (corners + midEdges)
 }
