@@ -38,20 +38,19 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 		currCube.cost = 0
 		fmt.Println("Phase1 DONE")
 		env.debugPrint(currCube.cube)
+		//return -1, closedList
 	} else if *phase == 2 && isInG2(currCube) == 0 &&
-		(currCube.internationalMove == "R" ||
-			currCube.internationalMove == "L" ||
-			currCube.internationalMove == "F" ||
-			currCube.internationalMove == "B" ||
-			currCube.internationalMove == "U" ||
+		(currCube.internationalMove == "U" ||
 			currCube.internationalMove == "D") {
 		*phase = 3
 		currCube.cost = 0
 		fmt.Println("Phase2 DONE")
 		env.debugPrint(currCube.cube)
-		return -1, closedList
+		//return -1, closedList
 	}
 	if env.isFinished(currCube) {
+		fmt.Println("ALL DONE")
+		env.debugPrint(currCube.cube)
 		return -1, closedList
 	}
 	min := 100000
@@ -109,7 +108,9 @@ func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
 			//tmp
 			newEnvCube.cost = currCube.cost + 1
 			newEnvCube.heuristic = newEnvCube.cost + env.globalHeuristic(newEnvCube, phase)
-			fmt.Println(phase, newEnvCube.cost, env.globalHeuristic(newEnvCube, phase))
+			/*if phase == 2 {
+				fmt.Println(phase, newEnvCube.cost, env.globalHeuristic(newEnvCube, phase))
+			}*/
 			//env.debugPrint(newEnvCube.internationalMove, newEnvCube.cube)
 			gridList = append(gridList, newEnvCube)
 		}
@@ -154,9 +155,10 @@ func cornerIsOriented(currCube CubeEnv, face int, facelet int32) bool {
 }
 
 func midEdgeIsGood(currCube CubeEnv, facelet int32, nextFacelet int32) bool {
-	for _, face := range []int{5, 0, 1, 2} {
+	faces := []int{5, 0, 1, 2}
+	for _, face := range faces {
 		if int(facelet) == face {
-			for _, nextFace := range []int{5, 0, 1, 2} {
+			for _, nextFace := range faces {
 				if nextFace != face && int(nextFacelet) == nextFace {
 					return true
 				}
@@ -197,6 +199,7 @@ func sagEdgeIsGood(currCube CubeEnv, facelet int32, nextFacelet int32) bool {
 func isInG1(currCube CubeEnv) int {
 	var corners int
 	var midEdges int
+	var topDownEdges int
 	for _, face := range []int{3, 4} {
 		for _, facelet := range []int{1, 3, 5, 7} {
 			if cornerIsOriented(currCube, face, (currCube.cube[face]>>uint(facelet*4))&15) {
@@ -204,61 +207,16 @@ func isInG1(currCube CubeEnv) int {
 			}
 		}
 	}
-	faces := []int{0, 1, 5, 2}
-	for i, face := range faces {
-		for _, facelet := range []int{0, 4} {
-			var nextFace int
-			nextFacelet := 0
-			if face == 5 {
-				if facelet == 0 {
-					nextFace = 2
-					nextFacelet = 0
-				} else {
-					nextFace = 1
-					nextFacelet = 4
-				}
+	for _, face := range []int{3, 4} {
+		for _, facelet := range []int{0, 2, 4, 6} {
+			var oppositeFace int
+			if face == 3 {
+				oppositeFace = 4
 			} else {
-				if facelet == 0 {
-					idx := i - 1
-					if idx == -1 {
-						idx = 3
-					}
-					nextFace = faces[idx]
-					if nextFace == 5 {
-						nextFacelet = 0
-					} else {
-						nextFacelet = 4
-					}
-				} else {
-					idx := i + 1
-					if idx == 4 {
-						idx = 0
-					}
-					nextFace = faces[idx]
-					if nextFace == 5 {
-						nextFacelet = 4
-					} else {
-						nextFacelet = 0
-					}
-				}
+				oppositeFace = 3
 			}
-			if midEdgeIsGood(currCube, (currCube.cube[face]>>uint(facelet*4))&15, (currCube.cube[nextFace]>>uint(nextFacelet*4))&15) {
-				midEdges++
-			}
-		}
-	}
-	return 12 - (corners + midEdges/2)
-}
-
-func isInG2(currCube CubeEnv) int {
-	var corners int
-	var midEdges int
-	var latEdges int
-	var sagEdges int
-	for _, face := range []int{0, 1, 2, 3, 4, 5} {
-		for _, facelet := range []int{1, 3, 5, 7} {
-			if cornerIsOriented(currCube, face, (currCube.cube[face]>>uint(facelet*4))&15) {
-				corners++
+			if (int(currCube.cube[face]>>uint(facelet*4))&15) == face || (int(currCube.cube[face]>>uint(facelet*4))&15) == oppositeFace {
+				topDownEdges++
 			}
 		}
 	}
@@ -305,84 +263,68 @@ func isInG2(currCube CubeEnv) int {
 			}
 		}
 	}
-	faces = []int{1, 2, 3, 4}
-	for _, face := range faces {
-		var nextFace int
-		var nextFacelet int
-		if face == 3 {
-			for _, facelet := range []int{0, 4} {
-				if facelet == 0 {
-					nextFace = 2
-					nextFacelet = 6
-				} else {
-					nextFace = 1
-					nextFacelet = 6
-				}
-				if latEdgeIsGood(currCube, (currCube.cube[face]>>uint(facelet*4))&15, (currCube.cube[nextFace]>>uint(nextFacelet*4))&15) {
-					midEdges++
-				}
-			}
-		} else if face == 2 {
-			for _, facelet := range []int{2, 6} {
-				if facelet == 6 {
-					nextFace = 3
-					nextFacelet = 0
-				} else {
-					nextFace = 4
-					nextFacelet = 0
-				}
-				if latEdgeIsGood(currCube, (currCube.cube[face]>>uint(facelet*4))&15, (currCube.cube[nextFace]>>uint(nextFacelet*4))&15) {
-					midEdges++
-				}
-			}
-		} else if face == 1 {
-			for _, facelet := range []int{2, 6} {
-				if facelet == 6 {
-					nextFace = 3
-					nextFacelet = 4
-				} else {
-					nextFace = 4
-					nextFacelet = 4
-				}
-				if latEdgeIsGood(currCube, (currCube.cube[face]>>uint(facelet*4))&15, (currCube.cube[nextFace]>>uint(nextFacelet*4))&15) {
-					midEdges++
-				}
-			}
-		} else if face == 4 {
-			for _, facelet := range []int{0, 4} {
-				if facelet == 0 {
-					nextFace = 2
-					nextFacelet = 2
-				} else {
-					nextFace = 1
-					nextFacelet = 2
-				}
-				if latEdgeIsGood(currCube, (currCube.cube[face]>>uint(facelet*4))&15, (currCube.cube[nextFace]>>uint(nextFacelet*4))&15) {
-					midEdges++
-				}
+	return 20 - (corners + midEdges/2 + topDownEdges)
+}
+
+func isInG2(currCube CubeEnv) int {
+	var corners int
+	var edges int
+	for _, face := range []int{0, 1, 2, 5} {
+		var oppositeFace int
+		if face%2 == 0 {
+			oppositeFace = face - 1
+		} else {
+			oppositeFace = face + 1
+		}
+		if oppositeFace == 6 {
+			oppositeFace = 0
+		} else if oppositeFace == -1 {
+			oppositeFace = 5
+		}
+		for _, facelet := range []int{1, 3, 5, 7} {
+			if (int(currCube.cube[face]>>uint(facelet*4))&15) == face || (int(currCube.cube[face]>>uint(facelet*4))&15) == oppositeFace {
+				corners++
 			}
 		}
 	}
-	faces = []int{0, 3, 4, 5}
-	facelets := []int{2, 6}
-	for i, face := range faces {
-		for j, facelet := range facelets {
-			nextFaceIdx := i + 1
-			if nextFaceIdx == 4 {
-				nextFaceIdx = 0
-			}
-			nextFace := faces[nextFaceIdx]
-			nextFaceletIdx := j + 1
-			if nextFaceletIdx == 2 {
-				nextFaceletIdx = 0
-			}
-			nextFacelet := facelets[nextFaceletIdx]
-			if sagEdgeIsGood(currCube, (currCube.cube[face]>>uint(facelet*4))&15, (currCube.cube[nextFace]>>uint(nextFacelet*4))&15) {
-				sagEdges++
+	for _, face := range []int{0, 1, 2, 5} {
+		var oppositeFace int
+		if face%2 == 0 {
+			oppositeFace = face - 1
+		} else {
+			oppositeFace = face + 1
+		}
+		if oppositeFace == 6 {
+			oppositeFace = 0
+		} else if oppositeFace == -1 {
+			oppositeFace = 5
+		}
+		for _, facelet := range []int{2, 6} {
+			if (int(currCube.cube[face]>>uint(facelet*4))&15) == face || (int(currCube.cube[face]>>uint(facelet*4))&15) == oppositeFace {
+				edges++
 			}
 		}
 	}
-	return 48 - int(corners+midEdges+latEdges+sagEdges)
+	/*for _, face := range []int{3, 4} {
+		var oppositeFace int
+		if face%2 == 0 {
+			oppositeFace = face - 1
+		} else {
+			oppositeFace = face + 1
+		}
+		if oppositeFace == 6 {
+			oppositeFace = 0
+		} else if oppositeFace == -1 {
+			oppositeFace = 5
+		}
+		for _, facelet := range []int{0, 2, 4, 6} {
+			if (int(currCube.cube[face]>>uint(facelet*4))&15) == face || (int(currCube.cube[face]>>uint(facelet*4))&15) == oppositeFace {
+				edges++
+			}
+		}
+	}*/
+	//fmt.Println(corners, edges)
+	return 24 - int(corners+edges)
 }
 
 func isInGc(currCube CubeEnv) int {
