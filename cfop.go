@@ -97,7 +97,7 @@ func (env *Env) first_cross() {
 	//env.debugPrint(env.currentCube.cube)
 }
 
-func (env *Env) f2l() {
+func (env *Env) f2lside() {
 	//https://ruwix.com/the-rubiks-cube/advanced-cfop-fridrich/first-two-layers-f2l/
 	all_algo := [42]string{
 		//1st case
@@ -212,16 +212,21 @@ func (env *Env) f2l() {
 					env.exec(all_algo[4])
 					return
 				}
+
+				// THIS ONE SHOULD ACTIVATE
 				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == FRONT &&
 					((env.currentCube.cube[RIGHT]>>4)&15) == RIGHT &&
 					((env.currentCube.cube[DOWN]>>20)&15) == DOWN
 				sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
 					((env.currentCube.cube[UP]>>16)&15) == FRONT
+				fmt.Println(cornercubie, sidecubie)
 				if cornercubie && sidecubie {
+					env.debugPrint(env.currentCube.cube, "BORWYG")
 					fmt.Println("05")
 					env.exec(all_algo[5])
 					return
 				}
+
 				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == RIGHT &&
 					((env.currentCube.cube[RIGHT]>>4)&15) == DOWN &&
 					((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
@@ -258,7 +263,7 @@ func (env *Env) f2l() {
 				sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
 					((env.currentCube.cube[UP]>>8)&15) == RIGHT
 				if cornercubie && sidecubie {
-					fmt.Println("09")
+					//	fmt.Println("09")
 					env.exec(all_algo[9])
 					return
 				}
@@ -586,27 +591,75 @@ func (env *Env) f2l() {
 					env.exec(all_algo[40])
 					return
 				}
-				env.exec("U'")
+				env.exec("U")
 			}
 			if y == 0 {
-				env.exec("R U R' U'")
+				env.exec("R U R' U'") // bien pour le premier, faux pour les autres
 			} else if y == 1 {
-				env.exec("R' U R U'")
+				env.exec("R' U R U'") // bien pour le premier, faux pour les autres
 			} else if y == 2 {
-				env.exec("L' U L U'")
+				env.exec("L' U L U'") // bien pour le premier, faux pour les autres
 			}
 		}
 	}
 }
 
+func (env *Env) f2l() {
+	env.f2lside()
+	env.debugPrint(env.currentCube.cube, "OGBWYR")
+	copy := env.copyCube(env.currentCube.cube)
+
+	env.currentCube.cube[1] = copy[0] // Green <= Orange
+	env.currentCube.cube[5] = copy[1] // Red <= Green
+	env.currentCube.cube[0] = copy[2] // Orange <= Blue
+	env.currentCube.cube[2] = copy[5] // Blue <= Red
+	//	env.debugPrint(env.currentCube.cube, "BORWYG")
+
+	fmt.Println("Hrer", env.currentCube.cube[4])
+	tmp := env.currentCube.cube[4] >> 24
+	popo := env.currentCube.cube[4] << 8
+	env.currentCube.cube[4] = popo + tmp
+	fmt.Println(env.currentCube.cube[4])
+
+	tmp = env.currentCube.cube[3] >> 24
+	popo = env.currentCube.cube[3] << 8
+	env.currentCube.cube[3] = popo + tmp
+
+	//	env.debugPrint(env.currentCube.cube, "BORWYG")
+	//env.f2lside()
+	//env.debugPrint(env.currentCube.cube, "BORWYG")
+
+	//back to normal
+	normal := env.copyCube(env.currentCube.cube)
+	env.currentCube.cube[0] = normal[1]
+	env.currentCube.cube[1] = normal[5]
+	env.currentCube.cube[2] = normal[0]
+	env.currentCube.cube[5] = normal[2]
+
+	tmp = env.currentCube.cube[4] & 255
+	popo = env.currentCube.cube[4] >> 8
+	env.currentCube.cube[4] = popo + (tmp << 24)
+
+	tmp = env.currentCube.cube[3] & 255
+	popo = env.currentCube.cube[3] >> 8
+	env.currentCube.cube[3] = popo + (tmp << 24)
+	env.debugPrint(env.currentCube.cube, "OGBWYR")
+}
+
 func (env *Env) cfop() {
 	//	env.debugPrint(env.currentCube.cube)
+
+	fmt.Println(replaceBits(int32(1431655765), 12, int32(1), 12))
+
 	env.first_cross() // POur gagner beaucoup de coup, possible de faire un A* en - de 10s
 	//fmt.Println("Cross :")
 	//env.debugPrint(env.currentCube.cube)
-	env.res = env.res[:len(env.res)-1]
-	fmt.Println(env.res)
 	env.f2l()
+	//env.res = env.res[:len(env.res)-1]
+	//fmt.Println(env.res)
 	//fmt.Println("F2l :")
-	env.debugPrint(env.currentCube.cube)
+	//env.debugPrint(env.currentCube.cube, "OGBWYR")
 }
+
+//0110 001 0011 0010 0101 0011 0000 0001
+//0011 0001 0011 0010 0101 0011 0000
