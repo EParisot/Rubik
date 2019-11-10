@@ -48,7 +48,7 @@ func (env *Env) first_cross() {
 		}
 		env.exec("D'")
 	}
-	env.debugPrint(env.currentCube.cube)
+	//env.debugPrint(env.currentCube.cube)
 	// next align yellow aretes cubie every with the correct color of their side
 	var CubiefaceOrange bool
 	var CubiefaceBlue bool
@@ -79,7 +79,7 @@ func (env *Env) first_cross() {
 		env.exec("D")
 	}
 
-	env.debugPrint(env.currentCube.cube)
+	//env.debugPrint(env.currentCube.cube)
 	if !CubiefaceOrange && !CubiefaceRed {
 		env.exec("F2 U2 B2 U2 F2") // swap front-back
 	} else if !CubiefaceGreen && !CubiefaceBlue {
@@ -94,7 +94,7 @@ func (env *Env) first_cross() {
 	} else if !CubiefaceBlue && !CubiefaceOrange {
 		env.exec("L2 U' F2 U L2") //swap left-front
 	}
-	env.debugPrint(env.currentCube.cube)
+	//env.debugPrint(env.currentCube.cube)
 }
 
 func (env *Env) f2l() {
@@ -155,357 +155,458 @@ func (env *Env) f2l() {
 	}
 
 	//1rt case :
-	cornercubie := ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
-		((env.currentCube.cube[UP]>>12)&15) == RIGHT
-	sidecubie := ((env.currentCube.cube[UP]>>24)&15) == FRONT &&
-		((env.currentCube.cube[BACK]>>8)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[0])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == UP &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>12)&15) == FRONT
-	sidecubie = ((env.currentCube.cube[UP])&15) == RIGHT &&
-		((env.currentCube.cube[LEFT]>>16)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[1])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
-		((env.currentCube.cube[UP]>>12)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>8)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[2])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == UP &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>12)&15) == FRONT
-	sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>16)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[3])
-	}
+	var cornercubie bool
+	var sidecubie bool
+	for true {
+		for y := 0; y < 3; y++ {
+			for i := 0; i < 4; i++ {
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
+					((env.currentCube.cube[UP]>>12)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[UP]>>24)&15) == FRONT &&
+					((env.currentCube.cube[BACK]>>8)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("00")
+					env.exec(all_algo[0])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == UP &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>12)&15) == FRONT
+				sidecubie = ((env.currentCube.cube[UP])&15) == RIGHT &&
+					((env.currentCube.cube[LEFT]>>24)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("01")
+					env.exec(all_algo[1])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
+					((env.currentCube.cube[UP]>>12)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>8)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("02")
+					env.exec(all_algo[2])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == UP &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>12)&15) == FRONT
+				sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>16)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("03")
+					env.exec(all_algo[3])
+					return
+				}
 
-	// 2nd case :
-	cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>4)&15) == RIGHT &&
-		((env.currentCube.cube[DOWN]>>20)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>8)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[4])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>4)&15) == RIGHT &&
-		((env.currentCube.cube[DOWN]>>20)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>16)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[5])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>4)&15) == DOWN &&
-		((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>8)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[6])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>4)&15) == DOWN &&
-		((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>16)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[7])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == DOWN &&
-		((env.currentCube.cube[RIGHT]>>4)&15) == FRONT &&
-		((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>16)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[8])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == DOWN &&
-		((env.currentCube.cube[RIGHT]>>4)&15) == FRONT &&
-		((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>8)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[9])
-	}
+				// 2nd case :
+				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>4)&15) == RIGHT &&
+					((env.currentCube.cube[DOWN]>>20)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>8)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("04")
+					env.exec(all_algo[4])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>4)&15) == RIGHT &&
+					((env.currentCube.cube[DOWN]>>20)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>16)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("05")
+					env.exec(all_algo[5])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>4)&15) == DOWN &&
+					((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>8)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("06")
+					env.exec(all_algo[6])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>4)&15) == DOWN &&
+					((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>16)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("07")
+					env.exec(all_algo[7])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == DOWN &&
+					((env.currentCube.cube[RIGHT]>>4)&15) == FRONT &&
+					((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>16)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("08")
+					env.exec(all_algo[8])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == DOWN &&
+					((env.currentCube.cube[RIGHT]>>4)&15) == FRONT &&
+					((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>8)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("09")
+					env.exec(all_algo[9])
+					return
+				}
 
-	//3rd case
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>12)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT])&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[10])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>12)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT])&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[11])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
-		((env.currentCube.cube[UP]>>12)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT])&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[12])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
-		((env.currentCube.cube[UP]>>12)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT])&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[13])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>12)&15) == FRONT
-	sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT])&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[14])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>12)&15) == FRONT
-	sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT])&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[15])
-	}
+				//3rd case
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>12)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT])&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("10")
+					env.exec(all_algo[10])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>12)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT])&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("11")
+					env.exec(all_algo[11])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
+					((env.currentCube.cube[UP]>>12)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT])&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("12")
+					env.exec(all_algo[12])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
+					((env.currentCube.cube[UP]>>12)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT])&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("13")
+					env.exec(all_algo[13])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>12)&15) == FRONT
+				sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT])&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("14")
+					env.exec(all_algo[14])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>12)&15) == FRONT
+				sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT])&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("15")
+					env.exec(all_algo[15])
+					return
+				}
 
-	//4th case
+				//4th case
 
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
-		((env.currentCube.cube[UP]>>12)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>16)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[16])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>12)&15) == FRONT
-	sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>8)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[17])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
-		((env.currentCube.cube[UP]>>12)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[UP]>>24)&15) == RIGHT &&
-		((env.currentCube.cube[BACK]>>8)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[18])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>12)&15) == FRONT
-	sidecubie = ((env.currentCube.cube[UP])&15) == FRONT &&
-		((env.currentCube.cube[LEFT]>>16)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[19])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
-		((env.currentCube.cube[UP]>>12)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[UP])&15) == RIGHT &&
-		((env.currentCube.cube[LEFT]>>16)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[20])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>12)&15) == FRONT
-	sidecubie = ((env.currentCube.cube[UP]>>24)&15) == FRONT &&
-		((env.currentCube.cube[BACK]>>8)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[21])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
-		((env.currentCube.cube[UP]>>12)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>16)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[22])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>12)&15) == FRONT
-	sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>8)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[23])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
-		((env.currentCube.cube[UP]>>12)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[UP])&15) == FRONT &&
-		((env.currentCube.cube[LEFT]>>16)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[24])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>12)&15) == FRONT
-	sidecubie = ((env.currentCube.cube[UP]>>24)&15) == RIGHT &&
-		((env.currentCube.cube[BACK]>>8)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[25])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
-		((env.currentCube.cube[UP]>>12)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>8)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[26])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>12)&15) == FRONT
-	sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>16)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[27])
-	}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
+					((env.currentCube.cube[UP]>>12)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>16)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("16")
+					env.exec(all_algo[16])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>12)&15) == FRONT
+				sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>8)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("17")
+					env.exec(all_algo[17])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
+					((env.currentCube.cube[UP]>>12)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[UP]>>24)&15) == RIGHT &&
+					((env.currentCube.cube[BACK]>>8)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("18")
+					env.exec(all_algo[18])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>12)&15) == FRONT
+				sidecubie = ((env.currentCube.cube[UP])&15) == FRONT &&
+					((env.currentCube.cube[LEFT]>>24)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("19")
+					env.exec(all_algo[19])
+					return
+				}
 
-	//5th
+				//Here devrai se declencher
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
+					((env.currentCube.cube[UP]>>12)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[UP])&15) == RIGHT &&
+					((env.currentCube.cube[LEFT]>>24)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("20")
+					env.exec(all_algo[20])
+					return
+				}
 
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>12)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>8)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[28])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>12)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>16)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[29])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>12)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[UP])&15) == FRONT &&
-		((env.currentCube.cube[LEFT]>>16)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[30])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>12)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[UP]>>24)&15) == RIGHT &&
-		((env.currentCube.cube[BACK]>>8)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[31])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>12)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[UP]>>24)&15) == FRONT &&
-		((env.currentCube.cube[BACK]>>8)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[32])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>12)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[UP])&15) == RIGHT &&
-		((env.currentCube.cube[LEFT]>>16)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[33])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>12)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
-		((env.currentCube.cube[UP]>>16)&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[34])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>12)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
-		((env.currentCube.cube[UP]>>8)&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[35])
-	}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>12)&15) == FRONT
+				sidecubie = ((env.currentCube.cube[UP]>>24)&15) == FRONT &&
+					((env.currentCube.cube[BACK]>>8)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("21")
+					env.exec(all_algo[21])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
+					((env.currentCube.cube[UP]>>12)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>16)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("22")
+					env.exec(all_algo[22])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>12)&15) == FRONT
+				sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>8)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("23")
+					env.exec(all_algo[23])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
+					((env.currentCube.cube[UP]>>12)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[UP])&15) == FRONT &&
+					((env.currentCube.cube[LEFT]>>24)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("24")
+					env.exec(all_algo[24])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>12)&15) == FRONT
+				sidecubie = ((env.currentCube.cube[UP]>>24)&15) == RIGHT &&
+					((env.currentCube.cube[BACK]>>8)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("25")
+					env.exec(all_algo[25])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == DOWN &&
+					((env.currentCube.cube[UP]>>12)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>8)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("26")
+					env.exec(all_algo[26])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == DOWN &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>12)&15) == FRONT
+				sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>16)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("27")
+					env.exec(all_algo[27])
+					return
+				}
 
-	//6th case
+				//5th
 
-	cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT]>>4)&15) == RIGHT &&
-		((env.currentCube.cube[DOWN]>>20)&15) == DOWN
-	sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT])&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[36])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>4)&15) == DOWN &&
-		((env.currentCube.cube[DOWN]>>20)&15) == FRONT
-	sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT])&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[37])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == DOWN &&
-		((env.currentCube.cube[RIGHT]>>4)&15) == FRONT &&
-		((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == FRONT &&
-		((env.currentCube.cube[RIGHT])&15) == RIGHT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[38])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT]>>4)&15) == DOWN &&
-		((env.currentCube.cube[DOWN]>>20)&15) == FRONT
-	sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT])&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[39])
-	}
-	cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == DOWN &&
-		((env.currentCube.cube[RIGHT]>>4)&15) == FRONT &&
-		((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
-	sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == RIGHT &&
-		((env.currentCube.cube[RIGHT])&15) == FRONT
-	if cornercubie && sidecubie {
-		env.exec(all_algo[40])
-	}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>12)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>8)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("28")
+					env.exec(all_algo[28])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>12)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>16)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("29")
+					env.exec(all_algo[29])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>12)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[UP])&15) == FRONT &&
+					((env.currentCube.cube[LEFT]>>24)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("30")
+					env.exec(all_algo[30])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>12)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[UP]>>24)&15) == RIGHT &&
+					((env.currentCube.cube[BACK]>>8)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("31")
+					env.exec(all_algo[31])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>12)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[UP]>>24)&15) == FRONT &&
+					((env.currentCube.cube[BACK]>>8)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("32")
+					env.exec(all_algo[32])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>12)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[UP])&15) == RIGHT &&
+					((env.currentCube.cube[LEFT]>>24)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("33")
+					env.exec(all_algo[33])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>12)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
+					((env.currentCube.cube[UP]>>16)&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("34")
+					env.exec(all_algo[34])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>20)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>28)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>12)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[FRONT]>>24)&15) == FRONT &&
+					((env.currentCube.cube[UP]>>8)&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("35")
+					env.exec(all_algo[35])
+					return
+				}
 
-	fmt.Println(all_algo)
-	// this function finish the first 2 stages
+				//6th case
+
+				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT]>>4)&15) == RIGHT &&
+					((env.currentCube.cube[DOWN]>>20)&15) == DOWN
+				sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT])&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("36")
+					env.exec(all_algo[36])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>4)&15) == DOWN &&
+					((env.currentCube.cube[DOWN]>>20)&15) == FRONT
+				sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT])&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("37")
+					env.exec(all_algo[37])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == DOWN &&
+					((env.currentCube.cube[RIGHT]>>4)&15) == FRONT &&
+					((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == FRONT &&
+					((env.currentCube.cube[RIGHT])&15) == RIGHT
+				if cornercubie && sidecubie {
+					fmt.Println("38")
+					env.exec(all_algo[38])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT]>>4)&15) == DOWN &&
+					((env.currentCube.cube[DOWN]>>20)&15) == FRONT
+				sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT])&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("39")
+					env.exec(all_algo[39])
+					return
+				}
+				cornercubie = ((env.currentCube.cube[FRONT]>>12)&15) == DOWN &&
+					((env.currentCube.cube[RIGHT]>>4)&15) == FRONT &&
+					((env.currentCube.cube[DOWN]>>20)&15) == RIGHT
+				sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == RIGHT &&
+					((env.currentCube.cube[RIGHT])&15) == FRONT
+				if cornercubie && sidecubie {
+					fmt.Println("40")
+					env.exec(all_algo[40])
+					return
+				}
+				env.exec("U'")
+			}
+			if y == 0 {
+				env.exec("R U R' U'")
+			} else if y == 1 {
+				env.exec("R' U R U'")
+			} else if y == 2 {
+				env.exec("L' U L U'")
+			}
+		}
+	}
 }
 
 func (env *Env) cfop() {
-	fmt.Println((env.currentCube.cube[5] >> 8) & 15)
-	env.debugPrint(env.currentCube.cube)
-	//env.first_cross() // POur gagner beaucoup de coup, possible de faire un A* en - de 10s
-	//env.f2l()
-
+	//	env.debugPrint(env.currentCube.cube)
+	env.first_cross() // POur gagner beaucoup de coup, possible de faire un A* en - de 10s
+	//fmt.Println("Cross :")
 	//env.debugPrint(env.currentCube.cube)
+	env.res = env.res[:len(env.res)-1]
+	fmt.Println(env.res)
+	env.f2l()
+	//fmt.Println("F2l :")
+	env.debugPrint(env.currentCube.cube)
 }
