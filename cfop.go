@@ -14,7 +14,7 @@ import (
 // MD2M'
 // U'B'EB
 
-func (env *Env) putCrossEdge() {
+func (env *Env) PutYellowCubieontheirface() {
 	for i := 0; i < 3; i++ {
 		if i == 1 { // bring out back-right edge
 			env.exec("R' U R F2")
@@ -35,7 +35,7 @@ func (env *Env) putCrossEdge() {
 
 func (env *Env) first_cross() {
 	for i := 0; i < 4; i++ {
-		env.putCrossEdge()
+		env.PutYellowCubieontheirface()
 		if 4 == ((env.currentCube.cube[0] >> 8) & 15) {
 			env.exec("F' R U R' F2") // Algo for reverse cubie
 		}
