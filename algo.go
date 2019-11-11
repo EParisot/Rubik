@@ -85,8 +85,8 @@ func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
 	for rotate := 0; rotate <= 5; rotate++ {
 		//for way := 0; way < 2; way++ {
 		way := 0
-		copyCube := env.copyCube(currCube.cube) // Check if needed
-		newCube := env.rotate(rotate, way, copyCube)
+		//copyCube := env.copyCube(currCube.cube) // Check if needed
+		newCube := env.rotate(rotate, way, currCube.cube)
 		var nb string
 		if (phase == 2 && (rotate == 0 || rotate == 5)) ||
 			(phase == 3 && (rotate == 1 || rotate == 2 || rotate == 0 || rotate == 5)) ||
@@ -152,6 +152,7 @@ func (env *Env) globalHeuristic(currCube CubeEnv, phase int) int {
 // fixes FB Edges orientation
 func isInG1(currCube CubeEnv) int {
 	var edges int
+	var facelets int
 	for _, face := range []int{0, 5} {
 		for _, facelet := range []int{2, 6} {
 			if int(currCube.cube[face]>>uint(facelet*4))&15 != 3 && int(currCube.cube[face]>>uint(facelet*4))&15 != 4 {
@@ -164,7 +165,21 @@ func isInG1(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 8 - edges
+	for _, face := range []int{0, 5} {
+		for _, facelet := range []int{0, 1, 2, 3, 4, 5, 6, 7} {
+			if int(currCube.cube[face]>>uint(facelet*4))&15 != 3 && int(currCube.cube[face]>>uint(facelet*4))&15 != 4 {
+				facelets++
+			}
+		}
+	}
+	for _, face := range []int{3, 4} {
+		for _, facelet := range []int{0, 1, 2, 3, 4, 5, 6, 7} {
+			if int(currCube.cube[face]>>uint(facelet*4))&15 != 0 && int(currCube.cube[face]>>uint(facelet*4))&15 != 5 {
+				facelets++
+			}
+		}
+	}
+	return 40 - (edges + facelets)
 }
 
 // Fixes UD facelets orientations and midEdges in midLayer
@@ -185,7 +200,7 @@ func isInG2(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 12 - int(topDownFacelets/2+midEdges/2)
+	return 24 - int(topDownFacelets+midEdges)
 }
 
 // Fixed all corners and edges orientation
@@ -209,7 +224,7 @@ func isInG3(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 16 - int(facelets/3)
+	return 48 - int(facelets)
 }
 
 // Restore solved cube
@@ -230,5 +245,5 @@ func isInGc(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 16 - int(corners/3+edges/3)
+	return 48 - int(corners+edges)
 }
