@@ -219,10 +219,9 @@ func (env *Env) f2lside() {
 					((env.currentCube.cube[DOWN]>>20)&15) == DOWN
 				sidecubie = ((env.currentCube.cube[RIGHT]>>24)&15) == RIGHT &&
 					((env.currentCube.cube[UP]>>16)&15) == FRONT
-				fmt.Println(cornercubie, sidecubie)
 				if cornercubie && sidecubie {
-					env.debugPrint(env.currentCube.cube, "BORWYG")
-					fmt.Println("05")
+				//	env.debugPrint(env.currentCube.cube)
+				//	fmt.Println("05")
 					env.exec(all_algo[5])
 					return
 				}
@@ -315,7 +314,7 @@ func (env *Env) f2lside() {
 				sidecubie = ((env.currentCube.cube[FRONT]>>16)&15) == FRONT &&
 					((env.currentCube.cube[RIGHT])&15) == RIGHT
 				if cornercubie && sidecubie {
-					fmt.Println("14")
+			//		fmt.Println("14")
 					env.exec(all_algo[14])
 					return
 				}
@@ -605,58 +604,61 @@ func (env *Env) f2lside() {
 }
 
 func (env *Env) f2l() {
+	// AU LIEU DE FAIRE CA, je converti juste les algo avec (F=>R)
+	//A essayer, ca vaut le coup
 	env.f2lside()
-	env.debugPrint(env.currentCube.cube, "OGBWYR")
-	copy := env.copyCube(env.currentCube.cube)
+	// FAUX POUR L"INSTANT putain
+	//env.debugPrint(env.currentCube.cube)
+	//env.exec("R'")
+	// copy := env.copyCube(env.currentCube.cube)
 
-	env.currentCube.cube[1] = copy[0] // Green <= Orange
-	env.currentCube.cube[5] = copy[1] // Red <= Green
-	env.currentCube.cube[0] = copy[2] // Orange <= Blue
-	env.currentCube.cube[2] = copy[5] // Blue <= Red
-	//	env.debugPrint(env.currentCube.cube, "BORWYG")
+	// env.currentCube.cube[1] = copy[0] // Green <= Orange
+	// env.currentCube.cube[5] = copy[1] // Red <= Green
+	// env.currentCube.cube[0] = copy[2] // Orange <= Blue
+	// env.currentCube.cube[2] = copy[5] // Blue <= Red
+	// //	env.debugPrint(env.currentCube.cube, "BORWYG")
 
-	fmt.Println("Hrer", env.currentCube.cube[4])
-	tmp := env.currentCube.cube[4] >> 24
-	popo := env.currentCube.cube[4] << 8
-	env.currentCube.cube[4] = popo + tmp
-	fmt.Println(env.currentCube.cube[4])
+	// tmp := env.currentCube.cube[4] >> 24
+	// popo := env.currentCube.cube[4] << 8
+	// env.currentCube.cube[4] = popo + tmp
 
-	tmp = env.currentCube.cube[3] >> 24
-	popo = env.currentCube.cube[3] << 8
-	env.currentCube.cube[3] = popo + tmp
+	// tmp = env.currentCube.cube[3] >> 24
+	// popo = env.currentCube.cube[3] << 8
+	// env.currentCube.cube[3] = popo + tmp
 
+	//env.exec("F")
 	//	env.debugPrint(env.currentCube.cube, "BORWYG")
 	//env.f2lside()
-	//env.debugPrint(env.currentCube.cube, "BORWYG")
+//	env.debugPrint(env.currentCube.cube)
 
 	//back to normal
-	normal := env.copyCube(env.currentCube.cube)
-	env.currentCube.cube[0] = normal[1]
-	env.currentCube.cube[1] = normal[5]
-	env.currentCube.cube[2] = normal[0]
-	env.currentCube.cube[5] = normal[2]
+	// normal := env.copyCube(env.currentCube.cube)
+	// env.currentCube.cube[0] = normal[1]
+	// env.currentCube.cube[1] = normal[5]
+	// env.currentCube.cube[2] = normal[0]
+	// env.currentCube.cube[5] = normal[2]
 
-	tmp = env.currentCube.cube[4] & 255
-	popo = env.currentCube.cube[4] >> 8
-	env.currentCube.cube[4] = popo + (tmp << 24)
+	// tmp = env.currentCube.cube[4] & 255
+	// popo = env.currentCube.cube[4] >> 8
+	// env.currentCube.cube[4] = popo + (tmp << 24)
 
-	tmp = env.currentCube.cube[3] & 255
-	popo = env.currentCube.cube[3] >> 8
-	env.currentCube.cube[3] = popo + (tmp << 24)
-	env.debugPrint(env.currentCube.cube, "OGBWYR")
+	// tmp = env.currentCube.cube[3] & 255
+	// popo = env.currentCube.cube[3] >> 8
+	// env.currentCube.cube[3] = popo + (tmp << 24)
+//	env.debugPrint(env.currentCube.cube)
 }
 
 func (env *Env) cfop() {
 	//	env.debugPrint(env.currentCube.cube)
 
-	fmt.Println(replaceBits(int32(1431655765), 12, int32(1), 12))
+//	fmt.Println(replaceBits(int32(1431655765), 12, int32(1), 12))
 
 	env.first_cross() // POur gagner beaucoup de coup, possible de faire un A* en - de 10s
 	//fmt.Println("Cross :")
 	//env.debugPrint(env.currentCube.cube)
 	env.f2l()
-	//env.res = env.res[:len(env.res)-1]
-	//fmt.Println(env.res)
+	env.res = env.res[:len(env.res)-1]
+	fmt.Println(env.res)
 	//fmt.Println("F2l :")
 	//env.debugPrint(env.currentCube.cube, "OGBWYR")
 }
