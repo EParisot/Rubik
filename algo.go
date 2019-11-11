@@ -2,13 +2,17 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
+var moves []string
+
 func (env *Env) idAstar() {
-	phase := 1
-	threshold := env.globalHeuristic(env.currentCube, phase)
+	moves = []string{"F", "R", "L", "U", "D", "B"}
 	var closedList []CubeEnv
 	closedList = append(closedList, env.currentCube)
+	phase := 1
+	threshold := env.globalHeuristic(env.currentCube, phase)
 	for {
 		tmpThres, closedList := env.search(threshold, &closedList, &phase)
 		if tmpThres == -1 {
@@ -80,43 +84,36 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
 	var gridList []CubeEnv
 	for rotate := 0; rotate <= 5; rotate++ {
-		//for way := 0; way < 2; way++ {
-		way := 0
-		//copyCube := env.copyCube(currCube.cube) // Check if needed
-		newCube := env.rotate(rotate, way, currCube.cube)
-		var nb string
-		if (phase == 2 && (rotate == 0 || rotate == 5)) ||
-			(phase == 3 && (rotate == 1 || rotate == 2 || rotate == 0 || rotate == 5)) ||
-			phase == 4 {
-			newCube = env.rotate(rotate, way, newCube)
-			nb = "2"
+		for way := 0; way < 2; way++ {
+			if strings.Contains(currCube.internationalMove, moves[rotate]) {
+				if strings.Contains(currCube.internationalMove, "'") && way == 1 {
+					continue
+				} else if strings.Contains(currCube.internationalMove, "'") == false && way == 0 {
+					continue
+				}
+			}
+			var newEnvCube CubeEnv
+			//copyCube := env.copyCube(currCube.cube) // Check if needed
+			newEnvCube.cube = env.rotate(rotate, way, currCube.cube)
+			var nb string
+			if (phase == 2 && (rotate == 0 || rotate == 5)) ||
+				(phase == 3 && (rotate == 1 || rotate == 2 || rotate == 0 || rotate == 5)) ||
+				phase == 4 {
+				newEnvCube.cube = env.rotate(rotate, way, newEnvCube.cube)
+				nb = "2"
+			}
+			newEnvCube.internationalMove = moves[rotate]
+			if way == 1 {
+				newEnvCube.internationalMove = newEnvCube.internationalMove + "'"
+			}
+			newEnvCube.internationalMove = newEnvCube.internationalMove + nb
+			newEnvCube.cost = currCube.cost + 1
+			newEnvCube.heuristic = newEnvCube.cost + env.globalHeuristic(newEnvCube, phase)
+			//fmt.Println(phase, newEnvCube.cost, env.globalHeuristic(newEnvCube, phase), newEnvCube.internationalMove)
+			//env.debugPrint(newEnvCube.cube)
+			gridList = append(gridList, newEnvCube)
 		}
-		var newEnvCube CubeEnv
-		if rotate == 0 {
-			newEnvCube.internationalMove = "F"
-		} else if rotate == 1 {
-			newEnvCube.internationalMove = "R"
-		} else if rotate == 2 {
-			newEnvCube.internationalMove = "L"
-		} else if rotate == 3 {
-			newEnvCube.internationalMove = "U"
-		} else if rotate == 4 {
-			newEnvCube.internationalMove = "D"
-		} else if rotate == 5 {
-			newEnvCube.internationalMove = "B"
-		}
-		if way == 1 {
-			newEnvCube.internationalMove = newEnvCube.internationalMove + "'"
-		}
-		newEnvCube.internationalMove = newEnvCube.internationalMove + nb
-		newEnvCube.cube = newCube
-		newEnvCube.cost = currCube.cost + 1
-		newEnvCube.heuristic = newEnvCube.cost + env.globalHeuristic(newEnvCube, phase)
-		//fmt.Println(phase, newEnvCube.cost, env.globalHeuristic(newEnvCube, phase), newEnvCube.internationalMove)
-		//env.debugPrint(newEnvCube.internationalMove, newEnvCube.cube)
-		gridList = append(gridList, newEnvCube)
 	}
-	//}
 	return gridList
 }
 
@@ -145,35 +142,15 @@ func (env *Env) globalHeuristic(currCube CubeEnv, phase int) int {
 
 // fixes FB Edges orientation
 func isInG1(currCube CubeEnv) int {
-	var edges int
 	var facelets int
-	for _, face := range []int{0, 5} {
-		for _, facelet := range []int{2, 6} {
-			if int(currCube.cube[face]>>uint(facelet*4))&15 != 3 && int(currCube.cube[face]>>uint(facelet*4))&15 != 4 {
-				edges++
-			}
-		}
-		for _, facelet := range []int{0, 4} {
-			if int(currCube.cube[face]>>uint(facelet*4))&15 != 1 && int(currCube.cube[face]>>uint(facelet*4))&15 != 2 {
-				edges++
-			}
-		}
-	}
-	for _, face := range []int{0, 5} {
+	for _, face := range []int{1, 2} {
 		for _, facelet := range []int{0, 1, 2, 3, 4, 5, 6, 7} {
 			if int(currCube.cube[face]>>uint(facelet*4))&15 != 3 && int(currCube.cube[face]>>uint(facelet*4))&15 != 4 {
 				facelets++
 			}
 		}
 	}
-	for _, face := range []int{3, 4} {
-		for _, facelet := range []int{0, 1, 2, 3, 4, 5, 6, 7} {
-			if int(currCube.cube[face]>>uint(facelet*4))&15 != 0 && int(currCube.cube[face]>>uint(facelet*4))&15 != 5 {
-				facelets++
-			}
-		}
-	}
-	return 40 - (edges + facelets)
+	return 8 - int(facelets/2)
 }
 
 // Fixes UD facelets orientations and midEdges in midLayer
@@ -181,7 +158,7 @@ func isInG2(currCube CubeEnv) int {
 	var topDownFacelets int
 	var midEdges int
 	for _, face := range []int{3, 4} {
-		for _, facelet := range []int{0, 1, 2, 3, 4, 5, 6, 7} {
+		for _, facelet := range []int{1, 3, 5, 7} {
 			if int(currCube.cube[face]>>uint(facelet*4))&15 == 3 || int(currCube.cube[face]>>uint(facelet*4))&15 == 4 {
 				topDownFacelets++
 			}
@@ -194,12 +171,13 @@ func isInG2(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 24 - int(topDownFacelets+midEdges)
+	return 8 - int(topDownFacelets/2+midEdges/2)
 }
 
 // Fixed all corners and edges orientation
 func isInG3(currCube CubeEnv) int {
 	var facelets int
+	//var corners int
 	for _, face := range []int{0, 1, 2, 3, 4, 5} {
 		var oppositeFace int
 		if face%2 == 0 {
@@ -218,7 +196,29 @@ func isInG3(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 48 - int(facelets)
+	/*face := 3
+	oppositeFace := 4
+	for _, facelet := range []int{1, 3, 5, 7} {
+		var oppositeFacelet int
+		if facelet == 1 {
+			oppositeFacelet = 7
+		} else if facelet == 3 {
+			oppositeFacelet = 5
+		} else if facelet == 5 {
+			oppositeFacelet = 3
+		} else {
+			oppositeFacelet = 1
+		}
+		if (int(currCube.cube[face]>>uint(facelet*4)) & 15) == (int(currCube.cube[oppositeFace]>>uint(oppositeFacelet*4)) & 15) {
+			corners++
+		}
+	}
+	if corners != 0 && corners != 4 {
+		corners = 0
+	} else {
+		corners = 4
+	}*/
+	return 6 - int(facelets/8)
 }
 
 // Restore solved cube
@@ -239,5 +239,5 @@ func isInGc(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 48 - int(corners+edges)
+	return 12 - int(corners/4+edges/4)
 }
