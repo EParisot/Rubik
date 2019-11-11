@@ -5,7 +5,6 @@ import (
 )
 
 func (env *Env) idAstar() {
-	//fmt.Println("Begin IDAstar")
 	phase := 1
 	threshold := env.globalHeuristic(env.currentCube, phase)
 	var closedList []CubeEnv
@@ -13,11 +12,9 @@ func (env *Env) idAstar() {
 	for {
 		tmpThres, closedList := env.search(threshold, &closedList, &phase)
 		if tmpThres == -1 {
-			//fmt.Println("IDAstar Done")
 			env.reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
 			return
 		} else if tmpThres >= 10000 {
-			//fmt.Println("IDAstar returned no solution")
 			return
 		}
 		threshold = tmpThres
@@ -31,7 +28,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 	}
 	if *phase == 1 && isInG1(currCube) == 0 {
 		*phase = 2
-		//currCube.cost = 0
+		currCube.cost = 0
 		threshold = isInG2(currCube)
 		fmt.Println("Phase1 DONE")
 		env.debugPrint(currCube.cube)
@@ -39,7 +36,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 	}
 	if *phase == 2 && isInG2(currCube) == 0 {
 		*phase = 3
-		//currCube.cost = 0
+		currCube.cost = 0
 		threshold = isInG3(currCube)
 		fmt.Println("Phase2 DONE")
 		env.debugPrint(currCube.cube)
@@ -47,7 +44,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 	}
 	if *phase == 3 && isInG3(currCube) == 0 {
 		*phase = 4
-		//currCube.cost = 0
+		currCube.cost = 0
 		threshold = isInGc(currCube)
 		fmt.Println("Phase3 DONE")
 		env.debugPrint(currCube.cube)
@@ -113,7 +110,6 @@ func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
 		}
 		newEnvCube.internationalMove = newEnvCube.internationalMove + nb
 		newEnvCube.cube = newCube
-		//tmp
 		newEnvCube.cost = currCube.cost + 1
 		newEnvCube.heuristic = newEnvCube.cost + env.globalHeuristic(newEnvCube, phase)
 		//fmt.Println(phase, newEnvCube.cost, env.globalHeuristic(newEnvCube, phase), newEnvCube.internationalMove)
@@ -125,14 +121,12 @@ func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
 }
 
 func (env *Env) reconstructPathIDA(closedList []CubeEnv, endGrid CubeEnv) {
-	//fmt.Println("Ordered sequence of states that make up the solution : ")
 	for i, step := range closedList[1:len(closedList)] {
 		fmt.Print(step.internationalMove)
 		if i < len(closedList)-2 {
 			fmt.Print(" ")
 		}
 	}
-	//fmt.Println("Number of moves required : ", len(closedList)-1)
 }
 
 func (env *Env) globalHeuristic(currCube CubeEnv, phase int) int {
