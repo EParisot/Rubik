@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 )
 
 var moves []string
@@ -34,16 +33,16 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 		*phase = 2
 		currCube.cost = 0
 		threshold = isInG2(currCube)
-		fmt.Println("Phase1 DONE")
-		env.debugPrint(currCube.cube)
+		//fmt.Println("Phase1 DONE")
+		//env.debugPrint(currCube.cube)
 		//return -1, closedList
 	}
 	if *phase == 2 && isInG2(currCube) == 0 {
 		*phase = 3
 		currCube.cost = 0
 		threshold = isInG3(currCube)
-		fmt.Println("Phase2 DONE")
-		env.debugPrint(currCube.cube)
+		//fmt.Println("Phase2 DONE")
+		//env.debugPrint(currCube.cube)
 		//return -1, closedList
 	}
 	if *phase == 3 && isInG3(currCube) == 0 {
@@ -56,7 +55,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 	}
 	if env.isFinished(currCube) {
 		fmt.Println("ALL DONE")
-		env.debugPrint(currCube.cube)
+		//env.debugPrint(currCube.cube)
 		return -1, closedList
 	}
 	min := 100000
@@ -84,35 +83,28 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
 	var gridList []CubeEnv
 	for rotate := 0; rotate <= 5; rotate++ {
-		for way := 0; way < 2; way++ {
-			if strings.Contains(currCube.internationalMove, moves[rotate]) {
-				if strings.Contains(currCube.internationalMove, "'") && way == 1 {
-					continue
-				} else if strings.Contains(currCube.internationalMove, "'") == false && way == 0 {
-					continue
-				}
-			}
-			var newEnvCube CubeEnv
-			//copyCube := env.copyCube(currCube.cube) // Check if needed
-			newEnvCube.cube = env.rotate(rotate, way, currCube.cube)
-			var nb string
-			if (phase == 2 && (rotate == 0 || rotate == 5)) ||
-				(phase == 3 && (rotate == 1 || rotate == 2 || rotate == 0 || rotate == 5)) ||
-				phase == 4 {
-				newEnvCube.cube = env.rotate(rotate, way, newEnvCube.cube)
-				nb = "2"
-			}
-			newEnvCube.internationalMove = moves[rotate]
-			if way == 1 {
-				newEnvCube.internationalMove = newEnvCube.internationalMove + "'"
-			}
-			newEnvCube.internationalMove = newEnvCube.internationalMove + nb
-			newEnvCube.cost = currCube.cost + 1
-			newEnvCube.heuristic = newEnvCube.cost + env.globalHeuristic(newEnvCube, phase)
-			//fmt.Println(phase, newEnvCube.cost, env.globalHeuristic(newEnvCube, phase), newEnvCube.internationalMove)
-			//env.debugPrint(newEnvCube.cube)
-			gridList = append(gridList, newEnvCube)
+		way := 0
+		var newEnvCube CubeEnv
+		//copyCube := env.copyCube(currCube.cube) // Check if needed
+		newEnvCube.cube = env.rotate(rotate, way, currCube.cube)
+		var nb string
+		if (phase == 2 && (rotate == 0 || rotate == 5)) ||
+			(phase == 3 && (rotate == 1 || rotate == 2 || rotate == 0 || rotate == 5)) ||
+			phase == 4 {
+			newEnvCube.cube = env.rotate(rotate, way, newEnvCube.cube)
+			nb = "2"
 		}
+		newEnvCube.internationalMove = moves[rotate]
+		newEnvCube.internationalMove = newEnvCube.internationalMove + nb
+		newEnvCube.cost = currCube.cost + 1
+		newEnvCube.heuristic = newEnvCube.cost + env.globalHeuristic(newEnvCube, phase)
+		/*if phase == 4 {
+			fmt.Println(phase, newEnvCube.cost, env.globalHeuristic(newEnvCube, phase), newEnvCube.internationalMove)
+			env.debugPrint(newEnvCube.cube)
+			os.Exit(0)
+		}*/
+		//env.debugPrint(newEnvCube.cube)
+		gridList = append(gridList, newEnvCube)
 	}
 	return gridList
 }
@@ -134,7 +126,7 @@ func (env *Env) globalHeuristic(currCube CubeEnv, phase int) int {
 		gHeur = isInG2(currCube)
 	} else if phase == 3 {
 		gHeur = isInG3(currCube)
-	} else {
+	} else if phase == 4 {
 		gHeur = isInGc(currCube)
 	}
 	return gHeur
@@ -218,7 +210,7 @@ func isInG3(currCube CubeEnv) int {
 	} else {
 		corners = 4
 	}*/
-	return 6 - int(facelets/8)
+	return 24 - int(facelets/2)
 }
 
 // Restore solved cube
@@ -239,5 +231,5 @@ func isInGc(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 12 - int(corners/4+edges/4)
+	return 24 - int(corners/2+edges/2)
 }
