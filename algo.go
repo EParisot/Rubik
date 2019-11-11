@@ -34,7 +34,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 		currCube.cost = 0
 		threshold = isInG2(currCube)
 		fmt.Println("Phase1 DONE")
-		//env.debugPrint(currCube.cube)
+		env.debugPrint(currCube.cube)
 		env.reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
 		if len(*closedList) > 1 {
 			fmt.Print(" ")
@@ -47,7 +47,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 		currCube.cost = 0
 		threshold = isInG3(currCube)
 		fmt.Println("\nPhase2 DONE")
-		//env.debugPrint(currCube.cube)
+		env.debugPrint(currCube.cube)
 		env.reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
 		if len(*closedList) > 1 {
 			fmt.Print(" ")
@@ -60,7 +60,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 		currCube.cost = 0
 		threshold = isInGc(currCube)
 		fmt.Println("\nPhase3 DONE")
-		//env.debugPrint(currCube.cube)
+		env.debugPrint(currCube.cube)
 		env.reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
 		if len(*closedList) > 1 {
 			fmt.Print(" ")
@@ -69,7 +69,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 		//return -1, closedList
 	}
 	if env.isFinished(currCube) {
-		//fmt.Println("ALL DONE")
+		fmt.Println("\nALL DONE")
 		//env.debugPrint(currCube.cube)
 		return -1, closedList
 	}
@@ -181,10 +181,9 @@ func isInG2(currCube CubeEnv) int {
 	return 8 - int(topDownFacelets/2+midEdges/2)
 }
 
-// Fixed all corners and edges orientation
+// Fixed all topDown corners and edges orientation
 func isInG3(currCube CubeEnv) int {
 	var facelets int
-	//var corners int
 	for _, face := range []int{0, 1, 2, 3, 4, 5} {
 		var oppositeFace int
 		if face%2 == 0 {
@@ -202,29 +201,8 @@ func isInG3(currCube CubeEnv) int {
 				facelets++
 			}
 		}
+		//TODO check corners paruty
 	}
-	/*face := 3
-	oppositeFace := 4
-	for _, facelet := range []int{1, 3, 5, 7} {
-		var oppositeFacelet int
-		if facelet == 1 {
-			oppositeFacelet = 7
-		} else if facelet == 3 {
-			oppositeFacelet = 5
-		} else if facelet == 5 {
-			oppositeFacelet = 3
-		} else {
-			oppositeFacelet = 1
-		}
-		if (int(currCube.cube[face]>>uint(facelet*4)) & 15) == (int(currCube.cube[oppositeFace]>>uint(oppositeFacelet*4)) & 15) {
-			corners++
-		}
-	}
-	if corners != 0 && corners != 4 {
-		corners = 0
-	} else {
-		corners = 4
-	}*/
 	return 24 - int(facelets/2)
 }
 
