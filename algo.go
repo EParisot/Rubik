@@ -184,6 +184,7 @@ func isInG2(currCube CubeEnv) int {
 // Fixed all topDown corners and edges orientation
 func isInG3(currCube CubeEnv) int {
 	var facelets int
+	var parity int
 	for _, face := range []int{0, 1, 2, 3, 4, 5} {
 		var oppositeFace int
 		if face%2 == 0 {
@@ -201,9 +202,26 @@ func isInG3(currCube CubeEnv) int {
 				facelets++
 			}
 		}
-		//TODO check corners paruty
 	}
-	return 24 - int(facelets/2)
+	for _, face := range []int{0, 1, 2, 5} {
+		for facelet := range []int{1, 5} {
+			var nextFacelet int
+			if facelet == 1 {
+				nextFacelet = 3
+			} else {
+				nextFacelet = 7
+			}
+			if (int(currCube.cube[face]>>uint(facelet*4)) & 15) == (int(currCube.cube[face]>>uint(nextFacelet*4)) & 15) {
+				parity++
+			}
+		}
+	}
+	if parity == 0 || parity == 8 {
+		parity = 8
+	} else {
+		parity = 0
+	}
+	return 32 - int(facelets/2+parity)
 }
 
 // Restore solved cube
