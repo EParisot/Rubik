@@ -37,7 +37,7 @@ func (env *Env) printVerticalCube(tmpface [9]string) {
 		}
 		for o := 0; o < 3; o++ {
 			env.printcolor(tmpface[order[i]])
-			i += 1
+			i++
 		}
 		fmt.Println()
 	}
@@ -91,7 +91,7 @@ func (env *Env) debugPrint(cube [6]int32) {
 		}
 		if j == 2 || j == 0 || j == 1 {
 			tmpStockface[x] = tmpface
-			x += 1
+			x++
 		}
 		if j == 1 {
 			env.printMiddleCube(tmpStockface)

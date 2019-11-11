@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// CubeEnv : Cube representation
 type CubeEnv struct {
 	cube              [6]int32
 	cost              int
@@ -14,7 +15,7 @@ type CubeEnv struct {
 	internationalMove string
 }
 
-// Game environnement
+// Env : Game environnement
 type Env struct {
 	mix         []string //shuffling list
 	currentCube CubeEnv  //current cube

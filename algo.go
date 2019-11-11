@@ -26,8 +26,8 @@ func (env *Env) idAstar() {
 
 func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *[]CubeEnv) {
 	currCube := (*closedList)[len(*closedList)-1]
-	if currCube.heuristic > threshold {
-		return currCube.heuristic, closedList
+	if currCube.heuristic+currCube.cost > threshold {
+		return currCube.heuristic + currCube.cost, closedList
 	}
 	if *phase == 1 && isInG1(currCube) == 0 {
 		*phase = 2
@@ -51,6 +51,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 		threshold = isInGc(currCube)
 		fmt.Println("Phase3 DONE")
 		env.debugPrint(currCube.cube)
+		fmt.Println(*closedList)
 		//return -1, closedList
 	}
 	if env.isFinished(currCube) {
@@ -81,7 +82,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 }
 
 func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
-	var gridList []CubeEnv
+	var cubeList []CubeEnv
 	for rotate := 0; rotate <= 5; rotate++ {
 		way := 0
 		var newEnvCube CubeEnv
@@ -97,16 +98,16 @@ func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
 		newEnvCube.internationalMove = moves[rotate]
 		newEnvCube.internationalMove = newEnvCube.internationalMove + nb
 		newEnvCube.cost = currCube.cost + 1
-		newEnvCube.heuristic = newEnvCube.cost + env.globalHeuristic(newEnvCube, phase)
+		newEnvCube.heuristic = env.globalHeuristic(newEnvCube, phase)
 		/*if phase == 4 {
 			fmt.Println(phase, newEnvCube.cost, env.globalHeuristic(newEnvCube, phase), newEnvCube.internationalMove)
 			env.debugPrint(newEnvCube.cube)
 			os.Exit(0)
 		}*/
 		//env.debugPrint(newEnvCube.cube)
-		gridList = append(gridList, newEnvCube)
+		cubeList = append(cubeList, newEnvCube)
 	}
-	return gridList
+	return cubeList
 }
 
 func (env *Env) reconstructPathIDA(closedList []CubeEnv, endGrid CubeEnv) {
