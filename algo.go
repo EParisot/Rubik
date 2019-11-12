@@ -102,9 +102,9 @@ func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
 		var newEnvCube CubeEnv
 		newEnvCube.cube = env.rotate(rotate, way, currCube.cube)
 		var nb string
-		if (phase == 2 && (rotate == 0 || rotate == 5)) ||
-			(phase == 3 && (rotate == 1 || rotate == 2 || rotate == 0 || rotate == 5)) ||
-			phase == 4 {
+		if (phase == 2 && (rotate == 0 || rotate == 5)) || // <F2 R L U D B2>
+			(phase == 3 && (rotate == 1 || rotate == 2 || rotate == 0 || rotate == 5)) || // <F2 R2 L2 U D B2>
+			phase == 4 { // <F2 R2 L2 U2 D2 B2>
 			newEnvCube.cube = env.rotate(rotate, way, newEnvCube.cube)
 			nb = "2"
 		}
