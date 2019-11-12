@@ -100,7 +100,6 @@ func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
 	for rotate := 0; rotate <= 5; rotate++ {
 		way := 0
 		var newEnvCube CubeEnv
-		//copyCube := env.copyCube(currCube.cube) // Check if needed
 		newEnvCube.cube = env.rotate(rotate, way, currCube.cube)
 		var nb string
 		if (phase == 2 && (rotate == 0 || rotate == 5)) ||
@@ -113,12 +112,6 @@ func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
 		newEnvCube.internationalMove = newEnvCube.internationalMove + nb
 		newEnvCube.cost = currCube.cost + 1
 		newEnvCube.heuristic = env.globalHeuristic(newEnvCube, phase)
-		/*if phase == 4 {
-			fmt.Println(phase, newEnvCube.cost, env.globalHeuristic(newEnvCube, phase), newEnvCube.internationalMove)
-			env.debugPrint(newEnvCube.cube)
-			os.Exit(0)
-		}*/
-		//env.debugPrint(newEnvCube.cube)
 		cubeList = append(cubeList, newEnvCube)
 	}
 	return cubeList
@@ -160,12 +153,13 @@ func isInG1(currCube CubeEnv) int {
 	return 8 - int(facelets/2)
 }
 
-// Fixes UD facelets orientations and midEdges in midLayer
+// Fixes UD facelets orientations (evenly for corners) and midEdges in midLayer
 func isInG2(currCube CubeEnv) int {
 	var topDownFacelets int
 	var midEdges int
+	var corners int
 	for _, face := range []int{3, 4} {
-		for _, facelet := range []int{1, 3, 5, 7} {
+		for _, facelet := range []int{0, 1, 2, 3, 4, 5, 6, 7} { // TO CMP with {1, 3, 5, 7}
 			if int(currCube.cube[face]>>uint(facelet*4))&15 == 3 || int(currCube.cube[face]>>uint(facelet*4))&15 == 4 {
 				topDownFacelets++
 			}
@@ -178,7 +172,18 @@ func isInG2(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 8 - int(topDownFacelets/2+midEdges/2)
+	face := 3
+	for _, facelet := range []int{0, 2, 4, 6} {
+		if int(currCube.cube[face]>>uint(facelet*4))&15 == face {
+			corners++
+		}
+	}
+	if corners%2 == 0 {
+		corners = 8
+	} else {
+		corners = 0
+	}
+	return 16 - int(topDownFacelets/2+midEdges/2+corners/2)
 }
 
 // Fixed all topDown corners and edges orientation
