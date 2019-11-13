@@ -6,7 +6,7 @@ G1 <F2 R L U D B2> :
 U' B'2 F2 U B2 R D R' D L F'2 R' B'2 R F2 D' U F'2
 U B'2 D' B2 F2 B'2 F'2 U L D' U R L F2 D' F'2 D L'
 B'2 F2 U B2 F2 U F'2 R' D' B'2 F2 D' F'2 B2
-L L D' U' U L' D U L D' L D' L B'2 D R' F'2 R
+D' L' D U L D' L D' L B'2 D R' F'2 R
 B'2 F2 B2 L R' B'2 F'2 L' F2 R'
 D L' B'2 D R F'2 B2 D L' B'2 U' L F'2 L'
 
