@@ -10,7 +10,7 @@ func (env *Env) idAstar() {
 	moves = []string{"F", "R", "L", "U", "D", "B"}
 	var closedList []CubeEnv
 	closedList = append(closedList, env.currentCube)
-	phase := 2
+	phase := 1
 	threshold := env.globalHeuristic(env.currentCube, phase)
 	for {
 		tmpThres, closedList := env.search(threshold, &closedList, &phase)
