@@ -1,20 +1,20 @@
 U F2 D B'2 U U' D U' R R R' D B'2 L B'2 R L L D' U' 
 
-
 G1 :
 U' B'2 F2 U' U' U B2 R D R' D L F'2 R' B'2 R F2 D' U F'2
 B'2 R' B2 U' L' L R U F'2 R R' L D U U L R R L D
 U' F'2 D' L' U' U' D' D' L L' D' D L B'2 R B2 B2 R B2 F2
 
 G2 :
-U' L'2 D' D L2 R2 U' F2 U' B'2 F2 D' L'2 F'2 U' F2 L2 D B2
-U F2 D B'2 U U' D U' R2 R2 R'2 D B'2 L2 B'2 R2 L2 L2 D' U'
+U' L'2 D' D L2 R2 U' F2 U' B'2 F2 D' L'2 F'2 U' F2 L2 D B2 -> Wierd F2 move in phase2
+U F2 D B'2 U U' D U' R2 R2 R'2 D B'2 L2 B'2 R2 L2 L2 D' U' -> Wierd F2 move in phase2
 L2 U' L'2 R2 F'2 L'2 B'2 B2 D L'2 L'2 U L'2 B'2 D R'2 D D F'2
-U' B'2 F2 U' U' U B2 R2 D R'2 D L2 F'2 R'2 B'2 R2 F2 D' U F'2
-U D D' B'2 F'2 U F2 L2 F2 L2 L'2 R'2 B'2 D' B'2 L2 R'2 B'2 L2 U'
+U' B'2 F2 U' U' U B2 R2 D R'2 D L2 F'2 R'2 B'2 R2 F2 D' U F'2 -> Wierd F2 move in phase2
+U D D' B'2 F'2 U F2 L2 F2 L2 L'2 R'2 B'2 D' B'2 L2 R'2 B'2 L2 U' -> Wierd B2 move in phase2
+
 G3 :
 R2 U'2 R'2 R2 D2 L'2 R2 U'2 R'2 R2 B'2 R'2 B2 U2 B'2 D2 B'2 U2 U2 B2
-U'2 R2 D'2 B'2 D'2 F'2 F'2 F2 D'2 F2 L2 D2 U2 F'2 R'2 B2 R2 L2 L2 R'2
-B2 B'2 B'2 B2 R2 F2 D'2 F'2 B2 B'2 L'2 D'2 B'2 U2 L'2 U2 B2 U'2 F'2 L'2
-U'2 B'2 F2 U'2 U'2 U2 B2 R2 D2 R'2 D2 L2 F'2 R'2 B'2 R2 F2 D'2 U2 F'2
+U'2 R2 D'2 B'2 D'2 F'2 F'2 F2 D'2 F2 L2 D2 U2 F'2 R'2 B2 R2 L2 L2 R'2 -> Wierd F2 move in phase2 and 3
+B2 B'2 B'2 B2 R2 F2 D'2 F'2 B2 B'2 L'2 D'2 B'2 U2 L'2 U2 B2 U'2 F'2 L'2 -> Wierd R2 move in phase3
+U'2 B'2 F2 U'2 U'2 U2 B2 R2 D2 R'2 D2 L2 F'2 R'2 B'2 R2 F2 D'2 U2 F'2 -> Wierd F2 move in phase2 and 3 + R2 in phase3
 U2 D2 D'2 B'2 F'2 U2 F2 L2 F2 L2 L'2 R'2 B'2 D'2 B'2 L2 R'2 B'2 L2 U'2

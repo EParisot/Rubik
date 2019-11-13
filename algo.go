@@ -145,14 +145,14 @@ func isInG1(currCube CubeEnv) int {
 	var latFacelets int
 	var facelets int
 	for _, face := range []int{1, 2} {
-		for _, facelet := range []int{0, 2, 4, 6} {
+		for _, facelet := range []int{0, 2, 4, 6} { //0, 1, 2, 3, 4, 5, 6, 7 ?
 			if int(currCube.cube[face]>>uint(facelet*4))&15 != 3 && int(currCube.cube[face]>>uint(facelet*4))&15 != 4 {
 				latFacelets++
 			}
 		}
 	}
 	for _, face := range []int{3, 4} {
-		for _, facelet := range []int{0, 2, 4, 6} {
+		for _, facelet := range []int{0, 2, 4, 6} { //0, 1, 2, 3, 4, 5, 6, 7 ?
 			if int(currCube.cube[face]>>uint(facelet*4))&15 != 1 && int(currCube.cube[face]>>uint(facelet*4))&15 != 2 {
 				facelets++
 			}
