@@ -42,7 +42,6 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 			fmt.Print(" ")
 		}
 		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
-		//return -1, closedList
 	}
 	if *phase == 2 && isInG2(currCube) == 0 {
 		*phase = 3
@@ -57,7 +56,6 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 			fmt.Print(" ")
 		}
 		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
-		//return -1, closedList
 	}
 	if *phase == 3 && isInG3(currCube) == 0 {
 		*phase = 4
@@ -72,7 +70,6 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 			fmt.Print(" ")
 		}
 		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
-		//return -1, closedList
 	}
 	if env.isFinished(currCube) {
 		if env.debug {
@@ -148,7 +145,7 @@ func (env *Env) globalHeuristic(currCube CubeEnv, phase int) int {
 	return gHeur
 }
 
-// fixes FB Edges orientation
+// fixes RL and UD Edges orientation
 func isInG1(currCube CubeEnv) int {
 	var latFacelets int
 	var facelets int
@@ -181,13 +178,6 @@ func isInG2(currCube CubeEnv) int {
 			}
 		}
 	}
-	for _, face := range []int{0, 1, 2, 5} {
-		for _, facelet := range []int{0, 4} {
-			if int(currCube.cube[face]>>uint(facelet*4))&15 != 3 && int(currCube.cube[face]>>uint(facelet*4))&15 != 4 {
-				midEdges++
-			}
-		}
-	}
 	face := 3
 	for _, facelet := range []int{0, 2, 4, 6} {
 		if int(currCube.cube[face]>>uint(facelet*4))&15 == face {
@@ -199,10 +189,17 @@ func isInG2(currCube CubeEnv) int {
 	} else {
 		parity = 0
 	}
+	for _, face := range []int{0, 1, 2, 5} {
+		for _, facelet := range []int{0, 4} {
+			if int(currCube.cube[face]>>uint(facelet*4))&15 != 3 && int(currCube.cube[face]>>uint(facelet*4))&15 != 4 {
+				midEdges++
+			}
+		}
+	}
 	return 16 - int(topDownFacelets/2+midEdges/2+parity/2)
 }
 
-// Fixed all topDown corners and edges orientation
+// Fixed all topDown corners and edges orientation and corners parity
 func isInG3(currCube CubeEnv) int {
 	var facelets int
 	var parity int
