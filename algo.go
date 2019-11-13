@@ -166,28 +166,16 @@ func isInG1(currCube CubeEnv) int {
 	return 8 - int(latFacelets/2+facelets/2)
 }
 
-// Fixes UD facelets orientations (evenly for face/back edges) and midEdges in midLayer
+// Fixes UD facelets orientations and midEdges in midLayer
 func isInG2(currCube CubeEnv) int {
 	var topDownFacelets int
 	var midEdges int
-	var parity int
 	for _, face := range []int{3, 4} {
 		for _, facelet := range []int{0, 1, 2, 3, 4, 5, 6, 7} { // TO CMP with {1, 3, 5, 7}
 			if int(currCube.cube[face]>>uint(facelet*4))&15 == 3 || int(currCube.cube[face]>>uint(facelet*4))&15 == 4 {
 				topDownFacelets++
 			}
 		}
-	}
-	face := 3
-	for _, facelet := range []int{0, 2, 4, 6} {
-		if int(currCube.cube[face]>>uint(facelet*4))&15 == face {
-			parity++
-		}
-	}
-	if parity%2 == 0 {
-		parity = 8
-	} else {
-		parity = 0
 	}
 	for _, face := range []int{0, 1, 2, 5} {
 		for _, facelet := range []int{0, 4} {
@@ -196,7 +184,7 @@ func isInG2(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 16 - int(topDownFacelets/2+midEdges/2+parity/2)
+	return 12 - int(topDownFacelets/2+midEdges/2)
 }
 
 // Fixed all topDown corners and edges orientation and corners parity
