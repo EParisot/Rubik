@@ -142,15 +142,23 @@ func (env *Env) globalHeuristic(currCube CubeEnv, phase int) int {
 
 // fixes FB Edges orientation
 func isInG1(currCube CubeEnv) int {
+	var latFacelets int
 	var facelets int
 	for _, face := range []int{1, 2} {
-		for _, facelet := range []int{0, 1, 2, 3, 4, 5, 6, 7} {
+		for _, facelet := range []int{0, 2, 4, 6} {
 			if int(currCube.cube[face]>>uint(facelet*4))&15 != 3 && int(currCube.cube[face]>>uint(facelet*4))&15 != 4 {
+				latFacelets++
+			}
+		}
+	}
+	for _, face := range []int{3, 4} {
+		for _, facelet := range []int{0, 2, 4, 6} {
+			if int(currCube.cube[face]>>uint(facelet*4))&15 != 1 && int(currCube.cube[face]>>uint(facelet*4))&15 != 2 {
 				facelets++
 			}
 		}
 	}
-	return 8 - int(facelets/2)
+	return 8 - int(latFacelets/2+facelets/2)
 }
 
 // Fixes UD facelets orientations (evenly for face/back edges) and midEdges in midLayer
@@ -221,14 +229,10 @@ func isInG3(currCube CubeEnv) int {
 			}
 		}
 	}
-	test := parity
 	if parity == 0 || parity == 8 {
 		parity = 8
 	} else {
 		parity = 0
-	}
-	if 32-int(facelets/2+parity) == 0 {
-		fmt.Println(test)
 	}
 	return 32 - int(facelets/2+parity)
 }
