@@ -227,7 +227,7 @@ func isInG3(currCube CubeEnv) int {
 	} else {
 		parity = 0
 	}
-	return 32 - int(facelets/2+parity)
+	return 28 - int(facelets/2+parity/2)
 }
 
 // Restore solved cube
