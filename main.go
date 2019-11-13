@@ -21,6 +21,7 @@ type Env struct {
 	currentCube CubeEnv  //current cube
 	solvedCube  [6]int32 //finished cube (const)
 	res         string   //result list
+	debug       bool
 }
 
 func (env *Env) parseArgs(arg string) error {
@@ -91,16 +92,29 @@ func (env *Env) execStep(step string) {
 }
 
 func main() {
+	var mix string
+	var debug bool
 	args := os.Args[1:]
 	if len(args) == 0 {
 		fmt.Println("Error : No arg")
 		return
 	}
-	arg := string(args[0])
-	env := Env{}
+	if len(args) == 2 {
+		if args[0] == "-d" {
+			debug = true
+			mix = string(args[1])
+		} else if args[1] == "-d" {
+			debug = true
+			mix = string(args[0])
+		}
+	} else {
+		debug = false
+		mix = string(args[0])
+	}
+	env := Env{debug: debug}
 	env.setCube()
 	// parsing
-	err := env.parseArgs(arg)
+	err := env.parseArgs(mix)
 	if err != nil {
 		fmt.Println(err)
 		return

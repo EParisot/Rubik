@@ -33,8 +33,10 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 		*phase = 2
 		currCube.cost = 0
 		threshold = isInG2(currCube)
-		fmt.Println("Phase1 DONE")
-		env.debugPrint(currCube.cube)
+		if env.debug {
+			fmt.Println("Phase1 DONE")
+			env.debugPrint(currCube.cube)
+		}
 		env.reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
 		if len(*closedList) > 1 {
 			fmt.Print(" ")
@@ -46,8 +48,10 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 		*phase = 3
 		currCube.cost = 0
 		threshold = isInG3(currCube)
-		fmt.Println("\nPhase2 DONE")
-		env.debugPrint(currCube.cube)
+		if env.debug {
+			fmt.Println("\nPhase2 DONE")
+			env.debugPrint(currCube.cube)
+		}
 		env.reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
 		if len(*closedList) > 1 {
 			fmt.Print(" ")
@@ -59,8 +63,10 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 		*phase = 4
 		currCube.cost = 0
 		threshold = isInGc(currCube)
-		fmt.Println("\nPhase3 DONE")
-		env.debugPrint(currCube.cube)
+		if env.debug {
+			fmt.Println("\nPhase3 DONE")
+			env.debugPrint(currCube.cube)
+		}
 		env.reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
 		if len(*closedList) > 1 {
 			fmt.Print(" ")
@@ -69,8 +75,10 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int) (int, *
 		//return -1, closedList
 	}
 	if env.isFinished(currCube) {
-		fmt.Println("\nALL DONE")
-		//env.debugPrint(currCube.cube)
+		if env.debug {
+			fmt.Println("\nALL DONE")
+			env.debugPrint(currCube.cube)
+		}
 		return -1, closedList
 	}
 	min := 100000
