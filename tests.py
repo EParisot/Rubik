@@ -65,9 +65,10 @@ def main(group):
                 logging.info("Error : Timeout\n")
                 errors += 1
     except KeyboardInterrupt:
-        print("\nAverage solution length: %d" % statistics.mean(counts))
-        print("Average compute time: %2.2fs" % statistics.mean(durations))
-        print("%d Success and %d Timeouts, rate = %.2f" % (success, errors, success/(success + errors)))
+        pass
+    print("\nAverage solution length: %d" % statistics.mean(counts))
+    print("Average compute time: %2.2fs" % statistics.mean(durations))
+    print("%d Success and %d Timeouts, rate = %.2f" % (success, errors, success/(success + errors)))
 
 if __name__ == "__main__":
     main()

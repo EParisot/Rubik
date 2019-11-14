@@ -1,0 +1,19 @@
+G3:
+Average solution length: 10
+Average compute time: 0.97s
+100 Success and 0 Timeouts, rate = 1.00
+
+G2:
+Average solution length: 19
+Average compute time: 9.59s
+93 Success and 7 Timeouts, rate = 0.93
+3 timeouts < 3min to solve ( 0.96 with 3min timeout )
+3 timeouts < 5min to solve ( 0.99 with 5min timeout )
+1 timeout 16m to solve ( 1.0 with 20min timeout )
+
+G1:
+Average solution length: 34
+Average compute time: 36.59s
+58 Success and 42 Timeouts, rate = 0.58
+
+G0:
