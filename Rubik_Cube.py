@@ -82,7 +82,13 @@ class EntireCube():
     def shuffle(self):
         print("\nScrambling...")
         # build steps
-        steps_idx = [random.randint(0, len(moves)-1) for _ in range(20)]
+        steps_idx = []
+        for _ in range(25):
+            rand = random.randint(0, len(moves)-1)
+            while len(steps_idx) and rand == steps_idx[-1]:
+                rand = random.randint(0, len(moves)-1)
+            steps_idx.append(rand)
+        #steps_idx = [random.randint(0, len(moves)-1) for _ in range(20)]
         self.steps = [moves[idx] for idx in steps_idx]
         print("Applying", " ".join(self.steps), ":")
         if len(self.hist) == 0:

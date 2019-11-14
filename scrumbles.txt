@@ -9,6 +9,7 @@ B'2 F2 U B2 F2 U F'2 R' D' B'2 F2 D' F'2 B2
 D' L' D U L D' L D' L B'2 D R' F'2 R
 B'2 F2 B2 L R' B'2 F'2 L' F2 R'
 D L' B'2 D R F'2 B2 D L' B'2 U' L F'2 L'
+F'2 L' U R' F'2 B'2 F'2 R D' R U R' F2 U L' F2 L' B2 D' U
 
 G2 <F2 R2 L2 U D B2> :
 U' R2 U' F2 U' B'2 F2 D' L'2 F'2 U' F2 L2 D B2
