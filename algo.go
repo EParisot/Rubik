@@ -163,7 +163,7 @@ func isInG1(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 4 - int((latFacelets+topDownFacelets)/8)
+	return 8 - int((latFacelets+topDownFacelets)/4)
 }
 
 // Fixes UD facelets orientations and midEdges in midLayer
