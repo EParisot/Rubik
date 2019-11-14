@@ -83,9 +83,9 @@ class EntireCube():
         print("\nScrambling...")
         # build steps
         steps_idx = []
-        for _ in range(25):
+        for _ in range(20):
             rand = random.randint(0, len(moves)-1)
-            while len(steps_idx) and rand == steps_idx[-1]:
+            while len(steps_idx) and moves[rand][0] == moves[steps_idx[-1]][0]:
                 rand = random.randint(0, len(moves)-1)
             steps_idx.append(rand)
         #steps_idx = [random.randint(0, len(moves)-1) for _ in range(20)]

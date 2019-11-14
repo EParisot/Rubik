@@ -163,150 +163,20 @@ func isInG1(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 16 - int(latFacelets/2+topDownFacelets/2)
-	/*	var latEdges int
-		var topDownEdges int
-		var faceEdges int
-		for _, face := range []int{1, 2} {
-			var oppositeFace int
-			var oppositeNextFace int
-			if face == 1 {
-				oppositeFace = 2
-			} else {
-				oppositeFace = 1
-			}
-			for _, facelet := range []int{0, 4} {
-				var nextFace int
-				if face == 1 && facelet == 0 {
-					nextFace = 0
-					oppositeNextFace = 5
-				} else if face == 1 && facelet == 4 {
-					nextFace = 5
-					oppositeNextFace = 0
-				} else if face == 2 && facelet == 0 {
-					nextFace = 5
-					oppositeNextFace = 0
-				} else if face == 2 && facelet == 4 {
-					nextFace = 0
-					oppositeNextFace = 5
-				}
-				if int(currCube.cube[face]>>uint(facelet*4))&15 == face || int(currCube.cube[face]>>uint(facelet*4))&15 == nextFace ||
-					int(currCube.cube[face]>>uint(facelet*4))&15 == oppositeFace || int(currCube.cube[face]>>uint(facelet*4))&15 == oppositeNextFace {
-					latEdges++
-				}
-			}
-		}
-		for _, face := range []int{3, 4} {
-			var oppositeFace int
-			var oppositeNextFace int
-			if face == 3 {
-				oppositeFace = 4
-			} else {
-				oppositeFace = 3
-			}
-			for _, facelet := range []int{0, 4} {
-				var nextFace int
-				if face == 3 && facelet == 0 {
-					nextFace = 2
-					oppositeNextFace = 1
-				} else if face == 3 && facelet == 4 {
-					nextFace = 1
-					oppositeNextFace = 2
-				} else if face == 4 && facelet == 0 {
-					nextFace = 2
-					oppositeNextFace = 1
-				} else if face == 4 && facelet == 4 {
-					nextFace = 1
-					oppositeNextFace = 2
-				}
-				if int(currCube.cube[face]>>uint(facelet*4))&15 == face || int(currCube.cube[face]>>uint(facelet*4))&15 == nextFace ||
-					int(currCube.cube[face]>>uint(facelet*4))&15 == oppositeFace || int(currCube.cube[face]>>uint(facelet*4))&15 == oppositeNextFace {
-					topDownEdges++
-				}
-			}
-		}
-		for _, face := range []int{0, 5} {
-			var oppositeFace int
-			var oppositeNextFace int
-			if face == 5 {
-				oppositeFace = 0
-			} else {
-				oppositeFace = 5
-			}
-			for _, facelet := range []int{0, 4} {
-				var nextFace int
-				if face == 0 && facelet == 0 {
-					nextFace = 2
-					oppositeNextFace = 1
-				} else if face == 0 && facelet == 4 {
-					nextFace = 1
-					oppositeNextFace = 2
-				} else if face == 5 && facelet == 0 {
-					nextFace = 2
-					oppositeNextFace = 1
-				} else if face == 5 && facelet == 4 {
-					nextFace = 1
-					oppositeNextFace = 2
-				}
-				if int(currCube.cube[face]>>uint(facelet*4))&15 == face || int(currCube.cube[face]>>uint(facelet*4))&15 == nextFace ||
-					int(currCube.cube[face]>>uint(facelet*4))&15 == oppositeFace || int(currCube.cube[face]>>uint(facelet*4))&15 == oppositeNextFace {
-					faceEdges++
-				}
-			}
-		}
-		return 6 - int(latEdges/2+topDownEdges/2+faceEdges/2)*/
+	return 4 - int((latFacelets+topDownFacelets)/8)
 }
 
 // Fixes UD facelets orientations and midEdges in midLayer
 func isInG2(currCube CubeEnv) int {
 	var topDownFacelets int
-	var midEdges int
 	for _, face := range []int{3, 4} {
-		for _, facelet := range []int{0, 1, 2, 3, 4, 5, 6, 7} { // TO CMP with {1, 3, 5, 7}
+		for _, facelet := range []int{0, 1, 2, 3, 4, 5, 6, 7} {
 			if int(currCube.cube[face]>>uint(facelet*4))&15 == 3 || int(currCube.cube[face]>>uint(facelet*4))&15 == 4 {
 				topDownFacelets++
 			}
 		}
 	}
-	for _, face := range []int{0, 1, 2, 5} {
-		for _, facelet := range []int{0, 4} {
-			if int(currCube.cube[face]>>uint(facelet*4))&15 != 3 && int(currCube.cube[face]>>uint(facelet*4))&15 != 4 {
-				midEdges++
-			}
-		}
-	}
-	/*var cornerParity int
-	for _, face := range []int{3, 4} {
-		for _, facelet := range []int{1, 3, 5, 7} {
-			var lFacelet int
-			var rFacelet int
-			if facelet == 1 {
-				lFacelet = 7
-				rFacelet = 3
-			} else if facelet == 3 {
-				lFacelet = 1
-				rFacelet = 5
-			} else if facelet == 5 {
-				lFacelet = 3
-				rFacelet = 7
-			} else {
-				lFacelet = 5
-				rFacelet = 1
-			}
-			if ((int(currCube.cube[face]>>uint(lFacelet*4))&15) != (int(currCube.cube[face]>>uint(facelet*4))&15) &&
-				(int(currCube.cube[face]>>uint(rFacelet*4))&15) == (int(currCube.cube[face]>>uint(facelet*4))&15)) ||
-				(int(currCube.cube[face]>>uint(lFacelet*4))&15) != (int(currCube.cube[face]>>uint(rFacelet*4))&15) {
-				cornerParity++
-			}
-		}
-	}
-	if cornerParity == 0 || cornerParity == 8 {
-		cornerParity = 8
-	} else {
-		cornerParity = 0
-	}
-	return 16 - int(topDownFacelets/2+midEdges/2+cornerParity/2)
-	*/return 12 - int(topDownFacelets/2+midEdges/2)
+	return 4 - int((topDownFacelets)/4)
 }
 
 // Fixed all topDown corners and edges orientation and corners parity
@@ -349,7 +219,7 @@ func isInG3(currCube CubeEnv) int {
 	} else {
 		parity = 0
 	}
-	return 14 - int(facelets/4+parity/4)
+	return 14 - int((facelets+parity)/4)
 }
 
 // Restore solved cube
@@ -370,5 +240,5 @@ func isInGc(currCube CubeEnv) int {
 			}
 		}
 	}
-	return 24 - int(corners/2+edges/2)
+	return 12 - int((corners+edges)/4)
 }
