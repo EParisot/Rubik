@@ -20,6 +20,7 @@ func (env *Env) idAstar() {
 	for {
 		tmpThres, _ := env.search(threshold, &closedList, &phase, 0)
 		if tmpThres == -1 {
+			result = parseOutput(result)
 			fmt.Println(result)
 			return
 		} else if tmpThres >= 10000 {

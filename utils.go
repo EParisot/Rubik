@@ -35,3 +35,42 @@ func (env *Env) shuffle(steps []string) {
 	}
 	env.startCube = env.currentCube
 }
+
+func (env *Env) execStep(step string) {
+	stepID := 0
+	way := 0
+	nb := 1
+	if len(step) == 2 {
+		if string(step[1]) == "'" || string(step[1]) == "’" {
+			way = 1
+		} else if string(step[1]) == "2" {
+			nb = 2
+		}
+	} else if len(step) == 3 {
+		if string(step[1]) == "'" || string(step[1]) == "’" {
+			way = 1
+		}
+		if string(step[2]) == "2" {
+			nb = 2
+		}
+	}
+	if step[0] == 'F' {
+		stepID = 0
+	} else if step[0] == 'R' {
+		stepID = 1
+	} else if step[0] == 'U' {
+		stepID = 3
+	} else if step[0] == 'B' {
+		stepID = 5
+	} else if step[0] == 'L' {
+		stepID = 2
+	} else if step[0] == 'D' {
+		stepID = 4
+	}
+	// exec rotations
+	oldCube := env.currentCube.cube
+	env.currentCube.cube = rotate(stepID, way, oldCube)
+	if nb == 2 {
+		env.currentCube.cube = rotate(stepID, way, env.currentCube.cube)
+	}
+}

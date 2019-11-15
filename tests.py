@@ -59,6 +59,7 @@ def main(group):
                     counts.append(count)
                     durations.append(end-start)
                     logging.info("Done in %d steps\n" % count)
+                    print(res)
                     success += 1
                 else:
                     time.sleep(0.1)
