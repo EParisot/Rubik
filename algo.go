@@ -118,9 +118,9 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 			}
 			fmt.Print("\n")
 		}
-		for i, step := range *closedList {
+		for i, step := range (*closedList)[1:len(*closedList)] {
 			result += step.internationalMove
-			if i < len(*closedList)-1 {
+			if i < len(*closedList)-2 {
 				result += " "
 			}
 		}
