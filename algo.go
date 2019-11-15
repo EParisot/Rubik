@@ -33,7 +33,6 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 	// Handle dept limit
 	depth++
 	if depth >= max[*phase] {
-		*phase = 0
 		env.currentCube = env.startCube
 		result = ""
 		for i := 0; i < 10; i++ {
