@@ -1,0 +1,29 @@
+0
+Applying U'2 B'2 D' F' D2 B' R F' D'2 L B' L'2 D2 U' F' R B'2 R' U D'2 :
+11/15/2019 11:57:23 PM Solving...
+11/16/2019 12:00:23 AM Error : Timeout
+
+5
+Applying U F'2 B' L2 R' U' R B U2 R L'2 F2 D U'2 B'2 U' F'2 L2 F' U'2 :
+11/16/2019 12:01:44 AM Solving...
+11/16/2019 12:04:44 AM Error : Timeout
+
+10
+Applying U R2 D'2 L'2 D F' L B R'2 L2 U2 R D R2 D'2 U'2 L2 D R F2 :
+11/16/2019 12:09:55 AM Solving...
+11/16/2019 12:12:55 AM Error : Timeout
+
+11
+Applying D'2 B'2 U' B L'2 F2 L2 F'2 U2 F' L'2 U' B2 L'2 F' D'2 L'2 D' L'2 D2 :
+11/16/2019 12:12:55 AM Solving...
+11/16/2019 12:15:55 AM Error : Timeout
+
+12
+Applying F B D' U D' F'2 U' B2 D'2 F2 U2 L'2 U2 L'2 D F' R2 F B' L' :
+11/16/2019 12:15:55 AM Solving...
+11/16/2019 12:18:55 AM Error : Timeout
+
+28
+Applying B'2 L2 U2 B'2 D'2 U'2 L'2 U L2 U'2 F D L D2 L U2 F2 U2 R'2 F'2 :
+11/16/2019 12:36:01 AM Solving...
+11/16/2019 12:39:01 AM Error : Timeout
