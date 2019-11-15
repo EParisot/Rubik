@@ -17,38 +17,37 @@ type CubeEnv struct {
 
 // Env : Game environnement
 type Env struct {
-	mix         []string //shuffling list
-	startCube   CubeEnv  //start cube
-	currentCube CubeEnv  //current cube
-	solvedCube  [6]int32 //finished cube (const)
-	res         string   //result list
+	//mix         []string //shuffling list
+	startCube   CubeEnv //start cube
+	currentCube CubeEnv //current cube
+	res         string  //result list
 	debug       bool
 }
 
-func (env *Env) parseArgs(arg string) error {
+func (env *Env) parseArgs(arg string) ([]string, error) {
+	var steps []string
 	arg = strings.Replace(arg, "\n", "", -1)
 	if len(arg) != 0 {
 		if arg[len(arg)-1] == ' ' {
 			arg = arg[0 : len(arg)-1]
 		}
-		steps := strings.Split(arg, " ")
+		steps = strings.Split(arg, " ")
 		for step := range steps {
 			steps[step] = strings.ReplaceAll(steps[step], "’", "'")
 			if len(steps[step]) == 0 || len(steps[step]) > 3 || (len(steps[step]) > 0 &&
 				!strings.Contains("FRUBLD", steps[step][0:1])) {
-				return errors.New("Error : Invalid step name")
+				return nil, errors.New("Error : Invalid step name")
 			} else if len(steps[step]) == 2 && !strings.Contains("'2", steps[step][1:2]) {
-				return errors.New("Error : Invalid step arg")
+				return nil, errors.New("Error : Invalid step arg")
 			} else if len(steps[step]) == 3 &&
 				(!strings.Contains("'2", steps[step][1:2]) || !strings.Contains("2", steps[step][2:3])) {
-				return errors.New("Error : Invalid step arg")
+				return nil, errors.New("Error : Invalid step arg")
 			}
 		}
-		env.mix = steps
 	} else {
-		return errors.New("Error : No arg")
+		return nil, errors.New("Error : No arg")
 	}
-	return nil
+	return steps, nil
 }
 
 func (env *Env) execStep(step string) {
@@ -84,9 +83,9 @@ func (env *Env) execStep(step string) {
 	}
 	// exec rotations
 	oldCube := env.currentCube.cube
-	env.currentCube.cube = env.rotate(stepID, way, oldCube)
+	env.currentCube.cube = rotate(stepID, way, oldCube)
 	if nb == 2 {
-		env.currentCube.cube = env.rotate(stepID, way, env.currentCube.cube)
+		env.currentCube.cube = rotate(stepID, way, env.currentCube.cube)
 	}
 	// DEBUG
 	//env.debugPrint(env.currentCube.cube)
@@ -115,13 +114,13 @@ func main() {
 	env := Env{debug: debug}
 	env.setCube()
 	// parsing
-	err := env.parseArgs(mix)
+	steps, err := env.parseArgs(mix)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	// Shuffling
-	env.shuffle()
+	env.shuffle(steps)
 	// Solve HERE
 	env.idAstar()
 }

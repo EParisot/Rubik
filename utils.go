@@ -1,15 +1,9 @@
 package main
 
-func (env *Env) copyCube(cube [6]int32) [6]int32 {
-	var copyCube [6]int32
-	for face := range cube {
-		copyCube[face] = cube[face]
-	}
-	return copyCube
-}
+var solvedCube [6]int32
 
-func (env *Env) isFinished(currCube CubeEnv) bool {
-	if currCube.cube == env.solvedCube {
+func isFinished(currCube CubeEnv) bool {
+	if currCube.cube == solvedCube {
 		return true
 	}
 	return false
@@ -31,13 +25,13 @@ func (env *Env) setCube() {
 	env.currentCube.cube[3] = 0b00110011001100110011001100110011 // White
 	env.currentCube.cube[4] = 0b01000100010001000100010001000100 // Yellow
 	env.currentCube.cube[5] = 0b01010101010101010101010101010101 // Red
-	env.solvedCube = env.copyCube(env.currentCube.cube)
+	solvedCube = env.currentCube.cube
 }
 
-func (env *Env) shuffle() {
-	for step := range env.mix {
+func (env *Env) shuffle(steps []string) {
+	for step := range steps {
 		// exec step
-		env.execStep(env.mix[step])
+		env.execStep(steps[step])
 	}
 	env.startCube = env.currentCube
 }

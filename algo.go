@@ -16,7 +16,7 @@ func (env *Env) idAstar() {
 	var closedList []CubeEnv
 	closedList = append(closedList, env.currentCube)
 	phase := 0
-	threshold := env.globalHeuristic(env.currentCube, phase)
+	threshold := globalHeuristic(env.currentCube, phase)
 	for {
 		tmpThres, _ := env.search(threshold, &closedList, &phase, 0)
 		if tmpThres == -1 {
@@ -42,7 +42,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 		}
 		if env.debug {
 			fmt.Println("RESET AND MIX MORE")
-			env.debugPrint(env.currentCube.cube)
+			debugPrint(env.currentCube.cube)
 			fmt.Println(result)
 		}
 		env.idAstar()
@@ -58,76 +58,76 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 		*phase = 1
 		currCube.cost = 0
 		threshold = isInG2(currCube)
+		for _, step := range (*closedList)[1:len(*closedList)] {
+			result += step.internationalMove + " "
+		}
+		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
 		if env.debug {
 			fmt.Println("Phase0 DONE")
-			env.debugPrint(currCube.cube)
-			env.reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
+			debugPrint(currCube.cube)
+			reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
 			if len(*closedList) > 1 {
 				fmt.Print(" ")
 			}
 			fmt.Print("\n")
 		}
-		for _, step := range (*closedList)[1:len(*closedList)] {
-			result += step.internationalMove + " "
-		}
-		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
 	}
 	if *phase == 1 && isInG2(currCube) == 0 {
 		*phase = 2
 		currCube.cost = 0
 		threshold = isInG3(currCube)
+		for _, step := range (*closedList)[1:len(*closedList)] {
+			result += step.internationalMove + " "
+		}
+		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
 		if env.debug {
 			fmt.Println("Phase1 DONE")
-			env.debugPrint(currCube.cube)
-			env.reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
+			debugPrint(currCube.cube)
+			reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
 			if len(*closedList) > 1 {
 				fmt.Print(" ")
 			}
 			fmt.Print("\n")
 		}
-		for _, step := range (*closedList)[1:len(*closedList)] {
-			result += step.internationalMove + " "
-		}
-		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
 	}
 	if *phase == 2 && isInG3(currCube) == 0 {
 		*phase = 3
 		currCube.cost = 0
 		threshold = isInGc(currCube)
-		if env.debug {
-			fmt.Println("Phase2 DONE")
-			env.debugPrint(currCube.cube)
-			env.reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
-			if len(*closedList) > 1 {
-				fmt.Print(" ")
-			}
-			fmt.Print("\n")
-		}
 		for _, step := range (*closedList)[1:len(*closedList)] {
 			result += step.internationalMove + " "
 		}
 		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
-	}
-	if env.isFinished(currCube) {
 		if env.debug {
-			fmt.Println("ALL DONE")
-			env.debugPrint(currCube.cube)
-			env.reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
+			fmt.Println("Phase2 DONE")
+			debugPrint(currCube.cube)
+			reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
 			if len(*closedList) > 1 {
 				fmt.Print(" ")
 			}
 			fmt.Print("\n")
 		}
+	}
+	if isFinished(currCube) {
 		for i, step := range (*closedList)[1:len(*closedList)] {
 			result += step.internationalMove
 			if i < len(*closedList)-2 {
 				result += " "
 			}
 		}
+		if env.debug {
+			fmt.Println("ALL DONE")
+			debugPrint(currCube.cube)
+			reconstructPathIDA(*closedList, (*closedList)[len(*closedList)-1])
+			if len(*closedList) > 1 {
+				fmt.Print(" ")
+			}
+			fmt.Print("\n")
+		}
 		return -1, closedList
 	}
 	min := 100000
-	childsList := env.getMoves(currCube, *phase)
+	childsList := getMoves(currCube, *phase)
 	for _, child := range childsList {
 		if !existInClosedList(child, *closedList) {
 			*closedList = append(*closedList, child)
@@ -148,29 +148,27 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 	return min, closedList
 }
 
-func (env *Env) getMoves(currCube CubeEnv, phase int) []CubeEnv {
+func getMoves(currCube CubeEnv, phase int) []CubeEnv {
 	var cubeList []CubeEnv
-	for rotate := 0; rotate <= 5; rotate++ {
-		way := 0
+	for face := 0; face <= 5; face++ {
 		var newEnvCube CubeEnv
-		newEnvCube.cube = env.rotate(rotate, way, currCube.cube)
+		newEnvCube.cube = rotate(face, 0, currCube.cube)
 		var nb string
-		if (phase == 1 && (rotate == 0 || rotate == 5)) || // <F2 R L U D B2>
-			(phase == 2 && (rotate == 1 || rotate == 2 || rotate == 0 || rotate == 5)) || // <F2 R2 L2 U D B2>
+		if (phase == 1 && (face == 0 || face == 5)) || // <F2 R L U D B2>
+			(phase == 2 && (face == 1 || face == 2 || face == 0 || face == 5)) || // <F2 R2 L2 U D B2>
 			phase == 3 { // <F2 R2 L2 U2 D2 B2>
-			newEnvCube.cube = env.rotate(rotate, way, newEnvCube.cube)
+			newEnvCube.cube = rotate(face, 0, newEnvCube.cube)
 			nb = "2"
 		}
-		newEnvCube.internationalMove = moves[rotate]
-		newEnvCube.internationalMove = newEnvCube.internationalMove + nb
+		newEnvCube.internationalMove = moves[face] + nb
 		newEnvCube.cost = currCube.cost + 1
-		newEnvCube.heuristic = env.globalHeuristic(newEnvCube, phase)
+		newEnvCube.heuristic = globalHeuristic(newEnvCube, phase)
 		cubeList = append(cubeList, newEnvCube)
 	}
 	return cubeList
 }
 
-func (env *Env) reconstructPathIDA(closedList []CubeEnv, endGrid CubeEnv) {
+func reconstructPathIDA(closedList []CubeEnv, endGrid CubeEnv) {
 	for i, step := range closedList[1:len(closedList)] {
 		fmt.Print(step.internationalMove)
 		if i < len(closedList)-2 {
@@ -179,7 +177,7 @@ func (env *Env) reconstructPathIDA(closedList []CubeEnv, endGrid CubeEnv) {
 	}
 }
 
-func (env *Env) globalHeuristic(currCube CubeEnv, phase int) int {
+func globalHeuristic(currCube CubeEnv, phase int) int {
 	var gHeur int
 	if phase == 0 {
 		gHeur = isInG1(currCube)

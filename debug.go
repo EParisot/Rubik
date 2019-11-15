@@ -6,7 +6,7 @@ import (
 	"github.com/fatih/color"
 )
 
-func (env *Env) printcolor(str string) {
+func printcolor(str string) {
 	if str == "W" {
 		c := color.New(color.FgWhite)
 		c.Print("W")
@@ -28,7 +28,7 @@ func (env *Env) printcolor(str string) {
 	}
 }
 
-func (env *Env) printVerticalCube(tmpface [9]string) {
+func printVerticalCube(tmpface [9]string) {
 	i := 0
 	order := [9]int{0, 1, 2, 7, 8, 3, 6, 5, 4}
 	for x := 0; x < 3; x++ {
@@ -36,7 +36,7 @@ func (env *Env) printVerticalCube(tmpface [9]string) {
 			fmt.Print(" ")
 		}
 		for o := 0; o < 3; o++ {
-			env.printcolor(tmpface[order[i]])
+			printcolor(tmpface[order[i]])
 			i++
 		}
 		fmt.Println()
@@ -44,25 +44,25 @@ func (env *Env) printVerticalCube(tmpface [9]string) {
 	fmt.Println()
 }
 
-func (env *Env) printMiddleCube(tmpStockface [3][9]string) {
+func printMiddleCube(tmpStockface [3][9]string) {
 	order := [9]int{0, 1, 2, 7, 8, 3, 6, 5, 4}
 	for x := 0; x < 3; x++ {
 		for o := 0; o < 3; o++ {
-			env.printcolor(tmpStockface[x][order[o]])
+			printcolor(tmpStockface[x][order[o]])
 		}
 		fmt.Print(" ")
 	}
 	fmt.Println()
 	for x := 0; x < 3; x++ {
 		for o := 3; o < 6; o++ {
-			env.printcolor(tmpStockface[x][order[o]])
+			printcolor(tmpStockface[x][order[o]])
 		}
 		fmt.Print(" ")
 	}
 	fmt.Println()
 	for x := 0; x < 3; x++ {
 		for o := 6; o < 9; o++ {
-			env.printcolor(tmpStockface[x][order[o]])
+			printcolor(tmpStockface[x][order[o]])
 		}
 		fmt.Print(" ")
 	}
@@ -70,7 +70,7 @@ func (env *Env) printMiddleCube(tmpStockface [3][9]string) {
 	fmt.Println()
 }
 
-func (env *Env) debugPrint(cube [6]int32) {
+func debugPrint(cube [6]int32) {
 	str := "OGBWYR" // "WROBGY"
 	order := [6]int{5, 3, 2, 0, 1, 4}
 	var tmpStockface [3][9]string
@@ -87,14 +87,14 @@ func (env *Env) debugPrint(cube [6]int32) {
 			face = face >> 4
 		}
 		if j == 5 || j == 3 || j == 4 {
-			env.printVerticalCube(tmpface)
+			printVerticalCube(tmpface)
 		}
 		if j == 2 || j == 0 || j == 1 {
 			tmpStockface[x] = tmpface
 			x++
 		}
 		if j == 1 {
-			env.printMiddleCube(tmpStockface)
+			printMiddleCube(tmpStockface)
 		}
 	}
 }

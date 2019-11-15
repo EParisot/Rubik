@@ -49,7 +49,6 @@ def main(group):
                 start = time.time()
                 popen.wait(3*60)
                 end = time.time()
-                durations.append(end-start)
                 output = popen.stdout.read().decode()
             except subprocess.TimeoutExpired:
                 output = ""
@@ -58,6 +57,7 @@ def main(group):
                 if len(res):
                     count = len(res.split(" "))
                     counts.append(count)
+                    durations.append(end-start)
                     logging.info("Done in %d steps\n" % count)
                     success += 1
                 else:
