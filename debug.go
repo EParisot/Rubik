@@ -70,7 +70,7 @@ func printMiddleCube(tmpStockface [3][9]string) {
 	fmt.Println()
 }
 
-func debugPrint(cube [6]int32) {
+func debugCube(cube [6]int32) {
 	str := "OGBWYR" // "WROBGY"
 	order := [6]int{5, 3, 2, 0, 1, 4}
 	var tmpStockface [3][9]string
@@ -95,6 +95,15 @@ func debugPrint(cube [6]int32) {
 		}
 		if j == 1 {
 			printMiddleCube(tmpStockface)
+		}
+	}
+}
+
+func debugPathIDA(closedList []CubeEnv, endGrid CubeEnv) {
+	for i, step := range closedList[1:len(closedList)] {
+		fmt.Print(step.internationalMove)
+		if i < len(closedList)-2 {
+			fmt.Print(" ")
 		}
 	}
 }
