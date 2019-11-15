@@ -58,8 +58,8 @@ def main(group):
                     count = len(res.split(" "))
                     counts.append(count)
                     durations.append(end-start)
-                    logging.info("Done in %d steps\n" % count)
-                    print(res)
+                    logging.info("Done in %d steps" % count)
+                    print(res + "\n")
                     success += 1
                 else:
                     time.sleep(0.1)

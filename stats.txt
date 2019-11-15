@@ -18,3 +18,6 @@ Average compute time: 32.54s
 All 19 timeouts goes straight to phase2 without any phase 1 move so we asume a 100% success at this stage...
 
 G0:
+Average solution length: 39
+Average compute time: 59.63s
+24 Success and 6 Timeouts, rate = 0.80
