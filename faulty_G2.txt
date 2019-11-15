@@ -6,7 +6,7 @@ Applying B'2 F2 D' F2 U' L2 D L2 B'2 U L2 B'2 R'2 L'2 B2 U F'2 R2 L2 U : 2m38
 11/14/2019 05:53:22 PM Solving...
 11/14/2019 05:55:22 PM Error : Timeout
 
-Applying D F2 D' L'2 U' L'2 B2 L'2 B2 R'2 D' U' L'2 B'2 F'2 D R'2 D B2 U' : TOO LONG
+Applying D F2 D' L'2 U' L'2 B2 L'2 B2 R'2 D' U' L'2 B'2 F'2 D R'2 D B2 U' : 16m1
 11/14/2019 05:55:45 PM Solving...
 11/14/2019 05:57:45 PM Error : Timeout
 
@@ -22,6 +22,6 @@ Applying F2 R'2 L2 F2 D L2 D' L2 D' U' F2 U' B2 U' B2 U F2 B2 F'2 D : 3m43
 11/14/2019 06:05:25 PM Solving...
 11/14/2019 06:07:25 PM Error : Timeout
 
-Applying U R'2 F'2 R'2 L'2 F'2 L'2 F2 U L2 D B2 D' B2 U B2 F2 R2 D U :
+Applying U R'2 F'2 R'2 L'2 F'2 L'2 F2 U L2 D B2 D' B2 U B2 F2 R2 D U : 2m14
 11/14/2019 06:07:39 PM Solving...
 11/14/2019 06:09:39 PM Error : Timeout

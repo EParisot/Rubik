@@ -18,6 +18,7 @@ type CubeEnv struct {
 // Env : Game environnement
 type Env struct {
 	mix         []string //shuffling list
+	startCube   CubeEnv  //start cube
 	currentCube CubeEnv  //current cube
 	solvedCube  [6]int32 //finished cube (const)
 	res         string   //result list

@@ -12,8 +12,9 @@ Average compute time: 9.59s
 1 timeout 16m to solve ( 1.0 with 20min timeout )
 
 G1:
-Average solution length: 34
-Average compute time: 36.59s
-58 Success and 42 Timeouts, rate = 0.58
+Average solution length: 29
+Average compute time: 32.54s
+45 Success and 19 Timeouts, rate = 0.70
+All 19 timeouts goes straight to phase2 without any phase 1 move so we asume a 100% success at this stage...
 
 G0:

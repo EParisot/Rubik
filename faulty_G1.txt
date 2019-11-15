@@ -1,400 +1,94 @@
-
-Applying D R F'2 L B'2 F'2 L B2 D L F2 L F'2 D B2 U' B'2 D U' L :
-11/14/2019 07:53:30 PM Solving...
-11/14/2019 07:53:31 PM Done in 29 steps
-
-Applying F2 U' B2 L' B'2 U' D' B2 F'2 D' B2 R F2 U' L' R' F2 D' U L' :
-11/14/2019 07:53:31 PM Solving...
-11/14/2019 07:53:31 PM Done in 29 steps
-
-Applying F2 D F'2 L U F2 U F'2 B2 D B2 F'2 R' B'2 D' R' U' B'2 R L' :
-11/14/2019 07:53:31 PM Solving...
-11/14/2019 07:55:31 PM Error : Timeout
-
-Applying L' U F2 B2 D L' U' R D R' U R' F2 D F'2 U F2 U' R F2 :
-11/14/2019 07:55:31 PM Solving...
-11/14/2019 07:55:38 PM Done in 33 steps
-
-Applying L' D' R B'2 F'2 L D' L D B'2 D' F2 D L' B2 L' R' D' L R' :
-11/14/2019 07:55:38 PM Solving...
-11/14/2019 07:57:38 PM Error : Timeout
-
-Applying L D R D F'2 L B2 D R' B2 F2 U L U B'2 D R' B'2 L F2 :
-11/14/2019 07:57:38 PM Solving...
-11/14/2019 07:57:41 PM Done in 32 steps
-
-Applying L B2 R D' L F2 U F'2 R' D' U B'2 D' L R F2 B'2 R' B2 R' :
-11/14/2019 07:57:41 PM Solving...
-11/14/2019 07:59:06 PM Done in 37 steps
-
-Applying U' L' R B2 F2 L' D' L' B2 F'2 U' D' L' D' R' D L' D B2 F2 :
-11/14/2019 07:59:06 PM Solving...
-11/14/2019 08:01:06 PM Error : Timeout
-
-Applying U B2 R' D U' B2 L' F2 R' U' F2 R' L U D' U F'2 R U F'2 :
-11/14/2019 08:01:06 PM Solving...
-11/14/2019 08:01:31 PM Done in 33 steps
-
-Applying D B'2 F2 R U D' L' F'2 R' U R' D' U' B2 F2 L' D' U R B'2 :
-11/14/2019 08:01:31 PM Solving...
-11/14/2019 08:03:31 PM Error : Timeout
-
-Applying F2 L' U F2 D F'2 L' F2 L' U' R' U R L B2 F2 L F2 D F2 :
-11/14/2019 08:03:31 PM Solving...
-11/14/2019 08:03:41 PM Done in 35 steps
-
-Applying F'2 R' U F'2 L' F2 B2 L' R' F2 R L' U B'2 R' L' B2 F2 D' F'2 :
-11/14/2019 08:03:41 PM Solving...
-11/14/2019 08:03:55 PM Done in 36 steps
-
-Applying L' B2 F'2 D' L F'2 R U' R U' R' D U F2 R U' D' R' B2 L :
-11/14/2019 08:03:55 PM Solving...
-11/14/2019 08:05:54 PM Done in 36 steps
-
-Applying D' B'2 L' B2 L' R U B2 F'2 R' D R U B'2 F2 D U L R' D' :
-11/14/2019 08:05:54 PM Solving...
-11/14/2019 08:06:01 PM Done in 33 steps
-
-Applying F2 B'2 F'2 D' L' R U R B'2 U' R L D' U R B'2 F'2 D B2 D' :
-11/14/2019 08:06:01 PM Solving...
-11/14/2019 08:08:01 PM Error : Timeout
-
-Applying R F2 B2 F'2 U' D' B2 D' R' F'2 U' B'2 F'2 L U D' R' L' B2 L' :
-11/14/2019 08:08:01 PM Solving...
-11/14/2019 08:10:01 PM Error : Timeout
-
-Applying R L' D' R F2 D U' R F'2 L' D' R D B'2 D L B2 F2 D R' :
-11/14/2019 08:10:01 PM Solving...
-11/14/2019 08:12:01 PM Error : Timeout
-
-Applying D' L' F'2 U D' F'2 U D' L R' F2 U' L' U F'2 D U' R' L' F2 :
-11/14/2019 08:12:01 PM Solving...
-11/14/2019 08:12:09 PM Done in 36 steps
-
-Applying D' U' R' U R B2 F2 D' R' F'2 L' D L' B2 D U R' B'2 L B2 :
-11/14/2019 08:12:09 PM Solving...
-11/14/2019 08:14:09 PM Error : Timeout
-
-Applying B'2 R D' U' L' R' B'2 U D U' B2 D' R U' L R F2 R L' D :
-11/14/2019 08:14:09 PM Solving...
-11/14/2019 08:14:41 PM Done in 32 steps
-
-Applying L D F'2 U' B'2 F'2 R' D' F'2 L R' F2 U' F2 U R' F'2 R' B'2 R' :
-11/14/2019 08:14:41 PM Solving...
-11/14/2019 08:16:41 PM Error : Timeout
-
-Applying L' B2 R F'2 B'2 D R' F2 D U L R' B2 U B2 L' F2 L D' B2 :
-11/14/2019 08:16:41 PM Solving...
-11/14/2019 08:16:48 PM Done in 35 steps
-
-Applying D U' R' F'2 R' L R' L R' F'2 B2 L F2 B2 U F'2 L B2 U' B2 :
-11/14/2019 08:16:48 PM Solving...
-11/14/2019 08:16:50 PM Done in 30 steps
-
-Applying U F'2 D' F'2 D' R' U D' U' F'2 D R D' B2 R' L' B2 F'2 U D :
-11/14/2019 08:16:50 PM Solving...
-11/14/2019 08:17:14 PM Done in 36 steps
-
-Applying L D U F2 D' U F2 D R L D B2 R' F'2 B2 D R F'2 R' U' :
-11/14/2019 08:17:14 PM Solving...
-11/14/2019 08:18:23 PM Done in 37 steps
-
-Applying D' U' L F2 R L B2 U' R' D' F'2 U B'2 R D' L' D' F'2 B'2 L :
-11/14/2019 08:18:23 PM Solving...
-11/14/2019 08:20:23 PM Error : Timeout
-
-Applying F'2 D L F'2 B2 U' D' F'2 L' D' U' D U' R' L B'2 D R' L R' :
-11/14/2019 08:20:23 PM Solving...
-11/14/2019 08:22:23 PM Error : Timeout
-
-Applying L' B'2 F2 U' R' B2 D' U' F2 D L D' L' R' F2 B'2 U' B'2 R' B2 :
-11/14/2019 08:22:23 PM Solving...
-11/14/2019 08:24:23 PM Error : Timeout
-
-Applying B2 R' U B'2 L' U' D B'2 U R' F'2 D R' L' U B2 U' D' B2 U' :
-11/14/2019 08:24:23 PM Solving...
-11/14/2019 08:24:38 PM Done in 36 steps
-
-Applying L' F'2 L' B2 D' L D' F'2 B'2 L U' D R F2 L U D' B2 L' R :
-11/14/2019 08:24:38 PM Solving...
-11/14/2019 08:24:49 PM Done in 35 steps
-
-Applying U' L U L D' U F'2 R L' D B2 U B'2 D R' U L U R' F'2 :
-11/14/2019 08:24:49 PM Solving...
-11/14/2019 08:24:53 PM Done in 34 steps
-
-Applying B2 U L R' D' R' D B2 U' F'2 D' F'2 R' F'2 D' U' D F2 R' D :
-11/14/2019 08:24:53 PM Solving...
-11/14/2019 08:26:53 PM Error : Timeout
-
-Applying B'2 L D' B2 R' U' L' R' L B2 D' F2 L' U' B'2 R L' U D U' :
-11/14/2019 08:26:53 PM Solving...
-11/14/2019 08:27:00 PM Done in 31 steps
-
-Applying R F2 R U D' B2 U' L' U' B'2 F'2 L F'2 U R F2 R' D B'2 R :
-11/14/2019 08:27:00 PM Solving...
-11/14/2019 08:29:00 PM Error : Timeout
-
-Applying U' B2 U R U B'2 D F2 D B2 R F2 U' F2 L' U D' R B'2 R :
-11/14/2019 08:29:00 PM Solving...
-11/14/2019 08:31:00 PM Error : Timeout
-
-Applying F2 U' R U' L' R' U F2 R U F2 U' B'2 R' B'2 U' B'2 R F2 U' :
-11/14/2019 08:31:00 PM Solving...
-11/14/2019 08:33:00 PM Error : Timeout
-
-Applying R B'2 U R' U L' R' F2 L D B2 R' B'2 D' L D F'2 U L U :
-11/14/2019 08:33:00 PM Solving...
-11/14/2019 08:35:00 PM Error : Timeout
-
-Applying F2 D B2 U R' F2 B'2 L' D B2 F'2 B'2 D' L' D R' U' B2 D L' :
-11/14/2019 08:35:00 PM Solving...
-11/14/2019 08:35:51 PM Done in 33 steps
-
-Applying R' B'2 F'2 L D' U' B'2 D R' F'2 D U' B'2 D' U' B'2 D' U' F2 B2 :
-11/14/2019 08:35:51 PM Solving...
-11/14/2019 08:37:15 PM Done in 37 steps
-
-Applying F2 B'2 L' F2 B'2 F2 D' R' U L B2 R D F'2 U' F'2 B2 D' B2 F'2 :
-11/14/2019 08:37:15 PM Solving...
-11/14/2019 08:39:15 PM Error : Timeout
-
-Applying D' R' B'2 D L R' L' U' F'2 R F'2 U L' R' U' D R' F'2 R' B2 :
-11/14/2019 08:39:15 PM Solving...
-11/14/2019 08:39:29 PM Done in 29 steps
-
-Applying F2 D' B'2 R U F2 L' D' R' L D U F2 R F2 B2 R U' L B'2 :
-11/14/2019 08:39:29 PM Solving...
-11/14/2019 08:41:05 PM Done in 38 steps
-
-Applying U' L D' U F2 U L' F2 B2 F'2 D B'2 U R' U B'2 R B2 U D :
-11/14/2019 08:41:05 PM Solving...
-11/14/2019 08:41:07 PM Done in 31 steps
-
-Applying R U D U' B'2 L' B'2 F2 R' F'2 U R' F'2 B2 U D' B'2 F'2 L' D :
-11/14/2019 08:41:07 PM Solving...
-11/14/2019 08:41:09 PM Done in 30 steps
-
-Applying B2 F2 D R' B'2 U L B2 U B'2 D B2 L' D L F2 L R B'2 D :
-11/14/2019 08:41:09 PM Solving...
-11/14/2019 08:41:32 PM Done in 36 steps
-
-Applying F'2 B'2 U D L' R' B'2 F2 U L D' F2 U' D R U L' D' B2 L :
-11/14/2019 08:41:32 PM Solving...
-11/14/2019 08:42:54 PM Done in 37 steps
-
-Applying F'2 B'2 R D' B2 R D' L' U B'2 F2 U' D F2 D B2 U' F'2 U D' :
-11/14/2019 08:42:54 PM Solving...
-11/14/2019 08:44:54 PM Error : Timeout
-
-Applying U B'2 R F2 D' B'2 F2 R F2 R' B2 F2 R F'2 R F'2 D' L B2 L :
-11/14/2019 08:44:54 PM Solving...
-11/14/2019 08:46:54 PM Error : Timeout
-
-Applying L F2 D' R' D R' D B'2 R F'2 R F2 B2 F2 U' D' L' F'2 R' D :
-11/14/2019 08:46:54 PM Solving...
-11/14/2019 08:47:46 PM Done in 37 steps
-
-Applying L B2 F2 L R L R F2 R D' U' L U' R' D U' D L' B'2 L :
-11/14/2019 08:47:46 PM Solving...
-11/14/2019 08:49:46 PM Error : Timeout
-
-Applying D U B2 L B2 D U F'2 R' F'2 R' B'2 D B2 F2 L U D' B2 L' :
-11/14/2019 08:49:46 PM Solving...
-11/14/2019 08:51:46 PM Error : Timeout
-
-Applying L' F2 R U' B'2 R D L D B'2 R B2 R' U D' L U' F2 D' F2 :
-11/14/2019 08:51:46 PM Solving...
-11/14/2019 08:52:02 PM Done in 34 steps
-
-Applying L' U' D B'2 U B2 U L U' R' D U F2 R F'2 U F'2 L U' B'2 :
-11/14/2019 08:52:02 PM Solving...
-11/14/2019 08:53:45 PM Done in 37 steps
-
-Applying L U' L' B'2 R F2 L' D U' L R F'2 B'2 L' U F'2 R' B2 F2 R' :
-11/14/2019 08:53:45 PM Solving...
-11/14/2019 08:55:45 PM Error : Timeout
-
-Applying L' D B'2 U L U B'2 R L B'2 L' F'2 R D' U F2 B'2 D B2 R' :
-11/14/2019 08:55:45 PM Solving...
-11/14/2019 08:57:45 PM Error : Timeout
-
-Applying F2 D' U' R' B2 L' B2 L' U' B2 L R' F2 U L' U' R' L R' D' :
-11/14/2019 08:57:45 PM Solving...
-11/14/2019 08:57:58 PM Done in 34 steps
-
-Applying L B'2 D' B2 R' B'2 L D L' D R B2 L' D L' D R D F'2 U' :
-11/14/2019 08:57:58 PM Solving...
-11/14/2019 08:59:58 PM Error : Timeout
-
-Applying L D' B'2 U' R' U' F2 L' U D B2 R U' B'2 R' D R F2 B'2 U :
-11/14/2019 08:59:58 PM Solving...
-11/14/2019 09:00:14 PM Done in 31 steps
-
-Applying B'2 D U R' L U' D U L B2 U' F2 B'2 F'2 L' R' L' D R U' :
-11/14/2019 09:00:14 PM Solving...
-11/14/2019 09:02:14 PM Error : Timeout
-
-Applying L' U' R' B'2 D' U D U L' R D' U' L R B'2 U' R B'2 R' F2 :
-11/14/2019 09:02:14 PM Solving...
-11/14/2019 09:02:50 PM Done in 33 steps
-
-Applying F'2 R' U L R L' D' R B'2 D R' D U D U' R' U' F2 L' U' :
-11/14/2019 09:02:51 PM Solving...
-11/14/2019 09:04:51 PM Error : Timeout
-
-Applying L' F2 B'2 F2 B'2 U F'2 U R' D U' F'2 B'2 D B'2 D U' F2 L' F'2 :
-11/14/2019 09:04:51 PM Solving...
-11/14/2019 09:05:22 PM Done in 35 steps
-
-Applying B2 L B2 D' U' B'2 U L' F2 B2 R' F'2 R' L U' B'2 F'2 D U' B'2 :
-11/14/2019 09:05:22 PM Solving...
-11/14/2019 09:07:22 PM Error : Timeout
-
-Applying B'2 L' F2 D' L U B'2 L' B2 F'2 U D' L' B2 L' B2 D' R' L R :
-11/14/2019 09:07:22 PM Solving...
-11/14/2019 09:09:22 PM Error : Timeout
-
-Applying L R' B2 F'2 L' R' D' R U' D B2 F'2 D R B2 R' F'2 L D' F2 :
-11/14/2019 09:09:22 PM Solving...
-11/14/2019 09:11:22 PM Error : Timeout
-
-Applying L' R' L' U D F2 R' D B'2 D B2 R L' F'2 U R' U' B'2 D B2 :
-11/14/2019 09:11:23 PM Solving...
-11/14/2019 09:13:23 PM Error : Timeout
-
-Applying U D' L D' L U F'2 D F'2 R U B2 L F'2 D L F'2 R L F'2 :
-11/14/2019 09:13:23 PM Solving...
-11/14/2019 09:13:54 PM Done in 39 steps
-
-Applying B2 R L D F2 R D R' U L' B'2 F'2 R F'2 L R B2 R' F2 U :
-11/14/2019 09:13:54 PM Solving...
-11/14/2019 09:15:54 PM Error : Timeout
-
-Applying F2 D U B2 R' B'2 R' D F2 R' U D' B2 F2 L' D R' B2 U' R' :
-11/14/2019 09:15:54 PM Solving...
-11/14/2019 09:16:31 PM Done in 35 steps
-
-Applying B'2 F2 L' F'2 D' U' D' F'2 D B'2 R' U L D' L' U B2 L' B2 D' :
-11/14/2019 09:16:31 PM Solving...
-11/14/2019 09:16:50 PM Done in 30 steps
-
-Applying L B'2 D' U F2 R F2 B'2 R L R' L U' F2 R' F2 D' F'2 R' B2 :
-11/14/2019 09:16:50 PM Solving...
-11/14/2019 09:18:17 PM Done in 37 steps
-
-Applying B'2 L' D' L' U F'2 B'2 R F2 R D' L' D' U' F2 L' R B2 R D :
-11/14/2019 09:18:17 PM Solving...
-11/14/2019 09:19:01 PM Done in 32 steps
-
-Applying F2 R' L' D' L F2 D' R' D R D' R' D' U R L F'2 U B2 D :
-11/14/2019 09:19:01 PM Solving...
-11/14/2019 09:20:03 PM Done in 36 steps
-
-Applying F'2 D' R F2 D B2 F'2 B'2 F2 U B'2 U L B2 F'2 L F2 D L F'2 :
-11/14/2019 09:20:03 PM Solving...
-11/14/2019 09:20:15 PM Done in 34 steps
-
-Applying D L' U D B'2 U B2 U' F'2 B'2 U L' R D' L' R U D L' B2 :
-11/14/2019 09:20:15 PM Solving...
-11/14/2019 09:21:26 PM Done in 37 steps
-
-Applying B2 L U' F2 D' L R U B'2 L' D' F'2 B'2 F2 B2 F'2 B'2 L' U L :
-11/14/2019 09:21:26 PM Solving...
-11/14/2019 09:23:26 PM Error : Timeout
-
-Applying B2 F'2 D R D L F2 R' F2 U D B2 R B'2 R U L R L' D :
-11/14/2019 09:23:26 PM Solving...
-11/14/2019 09:23:33 PM Done in 33 steps
-
-Applying R U' L' U' L U' R' D L' B2 L U' D U R' L' D L' B'2 U' :
-11/14/2019 09:23:33 PM Solving...
-11/14/2019 09:25:33 PM Error : Timeout
-
-Applying U B2 U D' U' R F'2 L U F'2 R' U L' B2 D U L' B2 L F2 :
-11/14/2019 09:25:33 PM Solving...
-11/14/2019 09:26:09 PM Done in 34 steps
-
-Applying R U D B2 D' R' D' L R D F'2 D F2 B'2 L F'2 R B'2 U' R :
-11/14/2019 09:26:09 PM Solving...
-11/14/2019 09:27:56 PM Done in 35 steps
-
-Applying F'2 D' U' R U' D' F'2 D' U' F2 L F2 D L F2 B'2 F2 B2 U R :
-11/14/2019 09:27:56 PM Solving...
-11/14/2019 09:28:00 PM Done in 33 steps
-
-Applying B2 L' U D' F2 R U B2 D' B2 U R D B2 L U' D U' B'2 L' :
-11/14/2019 09:28:00 PM Solving...
-11/14/2019 09:29:35 PM Done in 38 steps
-
-Applying L' F2 R F2 R U B'2 U F'2 L R B'2 D R' F2 B2 F2 R L U' :
-11/14/2019 09:29:35 PM Solving...
-11/14/2019 09:31:35 PM Error : Timeout
-
-Applying B'2 F2 R U' R U L' B'2 L' B'2 U' L' U D' U' F2 R U B'2 L' :
-11/14/2019 09:31:35 PM Solving...
-11/14/2019 09:31:53 PM Done in 35 steps
-
-Applying U' F2 D' B2 R L' B2 L' F'2 R U' F2 B'2 R U' R U' D R' F'2 :
-11/14/2019 09:31:53 PM Solving...
-11/14/2019 09:33:32 PM Done in 37 steps
-
-Applying U' D' B'2 L' D U F'2 B'2 R' F2 B2 D F'2 R L' D R L' R' D' :
-11/14/2019 09:33:32 PM Solving...
-11/14/2019 09:33:38 PM Done in 33 steps
-
-Applying D' F'2 U F'2 D L R' B2 U' D B'2 L B'2 F2 L' D U' L F2 D :
-11/14/2019 09:33:38 PM Solving...
-11/14/2019 09:33:54 PM Done in 34 steps
-
-Applying R' L' B2 D' F2 L D R U B'2 D' B2 D' L F2 B'2 D' R U L :
-11/14/2019 09:33:55 PM Solving...
-11/14/2019 09:35:55 PM Error : Timeout
-
-Applying U D B'2 U F'2 L' B2 R L F'2 B'2 U B'2 F'2 R' L' D B'2 L' U' :
-11/14/2019 09:35:55 PM Solving...
-11/14/2019 09:37:55 PM Error : Timeout
-
-Applying B2 L' B'2 L R F'2 B'2 L U' R' D L' U R B'2 D' L' B'2 F2 D :
-11/14/2019 09:37:55 PM Solving...
-11/14/2019 09:38:16 PM Done in 36 steps
-
-Applying L U D F'2 L B2 R B'2 R' L F2 D F'2 L B2 L' D' U B2 R' :
-11/14/2019 09:38:16 PM Solving...
-11/14/2019 09:38:55 PM Done in 36 steps
-
-Applying L F'2 R' U B2 D' F2 R' F2 U D U' D' L' U L D U' F'2 D' :
-11/14/2019 09:38:55 PM Solving...
-11/14/2019 09:40:19 PM Done in 37 steps
-
-Applying L D B2 U' D B'2 F'2 D' F2 U' B2 U D R' F'2 D L U' B'2 L :
-11/14/2019 09:40:19 PM Solving...
-11/14/2019 09:42:19 PM Error : Timeout
-
-Applying R F'2 U L' D' L B'2 D B2 L' F'2 B'2 U' D L U R' L' R B2 :
-11/14/2019 09:42:19 PM Solving...
-11/14/2019 09:44:19 PM Error : Timeout
-
-Applying U B2 R F2 D' B2 D' B'2 D' B2 L' U F'2 B'2 U R' U' R F2 B'2 :
-11/14/2019 09:44:19 PM Solving...
-11/14/2019 09:44:52 PM Done in 34 steps
-
-Applying L U' L' D U B'2 R L R L' B2 U B2 D' B'2 U R B'2 D' R' :
-11/14/2019 09:44:52 PM Solving...
-11/14/2019 09:46:52 PM Error : Timeout
-
-Applying F2 R' F2 L' R B2 R' D F2 D L' B'2 R' F'2 D' R D' L F'2 B2 :
-11/14/2019 09:46:52 PM Solving...
-11/14/2019 09:47:20 PM Done in 36 steps
-
-Applying F2 B2 F2 L' F'2 R F2 L R D R' U' B'2 F'2 D' B2 U' L' U R :
-11/14/2019 09:47:20 PM Solving...
-11/14/2019 09:48:55 PM Done in 39 steps
-
-Applying F2 D' L F'2 L U R' F2 B'2 U L' F2 R B'2 F'2 D L' B2 D F'2 :
-11/14/2019 09:48:55 PM Solving...
-11/14/2019 09:50:55 PM Error : Timeout
-
-Applying L D' B'2 F'2 R L' B2 U' B2 F'2 L F'2 R F'2 D L D F2 L' R :
-11/14/2019 09:50:55 PM Solving...
-11/14/2019 09:52:55 PM Error : Timeout
+4
+Applying B'2 L R' L B'2 D L' B2 F2 B'2 L B2 R' D' B2 R' B'2 F'2 U L' : 7m16
+11/15/2019 01:16:04 PM Solving... 
+11/15/2019 01:18:04 PM Error : Timeout
+
+10
+Applying B2 L' U' B2 F2 B'2 R' D' F'2 L D F2 R U B'2 L U' L' R' U : 2m12
+11/15/2019 01:19:22 PM Solving...
+11/15/2019 01:21:22 PM Error : Timeout
+
+13
+Applying U' B'2 U' F'2 L U' L' B2 L R' F'2 R' U' R D L' F'2 R D L' : TOO LONG
+11/15/2019 01:22:24 PM Solving...
+11/15/2019 01:24:24 PM Error : Timeout
+
+16
+Applying R' L R' U D' F'2 U L F'2 D R U' R' L' F'2 U' D L' D' R :
+11/15/2019 01:27:07 PM Solving...
+11/15/2019 01:29:07 PM Error : Timeout
+
+17
+Applying L F2 L U' F'2 B2 U B'2 U' B'2 R' D R B2 D R F'2 U B'2 F'2 :
+11/15/2019 01:29:07 PM Solving...
+11/15/2019 01:31:08 PM Error : Timeout
+
+20
+Applying R' U' L R' F'2 U R' D' R L D L' F'2 R U D' B'2 R' U B'2 :
+11/15/2019 01:33:13 PM Solving...
+11/15/2019 01:35:13 PM Error : Timeout
+
+23
+Applying U D B'2 R F2 R L' U' R' D U' R L D L' F2 L B'2 F2 U :
+11/15/2019 01:35:58 PM Solving...
+11/15/2019 01:37:58 PM Error : Timeout
+
+26
+Applying D U F'2 B'2 F'2 U R' F'2 U' B2 L B2 U' D' L' D B'2 U' D' F'2 :
+11/15/2019 01:38:22 PM Solving...
+11/15/2019 01:40:22 PM Error : Timeout
+
+33
+Applying D' R' U' F2 L' R L' U F2 L R' U R' L' U' L F'2 D U' B'2 :
+11/15/2019 01:43:52 PM Solving...
+11/15/2019 01:45:52 PM Error : Timeout
+
+35
+Applying L' U R' D' U F'2 U' L U' R L B2 L F'2 L' D' U R B'2 D' :
+11/15/2019 01:45:53 PM Solving...
+11/15/2019 01:47:53 PM Error : Timeout
+
+39
+Applying L U' R' L U F'2 L B2 F2 B'2 F2 B2 L' U B2 L' R U' B2 L' :
+11/15/2019 01:48:47 PM Solving...
+11/15/2019 01:50:47 PM Error : Timeout
+
+43
+Applying F2 D' F'2 L U R' D U L D B'2 F2 U' F'2 R U R U L' R' :
+11/15/2019 01:53:04 PM Solving...
+11/15/2019 01:55:04 PM Error : Timeout
+
+45
+Applying F'2 L' D' B2 R' F'2 L R B2 L F2 D R' D F2 D R U D U' :
+11/15/2019 01:55:06 PM Solving...
+11/15/2019 01:57:06 PM Error : Timeout
+
+48
+Applying F2 D U F'2 L U R' D' U F'2 R' L' B2 L' B2 U' D' U' B2 L :
+11/15/2019 01:58:14 PM Solving...
+11/15/2019 02:00:14 PM Error : Timeout
+
+51
+Applying U' F2 B2 F2 R' U L D B'2 R' L' D' B'2 L' B2 U R D' F'2 B'2 :
+11/15/2019 02:01:14 PM Solving...
+11/15/2019 02:03:14 PM Error : Timeout
+
+53
+Applying F'2 D F'2 U R F'2 L' F'2 U' R B'2 R' B'2 F2 D B2 L' F'2 L D :
+11/15/2019 02:03:35 PM Solving...
+11/15/2019 02:05:35 PM Error : Timeout
+
+57
+Applying D' R' L' R U B2 U' R' D L' B'2 L F'2 B2 F2 L' D U F2 D' :
+11/15/2019 02:07:15 PM Solving...
+11/15/2019 02:09:15 PM Error : Timeout
+
+59
+Applying U' D' F'2 B2 R L B2 D' U B'2 U L' B2 U R D F2 B'2 U' D :
+11/15/2019 02:09:33 PM Solving...
+11/15/2019 02:11:33 PM Error : Timeout
+
+60
+Applying B'2 F'2 U R B'2 U' L R U' B'2 F2 D' R' B'2 R U F'2 D B2 F'2 :
+11/15/2019 02:11:33 PM Solving...
+11/15/2019 02:13:33 PM Error : Timeout

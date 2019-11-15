@@ -7,7 +7,7 @@ import statistics
 import subprocess
 import time
 
-groups = {"G0": ["F", "R", "U", "B", "L", "D", "F'", "R'", "U'", "B'", "L'", "D'"],
+groups = {"G0": ["F", "R", "U", "B", "L", "D", "F'", "R'", "U'", "B'", "L'", "D'","F2", "R2", "U2", "B2", "L2", "D2", "F'2", "R'2", "U'2", "B'2", "L'2", "D'2"],
             "G1": ["R", "U", "L", "D", "R'", "U'", "L'", "D'","F2", "B2", "F'2", "B'2"],
             "G2": ["U", "D", "U'", "D'","F2", "R2", "B2", "L2", "F'2", "R'2", "B'2", "L'2"],
             "G3": ["F2", "R2", "U2", "B2", "L2", "D2", "F'2", "R'2", "U'2", "B'2", "L'2", "D'2"]}
@@ -36,7 +36,8 @@ def main(group):
         args = ("go", "build")
         popen = subprocess.Popen(args)
     try:
-        for _ in range(100):
+        for i in range(100):
+            print(i)
             mix = scramble(groups[group])
             logging.info("Solving...")
             if sys.platform == "win32":
@@ -46,7 +47,7 @@ def main(group):
             popen = subprocess.Popen(args, stdout=subprocess.PIPE)
             try:
                 start = time.time()
-                popen.wait(2*60)
+                popen.wait(3*60)
                 end = time.time()
                 durations.append(end-start)
                 output = popen.stdout.read().decode()
