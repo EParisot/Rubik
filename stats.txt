@@ -21,3 +21,8 @@ G0:
 Average solution length: 39
 Average compute time: 59.63s
 24 Success and 6 Timeouts, rate = 0.80
+
+On ROG:
+Average solution length: 39
+Average compute time: 60.99s
+92 Success and 8 Timeouts, rate = 0.92
