@@ -1,6 +1,7 @@
 package main
 
 import (
+//	"fmt"
 	"strings"
 )
 
@@ -46,6 +47,24 @@ func (env *Env) shuffle() {
 }
 
 func (env *Env) exec(str string) {
+	okay := strings.Split(str, " ")
+	for _, i := range okay {
+		// exec step
+		env.res += string(i) + " "
+		env.execStep(string(i))
+	}
+}
+
+func (env *Env) execFace(str string, face int32) {
+//	fmt.Println("Before :" + str)
+	if face == GREEN {
+		r := strings.NewReplacer("F", "L",
+            "R", "F",
+			"B", "R",
+			"L", "B")
+		str = r.Replace(str)
+	}
+//	fmt.Println("After :" + str)
 	okay := strings.Split(str, " ")
 	for _, i := range okay {
 		// exec step

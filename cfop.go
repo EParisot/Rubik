@@ -96,27 +96,99 @@ func (env *Env) first_cross() {
 	//env.debugPrint(env.currentCube.cube)
 }
 
-func (env *Env) firstlayer() {
+func (env *Env) one(face int32, cube [6]int32) bool {
+	var onecolor bool
+	if face == ORANGE {
+		onecolor = ((cube[ORANGE]>>20)&15) == YELLOW &&
+			((cube[GREEN]>>28)&15) == GREEN &&
+			((cube[WHITE]>>12)&15) == ORANGE // cas R' D' R
+	} else if face == GREEN {
+		onecolor = ((cube[GREEN]>>20)&15) == YELLOW &&
+			((cube[RED]>>12)&15) == ORANGE &&
+			((cube[WHITE]>>20)&15) == GREEN
+	}
+	return onecolor
+}
+
+func (env *Env) two(face int32, cube [6]int32) bool {
+	var twocolor bool
+	if face == ORANGE {
+		twocolor = ((cube[ORANGE]>>20)&15) == ORANGE &&
+			((cube[GREEN]>>28)&15) == YELLOW &&
+			((cube[WHITE]>>12)&15) == GREEN // cas F D F'
+	} else if face == GREEN {
+		twocolor = ((cube[GREEN]>>20)&15) == GREEN &&
+			((cube[RED]>>12)&15) == YELLOW &&
+			((cube[WHITE]>>20)&15) == ORANGE // cas F D F'
+	}
+	return twocolor
+}
+
+func (env *Env) three(face int32, cube [6]int32) bool {
+	var threecolor bool
+	if face == ORANGE {
+		threecolor = ((cube[ORANGE]>>20)&15) == GREEN &&
+			((cube[GREEN]>>28)&15) == ORANGE &&
+			((cube[WHITE]>>12)&15) == YELLOW // cas F L D2 L' F'
+	} else if face == GREEN {
+		threecolor = ((cube[GREEN]>>20)&15) == ORANGE &&
+			((cube[RED]>>12)&15) == GREEN &&
+			((cube[WHITE]>>20)&15) == YELLOW // cas F L D2 L' F'
+	}
+	return threecolor
+}
+
+func (env *Env) faceFirstLayer(face int32) {
 	//first objective
-	var first bool
-	top_orange_one = ((env.currentCube.cube[ORANGE]>>20)&15) == GREEN &&
-	((env.currentCube.cube[GREEN]>>28)&15) == ORANGE &&
-	((env.currentCube.cube[WHITE]>>12)&15) == YELLOW
-	top_orange_two = ((env.currentCube.cube[ORANGE]>>20)&15) == GREEN &&
-	((env.currentCube.cube[GREEN]>>28)&15) == ORANGE &&
-	((env.currentCube.cube[WHITE]>>12)&15) == YELLOW
-	top_orange_one = ((env.currentCube.cube[ORANGE]>>20)&15) == GREEN &&
-	((env.currentCube.cube[GREEN]>>28)&15) == ORANGE &&
-	((env.currentCube.cube[WHITE]>>12)&15) == YELLOW 
-	//test x 4
-	//Si c'est bon mais juste inverse algo
-	for true {
-		top_orange =
-		if first {
-			env.exec("R' D' R D")
-			return
+	var one bool
+	var two bool
+	var three bool
+
+	// Cas orange face :
+	for i := 0; i <= 4; i++ {
+		for j := 0; j < 4; j++ {
+			one = env.one(face, env.currentCube.cube)
+			two = env.two(face, env.currentCube.cube)
+			three = env.three(face, env.currentCube.cube)
+			if one {
+				env.execFace("F' U' F", face) // confirmed
+				fmt.Println("One")
+				return
+			} else if two {
+				env.execFace("R U R'", face) // confirmed
+				//		fmt.Println("Two")
+				return
+			} else if three {
+				env.execFace("R B U2 B' R'", face) // confirmed
+				fmt.Println("three")
+				return
+			} else {
+				//sinon change de corner
+				env.execFace("U", face)
+			}
+		}
+		// If the corner is block, need to deblock it
+		//	fmt.Println("Corner is blocked in other corner, wip")
+		// Warning, ne pas enlever une piece deja mise
+		if i == 0 {
+			env.execFace("R U R'", face)
+			//		fmt.Println("corner block, deblock front")
+		} else if i == 1 {
+			env.execFace("R' U R", face)
+			//	fmt.Println("corner block, deblock Right")
+		} else if i == 2 {
+			env.execFace("L U L'", face)
+			//		fmt.Println("corner block, deblock Back")
+		} else {
+			env.execFace("L' U L", face)
+			//		fmt.Println("corner block, deblock left")
 		}
 	}
+}
+
+func (env *Env) firstlayer() {
+	env.faceFirstLayer(ORANGE)
+	//	env.faceFirstLayer(GREEN)
 }
 
 func (env *Env) cfop() {
