@@ -188,7 +188,7 @@ func (env *Env) faceFirstLayer(face int32) {
 			//	fmt.Println("Next answer")
 			env.exec("L U L'")
 			//		fmt.Println("corner block, deblock Back")
-		} else if i == 3 && face != BLUE {
+		} else if i == 3 {
 			//	fmt.Println("Here the solution")
 			env.exec("L' U L")
 			//		fmt.Println("corner block, deblock left")
