@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 const RIGHT = 1
 const LEFT = 2
 
@@ -77,6 +79,27 @@ func (env *Env) secondlayerisbarelyFinnished(cube [6]int32) bool {
 	}
 	return false
 }
+
+func (env *Env) dealwithwrongorientation() {
+	//Orange
+	if ((env.currentCube.cube[ORANGE] >> 16) & 15) == GREEN {
+		//	fmt.Println("wrong orange")
+		env.execFace("U R U' R' U' F' U F U2 U R U' R' U' F' U F", ORANGE)
+	}
+	if ((env.currentCube.cube[GREEN] >> 16) & 15) == RED {
+		//	fmt.Println("wrong green")
+		env.execFace("U R U' R' U' F' U F U2 U R U' R' U' F' U F", GREEN)
+	}
+	if ((env.currentCube.cube[RED] >> 0) & 15) == BLUE {
+		//	fmt.Println("wrong red")
+		env.execFace("U R U' R' U' F' U F U2 U R U' R' U' F' U F", RED)
+	}
+	if ((env.currentCube.cube[BLUE] >> 16) & 15) == ORANGE {
+		//	fmt.Println("wrong blue")
+		env.execFace("U R U' R' U' F' U F U2 U R U' R' U' F' U F", BLUE)
+	}
+}
+
 func (env *Env) secondlayer() {
 	faceSecondLayer := [4]int32{ORANGE, GREEN, RED, BLUE}
 	var o bool
@@ -99,13 +122,13 @@ func (env *Env) secondlayer() {
 			}
 			if env.secondlayerisbarelyFinnished(env.currentCube.cube) {
 				//		fmt.Println("Success !")
+				env.dealwithwrongorientation()
 				return
 			}
 			env.exec("U")
 		}
 		if o == false {
-			//	fmt.Println("Misere")
-			//check if arrete is not in a place
+			fmt.Println("Misere, Si ce message apparait, il y a sans doute un truc qui ira pas dans le turfu")
 			break
 		}
 	}
