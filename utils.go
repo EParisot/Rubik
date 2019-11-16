@@ -56,15 +56,27 @@ func (env *Env) exec(str string) {
 }
 
 func (env *Env) execFace(str string, face int32) {
-//	fmt.Println("Before :" + str)
+	///fmt.Println("Before :" + str)
 	if face == GREEN {
+		r := strings.NewReplacer("F", "R",
+            "R", "B",
+			"B", "L",
+			"L", "F")
+		str = r.Replace(str)
+	} else if face == RED {
+		r := strings.NewReplacer("F", "B",
+            "R", "L",
+			"B", "F",
+			"L", "R")
+		str = r.Replace(str)
+	} else if face == BLUE {
 		r := strings.NewReplacer("F", "L",
             "R", "F",
 			"B", "R",
 			"L", "B")
 		str = r.Replace(str)
 	}
-//	fmt.Println("After :" + str)
+	//fmt.Println("After :" + str)
 	okay := strings.Split(str, " ")
 	for _, i := range okay {
 		// exec step

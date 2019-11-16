@@ -104,8 +104,17 @@ func (env *Env) one(face int32, cube [6]int32) bool {
 			((cube[WHITE]>>12)&15) == ORANGE // cas R' D' R
 	} else if face == GREEN {
 		onecolor = ((cube[GREEN]>>20)&15) == YELLOW &&
-			((cube[RED]>>12)&15) == ORANGE &&
+			((cube[RED]>>12)&15) == RED &&
 			((cube[WHITE]>>20)&15) == GREEN
+	} else if face == RED {
+		onecolor = ((cube[RED]>>4)&15) == YELLOW &&
+			((cube[BLUE]>>20)&15) == BLUE &&
+			((cube[WHITE]>>28)&15) == RED
+	} else if face == BLUE {
+		onecolor = ((cube[BLUE]>>20)&15) == YELLOW &&
+			((cube[ORANGE]>>28)&15) == ORANGE &&
+			((cube[WHITE]>>4)&15) == BLUE
+		//fmt.Printf("%t %t %t\n", ((cube[BLUE]>>12)&15) == YELLOW, ((cube[ORANGE]>>28)&15) == ORANGE, ((cube[WHITE]>>4)&15) == BLUE)
 	}
 	return onecolor
 }
@@ -119,7 +128,15 @@ func (env *Env) two(face int32, cube [6]int32) bool {
 	} else if face == GREEN {
 		twocolor = ((cube[GREEN]>>20)&15) == GREEN &&
 			((cube[RED]>>12)&15) == YELLOW &&
-			((cube[WHITE]>>20)&15) == ORANGE // cas F D F'
+			((cube[WHITE]>>20)&15) == RED // cas F D F'
+	} else if face == RED {
+		twocolor = ((cube[RED]>>4)&15) == RED &&
+			((cube[BLUE]>>20)&15) == YELLOW &&
+			((cube[WHITE]>>28)&15) == BLUE
+	} else if face == BLUE {
+		twocolor = ((cube[BLUE]>>20)&15) == BLUE &&
+			((cube[ORANGE]>>28)&15) == YELLOW &&
+			((cube[WHITE]>>4)&15) == ORANGE
 	}
 	return twocolor
 }
@@ -131,9 +148,19 @@ func (env *Env) three(face int32, cube [6]int32) bool {
 			((cube[GREEN]>>28)&15) == ORANGE &&
 			((cube[WHITE]>>12)&15) == YELLOW // cas F L D2 L' F'
 	} else if face == GREEN {
-		threecolor = ((cube[GREEN]>>20)&15) == ORANGE &&
+		threecolor = ((cube[GREEN]>>20)&15) == RED &&
 			((cube[RED]>>12)&15) == GREEN &&
 			((cube[WHITE]>>20)&15) == YELLOW // cas F L D2 L' F'
+		//		fmt.Printf("%t %t %t\n", ((cube[GREEN]>>20)&15) == ORANGE, ((cube[RED]>>12)&15) == GREEN, ((cube[WHITE]>>20)&15) == YELLOW)
+	} else if face == RED {
+		threecolor = ((cube[RED]>>4)&15) == BLUE &&
+			((cube[BLUE]>>20)&15) == RED &&
+			((cube[WHITE]>>28)&15) == YELLOW
+		//	fmt.Printf("%t %t %t\n", ((cube[RED]>>4)&15) == BLUE, ((cube[BLUE]>>20)&15) == RED, ((cube[WHITE]>>28)&15) == YELLOW)
+	} else if face == BLUE {
+		threecolor = ((cube[BLUE]>>20)&15) == ORANGE &&
+			((cube[ORANGE]>>28)&15) == BLUE &&
+			((cube[WHITE]>>4)&15) == YELLOW
 	}
 	return threecolor
 }
@@ -152,15 +179,15 @@ func (env *Env) faceFirstLayer(face int32) {
 			three = env.three(face, env.currentCube.cube)
 			if one {
 				env.execFace("F' U' F", face) // confirmed
-				fmt.Println("One")
+				//fmt.Println("One")
 				return
 			} else if two {
 				env.execFace("R U R'", face) // confirmed
-				//		fmt.Println("Two")
+				//fmt.Println("Two")
 				return
 			} else if three {
+				//		fmt.Println("three")
 				env.execFace("R B U2 B' R'", face) // confirmed
-				fmt.Println("three")
 				return
 			} else {
 				//sinon change de corner
@@ -170,25 +197,29 @@ func (env *Env) faceFirstLayer(face int32) {
 		// If the corner is block, need to deblock it
 		//	fmt.Println("Corner is blocked in other corner, wip")
 		// Warning, ne pas enlever une piece deja mise
-		if i == 0 {
-			env.execFace("R U R'", face)
+		if i == 0 && face == ORANGE {
+			env.exec("R U R'")
 			//		fmt.Println("corner block, deblock front")
-		} else if i == 1 {
-			env.execFace("R' U R", face)
+		} else if i == 1 && (face == ORANGE || face == GREEN) {
+			env.exec("R' U R")
 			//	fmt.Println("corner block, deblock Right")
-		} else if i == 2 {
-			env.execFace("L U L'", face)
+		} else if i == 2 && face != BLUE {
+			env.exec("L U L'")
 			//		fmt.Println("corner block, deblock Back")
-		} else {
-			env.execFace("L' U L", face)
+		} else if i == 3 && face != BLUE {
+			//	fmt.Println("Here the solution")
+			env.exec("L' U L")
 			//		fmt.Println("corner block, deblock left")
-		}
+		} // donc fais des tours en trop, car si Red et i==0, refait des tours
 	}
 }
 
 func (env *Env) firstlayer() {
 	env.faceFirstLayer(ORANGE)
-	//	env.faceFirstLayer(GREEN)
+	env.faceFirstLayer(GREEN)
+	env.faceFirstLayer(RED)
+	//fmt.Println("Now blue face")
+	env.faceFirstLayer(BLUE)
 }
 
 func (env *Env) cfop() {
