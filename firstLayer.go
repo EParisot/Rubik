@@ -1,25 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
-
-const ORANGE = 0 //Orange witout rotation
-const GREEN = 1  //Green witout rotation
-const BLUE = 2   //Blue witout rotation
-const WHITE = 3  //White witout rotation
-const YELLOW = 4 //Yellow witout rotation
-const RED = 5    //Red witout rotation
-
-// 0 1 2
-// 7 8 3
-// 6 5 4
-
-// https://www.francocube.com/cyril/step_1
-//Algo Arrete :
-// D'MDM'
-// MD2M'
-// U'B'EB
+// https://ruwix.com/the-rubiks-cube/how-to-solve-the-rubiks-cube-beginners-method/
 
 func (env *Env) PutYellowCubieontheirface() {
 	for i := 0; i < 3; i++ {
@@ -108,7 +89,7 @@ func (env *Env) one(face int32, cube [6]int32) bool {
 			((cube[WHITE]>>20)&15) == GREEN
 	} else if face == RED {
 		onecolor = ((cube[RED]>>4)&15) == YELLOW &&
-			((cube[BLUE]>>20)&15) == BLUE &&
+			((cube[BLUE]>>28)&15) == BLUE &&
 			((cube[WHITE]>>28)&15) == RED
 	} else if face == BLUE {
 		onecolor = ((cube[BLUE]>>20)&15) == YELLOW &&
@@ -131,7 +112,7 @@ func (env *Env) two(face int32, cube [6]int32) bool {
 			((cube[WHITE]>>20)&15) == RED // cas F D F'
 	} else if face == RED {
 		twocolor = ((cube[RED]>>4)&15) == RED &&
-			((cube[BLUE]>>20)&15) == YELLOW &&
+			((cube[BLUE]>>28)&15) == YELLOW &&
 			((cube[WHITE]>>28)&15) == BLUE
 	} else if face == BLUE {
 		twocolor = ((cube[BLUE]>>20)&15) == BLUE &&
@@ -154,9 +135,9 @@ func (env *Env) three(face int32, cube [6]int32) bool {
 		//		fmt.Printf("%t %t %t\n", ((cube[GREEN]>>20)&15) == ORANGE, ((cube[RED]>>12)&15) == GREEN, ((cube[WHITE]>>20)&15) == YELLOW)
 	} else if face == RED {
 		threecolor = ((cube[RED]>>4)&15) == BLUE &&
-			((cube[BLUE]>>20)&15) == RED &&
+			((cube[BLUE]>>28)&15) == RED &&
 			((cube[WHITE]>>28)&15) == YELLOW
-		//	fmt.Printf("%t %t %t\n", ((cube[RED]>>4)&15) == BLUE, ((cube[BLUE]>>20)&15) == RED, ((cube[WHITE]>>28)&15) == YELLOW)
+		//	fmt.Printf("%t %t %t\n", ((cube[RED]>>4)&15) == BLUE, ((cube[BLUE]>>28)&15) == RED, ((cube[WHITE]>>28)&15) == YELLOW)
 	} else if face == BLUE {
 		threecolor = ((cube[BLUE]>>20)&15) == ORANGE &&
 			((cube[ORANGE]>>28)&15) == BLUE &&
@@ -186,7 +167,7 @@ func (env *Env) faceFirstLayer(face int32) {
 				//fmt.Println("Two")
 				return
 			} else if three {
-				//		fmt.Println("three")
+				//	fmt.Println("three")
 				env.execFace("R B U2 B' R'", face) // confirmed
 				return
 			} else {
@@ -204,6 +185,7 @@ func (env *Env) faceFirstLayer(face int32) {
 			env.exec("R' U R")
 			//	fmt.Println("corner block, deblock Right")
 		} else if i == 2 && face != BLUE {
+			//	fmt.Println("Next answer")
 			env.exec("L U L'")
 			//		fmt.Println("corner block, deblock Back")
 		} else if i == 3 && face != BLUE {
@@ -212,21 +194,4 @@ func (env *Env) faceFirstLayer(face int32) {
 			//		fmt.Println("corner block, deblock left")
 		} // donc fais des tours en trop, car si Red et i==0, refait des tours
 	}
-}
-
-func (env *Env) firstlayer() {
-	env.faceFirstLayer(ORANGE)
-	env.faceFirstLayer(GREEN)
-	env.faceFirstLayer(RED)
-	//fmt.Println("Now blue face")
-	env.faceFirstLayer(BLUE)
-}
-
-func (env *Env) cfop() {
-
-	env.first_cross() // POur gagner beaucoup de coup, possible de faire un A* en - de 10s
-	env.firstlayer()
-	env.res = env.res[:len(env.res)-1]
-	fmt.Println(env.res)
-
 }

@@ -108,5 +108,5 @@ func main() {
 	env.shuffle()
 	// Solve HERE
 	//env.idAstar()
-	env.cfop()
+	env.human()
 }
