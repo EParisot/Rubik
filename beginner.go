@@ -21,7 +21,7 @@ func (env *Env) firstlayer() {
 	env.faceFirstLayer(BLUE)
 }
 
-func (env *Env) human() {
+func (env *Env) beginner() {
 
 	env.first_cross() // POur gagner beaucoup de coup, possible de faire un A* en - de 10s
 	env.firstlayer()
