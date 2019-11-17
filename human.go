@@ -26,6 +26,8 @@ func (env *Env) human() {
 	env.first_cross() // POur gagner beaucoup de coup, possible de faire un A* en - de 10s
 	env.firstlayer()
 	env.secondlayer()
+	env.topcross()
+	env.topedges()
 	env.res = env.res[:len(env.res)-1]
 	fmt.Println(env.res)
 
