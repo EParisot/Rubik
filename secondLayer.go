@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+// import (
+// 	"fmt"
+// )
 
 const RIGHT = 1
 const LEFT = 2
@@ -100,6 +102,43 @@ func (env *Env) dealwithwrongorientation() {
 	}
 }
 
+func (env *Env) inwrongplace(face int32, cube [6]int32) bool {
+	if face == ORANGE {
+		if (((cube[ORANGE]>>16)&15) == ORANGE ||
+			((cube[ORANGE]>>16)&15) == GREEN) &&
+			(((cube[GREEN]>>0)&15) == GREEN ||
+				((cube[GREEN]>>0)&15) == ORANGE) {
+			return false
+		}
+		return true
+	} else if face == GREEN {
+		if (((cube[GREEN]>>16)&15) == GREEN ||
+			((cube[GREEN]>>16)&15) == RED) &&
+			(((cube[RED]>>16)&15) == RED ||
+				((cube[RED]>>16)&15) == GREEN) {
+			return false
+		}
+		return true
+	} else if face == RED {
+		if (((cube[RED]>>0)&15) == RED ||
+			((cube[RED]>>0)&15) == BLUE) &&
+			(((cube[BLUE]>>0)&15) == BLUE ||
+				((cube[BLUE]>>0)&15) == RED) {
+			return false
+		}
+		return true
+	} else if face == BLUE {
+		if (((cube[BLUE]>>16)&15) == BLUE ||
+			((cube[BLUE]>>16)&15) == ORANGE) &&
+			(((cube[ORANGE]>>0)&15) == ORANGE ||
+				((cube[ORANGE]>>0)&15) == BLUE) {
+			return false
+		}
+		return true
+	}
+	return false
+}
+
 func (env *Env) secondlayer() {
 	faceSecondLayer := [4]int32{ORANGE, GREEN, RED, BLUE}
 	var o bool
@@ -128,8 +167,15 @@ func (env *Env) secondlayer() {
 			env.exec("U")
 		}
 		if o == false {
-			fmt.Println("Misere, Si ce message apparait, il y a sans doute un truc qui ira pas dans le turfu")
-			break
+			//the border are in the wrong place, need to deloge them
+			for _, slayer := range faceSecondLayer {
+				value := env.inwrongplace(slayer, env.currentCube.cube)
+				if value {
+					//	fmt.Println("Here")
+					env.execFace("U R U' R' U' F' U F", slayer)
+					break
+				}
+			}
 		}
 	}
 	//regarder si on peux faire l'algo a chacun des coins

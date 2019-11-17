@@ -3,6 +3,7 @@ package main
 import (
 //	"fmt"
 	"strings"
+	"math/rand"
 )
 
 func (env *Env) copyCube(cube [6]int32) [6]int32 {
@@ -39,6 +40,23 @@ func (env *Env) setCube() {
 	env.solvedCube = env.copyCube(env.currentCube.cube)
 }
 
+func (env *Env) generaterandom() string{
+	
+	var str string
+	possible := [5]string{"U", "R", "L", "D", "B"}
+	var reverse int
+
+	for i := 0; i < 25; i++ {
+		str = str + possible[rand.Intn(5)]
+		reverse = rand.Intn(2)
+		if reverse == 1 {
+			str = str + "'"
+		}
+		str = str + " "
+	}
+	str = str[:len(str)-1]
+	return str
+}
 func (env *Env) shuffle() {
 	for step := range env.mix {
 		// exec step
