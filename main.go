@@ -49,6 +49,7 @@ func parseArgs(arg string) ([]string, error) {
 	return steps, nil
 }
 
+// TODO improve this
 func parseOutput(rawOutput string) string {
 	var output string
 	outTab := strings.Split(rawOutput, " ")
@@ -73,22 +74,20 @@ func parseOutput(rawOutput string) string {
 func main() {
 	var mix string
 	var debug bool
+	var idaStar bool
 	args := os.Args[1:]
 	if len(args) == 0 {
 		fmt.Println("Error : No arg")
 		return
 	}
-	if len(args) == 2 {
-		if args[0] == "-d" {
+	for _, arg := range args {
+		if arg == "-d" {
 			debug = true
-			mix = string(args[1])
-		} else if args[1] == "-d" {
-			debug = true
+		} else if arg == "-ida" {
+			idaStar = true
+		} else {
 			mix = string(args[0])
 		}
-	} else {
-		debug = false
-		mix = string(args[0])
 	}
 	env := Env{debug: debug}
 	env.setCube()
@@ -100,7 +99,10 @@ func main() {
 	}
 	// Shuffling
 	env.shuffle(steps)
-	// Solve HERE
-	//env.idAstar()
-	env.beginner()
+	// Solve
+	if !idaStar {
+		env.beginner()
+	} else {
+		env.idAstar()
+	}
 }

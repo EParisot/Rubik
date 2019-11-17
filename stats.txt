@@ -1,0 +1,34 @@
+G3:
+Average solution length: 10
+Average compute time: 0.97s
+100 Success and 0 Timeouts, rate = 1.00
+
+G2:
+Average solution length: 19
+Average compute time: 9.59s
+93 Success and 7 Timeouts, rate = 0.93
+3 timeouts < 3min to solve ( 0.96 with 3min timeout )
+3 timeouts < 5min to solve ( 0.99 with 5min timeout )
+1 timeout 16m to solve ( 1.0 with 20min timeout )
+
+G1:
+Average solution length: 29
+Average compute time: 32.54s
+45 Success and 19 Timeouts, rate = 0.70
+All 19 timeouts goes straight to phase2 without any phase 1 move so we asume a 100% success at this stage...
+
+G0:
+IDAstar (3min timeout):
+Average solution length: 39
+Average compute time: 59.63s
+24 Success and 6 Timeouts, rate = 0.80
+
+IDAstar on ROG (3min timeout):
+Average solution length: 39
+Average compute time: 60.99s
+92 Success and 8 Timeouts, rate = 0.92
+
+Beginner:
+Average solution length: 245
+Average compute time: 0.01s
+100 Success and 0 Timeouts, rate = 1.00
