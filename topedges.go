@@ -29,7 +29,5 @@ func (env *Env) topedges() {
 				return
 			}
 		}
-		// if good color, pass
-		//else if can inverse with left one , do it (if it good for both)
 	}
 }

@@ -98,12 +98,7 @@ func (env *Env) positiontopcorner() {
 				env.execFace("U R U' L' U R' U' L", BLUE)
 			}
 		}
+		//for scrambled
 		env.execFace("U R U' L' U R' U' L", ORANGE)
-		// if good color, pass
-		//else if can inverse with left one , do it (if it good for both)
 	}
 }
-
-//Chercher un bon corner (ou ya les bonnes couleurs, peux importe l'orientation)
-//Si trouver, faire l'algo autant de fois que tout les cubes se mettent en place
-//Sinon faire l'ago au pif pui rechercher un bon corner

@@ -1,9 +1,5 @@
 package main
 
-// import (
-// 	"fmt"
-// )
-
 const RIGHT = 1
 const LEFT = 2
 
@@ -32,7 +28,7 @@ func (env *Env) arreteintop(face int32, cube [6]int32) int32 {
 			return LEFT
 		}
 		return 0
-	} else if face == RED { //really not sure
+	} else if face == RED {
 		if (((cube[RED]>>8)&15) == RED &&
 			(((cube[WHITE]>>24)&15) == BLUE || ((cube[WHITE]>>24)&15) == GREEN)) ||
 			(((cube[WHITE]>>24)&15) == RED &&
@@ -75,7 +71,6 @@ func (env *Env) secondlayerisbarelyFinnished(cube [6]int32) bool {
 
 	blueface = (((cube[BLUE]>>0)&15) == BLUE || ((cube[BLUE]>>0)&15) == RED) &&
 		(((cube[BLUE]>>16)&15) == BLUE || ((cube[BLUE]>>16)&15) == ORANGE)
-	//fmt.Println(orangeface, greenface, redface, blueface)
 	if orangeface && greenface && redface && blueface {
 		return true
 	}
@@ -83,21 +78,16 @@ func (env *Env) secondlayerisbarelyFinnished(cube [6]int32) bool {
 }
 
 func (env *Env) dealwithwrongorientation() {
-	//Orange
 	if ((env.currentCube.cube[ORANGE] >> 16) & 15) == GREEN {
-		//	fmt.Println("wrong orange")
 		env.execFace("U R U' R' U' F' U F U2 U R U' R' U' F' U F", ORANGE)
 	}
 	if ((env.currentCube.cube[GREEN] >> 16) & 15) == RED {
-		//	fmt.Println("wrong green")
 		env.execFace("U R U' R' U' F' U F U2 U R U' R' U' F' U F", GREEN)
 	}
 	if ((env.currentCube.cube[RED] >> 0) & 15) == BLUE {
-		//	fmt.Println("wrong red")
 		env.execFace("U R U' R' U' F' U F U2 U R U' R' U' F' U F", RED)
 	}
 	if ((env.currentCube.cube[BLUE] >> 16) & 15) == ORANGE {
-		//	fmt.Println("wrong blue")
 		env.execFace("U R U' R' U' F' U F U2 U R U' R' U' F' U F", BLUE)
 	}
 }
@@ -147,20 +137,16 @@ func (env *Env) secondLayer() {
 		o = false
 		for i := 0; i < 4; i++ {
 			for _, slayer := range faceSecondLayer {
-				//	fmt.Println("Test : ", slayer)
 				value := env.arreteintop(slayer, env.currentCube.cube)
 				if value == RIGHT {
-					//		fmt.Println("FInd right")
 					o = true
 					env.execFace("U R U' R' U' F' U F", slayer)
 				} else if value == LEFT {
-					//		fmt.Println("FInd LEft")
 					o = true
 					env.execFace("U' L' U L U F U' F'", slayer)
 				}
 			}
 			if env.secondlayerisbarelyFinnished(env.currentCube.cube) {
-				//		fmt.Println("Success !")
 				env.dealwithwrongorientation()
 				return
 			}
@@ -171,15 +157,10 @@ func (env *Env) secondLayer() {
 			for _, slayer := range faceSecondLayer {
 				value := env.inwrongplace(slayer, env.currentCube.cube)
 				if value {
-					//	fmt.Println("Here")
 					env.execFace("U R U' R' U' F' U F", slayer)
 					break
 				}
 			}
 		}
 	}
-	//regarder si on peux faire l'algo a chacun des coins
-	//si on peux pas, tourne U
-
-	//si a la fin on se retrouve avec un qui a la mauvaise orientation, il faut appliquer l'algo (lequel ? ) deux fois
 }
