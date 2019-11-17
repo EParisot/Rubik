@@ -28,6 +28,8 @@ func (env *Env) human() {
 	env.secondlayer()
 	env.topcross()
 	env.topedges()
+	env.positiontopcorner()
+	env.orientedlastcorner()
 	env.res = env.res[:len(env.res)-1]
 	fmt.Println(env.res)
 
