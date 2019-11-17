@@ -77,13 +77,20 @@ class EntireCube():
         self.reset = False
         self.solving = False
         if len(self.steps):
-            print("\nSuffling...")
+            print("\nScrambling...")
 
     def shuffle(self):
-        print("\nSuffling...")
+        print("\nScrambling...")
         # build steps
-        steps_idx = [random.randint(0, len(moves)-1) for _ in range(20)]
+        steps_idx = []
+        for _ in range(20):
+            rand = random.randint(0, len(moves)-1)
+            while len(steps_idx) and moves[rand][0] == moves[steps_idx[-1]][0]:
+                rand = random.randint(0, len(moves)-1)
+            steps_idx.append(rand)
+        #steps_idx = [random.randint(0, len(moves)-1) for _ in range(20)]
         self.steps = [moves[idx] for idx in steps_idx]
+        print("Applying", " ".join(self.steps), ":")
         if len(self.hist) == 0:
             self.reset = True
         self.solving = False
@@ -226,7 +233,7 @@ class EntireCube():
             if len(self.steps) == 0 and ang_x % 360 == 0 and ang_y % 360 == 0:
                 if len(self.hist):
                     button("Solve", -25.4, 7, action=self.solve)
-                button("Shuffle", -24.5, 9.5, action=self.shuffle)
+                button("Scramble", -24.5, 9.5, action=self.shuffle)
             # Print action on screen
             drawText(-1, 8, curr)
 
