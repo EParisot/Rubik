@@ -1,13 +1,15 @@
 package main
 
-func (env *Env) copyCube(cube [6][3][3]int) [6][3][3]int {
-	var copyCube [6][3][3]int
+import (
+//	"fmt"
+	"strings"
+	"math/rand"
+)
+
+func (env *Env) copyCube(cube [6]int32) [6]int32 {
+	var copyCube [6]int32
 	for face := range cube {
-		for line := range cube[face] {
-			for col := range cube[face][line] {
-				copyCube[face][line][col] = cube[face][line][col]
-			}
-		}
+		copyCube[face] = cube[face]
 	}
 	return copyCube
 }
@@ -29,21 +31,74 @@ func existInClosedList(currCube CubeEnv, closedList []CubeEnv) bool {
 }
 
 func (env *Env) setCube() {
-	i := 0
-	for face := range env.currentCube.cube {
-		for line := range env.currentCube.cube[face] {
-			for col := range env.currentCube.cube[face][line] {
-				env.currentCube.cube[face][line][col] = i
-				env.solvedCube[face][line][col] = i
-				i++
-			}
-		}
-	}
+	env.currentCube.cube[0] = 0b00000000000000000000000000000000 // Orange
+	env.currentCube.cube[1] = 0b00010001000100010001000100010001 // Green
+	env.currentCube.cube[2] = 0b00100010001000100010001000100010 // Blue
+	env.currentCube.cube[3] = 0b00110011001100110011001100110011 // White
+	env.currentCube.cube[4] = 0b01000100010001000100010001000100 // Yellow
+	env.currentCube.cube[5] = 0b01010101010101010101010101010101 // Red
+	env.solvedCube = env.copyCube(env.currentCube.cube)
 }
 
+func (env *Env) generaterandom() string{
+	
+	var str string
+	possible := [5]string{"U", "R", "L", "D", "B"}
+	var reverse int
+
+	for i := 0; i < 25; i++ {
+		str = str + possible[rand.Intn(5)]
+		reverse = rand.Intn(2)
+		if reverse == 1 {
+			str = str + "'"
+		}
+		str = str + " "
+	}
+	str = str[:len(str)-1]
+	return str
+}
 func (env *Env) shuffle() {
 	for step := range env.mix {
 		// exec step
 		env.execStep(env.mix[step])
+	}
+}
+
+func (env *Env) exec(str string) {
+	okay := strings.Split(str, " ")
+	for _, i := range okay {
+		// exec step
+		env.res += string(i) + " "
+		env.execStep(string(i))
+	}
+}
+
+func (env *Env) execFace(str string, face int32) {
+	///fmt.Println("Before :" + str)
+	if face == GREEN {
+		r := strings.NewReplacer("F", "R",
+            "R", "B",
+			"B", "L",
+			"L", "F")
+		str = r.Replace(str)
+	} else if face == RED {
+		r := strings.NewReplacer("F", "B",
+            "R", "L",
+			"B", "F",
+			"L", "R")
+		str = r.Replace(str)
+	} else if face == BLUE {
+		r := strings.NewReplacer("F", "L",
+            "R", "F",
+			"B", "R",
+			"L", "B")
+		str = r.Replace(str)
+	}
+	//fmt.Println("After :" + str)
+	okay := strings.Split(str, " ")
+	for _, i := range okay {
+		// exec step
+		env.res += string(i) + " "
+		env.execStep(string(i))
 	}
 }

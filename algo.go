@@ -32,6 +32,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv) (int, *[]CubeEnv) {
 		return -1, closedList
 	}
 	min := 100000
+	//	fmt.Println(currCube.cost)
 	childsList := env.getMoves(currCube)
 	for _, child := range childsList {
 		if !existInClosedList(child, *closedList) {
@@ -57,7 +58,7 @@ func (env *Env) getMoves(currCube CubeEnv) []CubeEnv {
 	var gridList []CubeEnv
 	for rotate := 0; rotate <= 5; rotate++ {
 		for way := 0; way < 2; way++ {
-			copyCube := env.copyCube(currCube.cube)
+			copyCube := env.copyCube(currCube.cube) // Check if needed
 			newCube := env.rotate(rotate, way, copyCube)
 			var newEnvCube CubeEnv
 			if rotate == 0 {
@@ -81,7 +82,7 @@ func (env *Env) getMoves(currCube CubeEnv) []CubeEnv {
 			newEnvCube.cost = currCube.cost + 1
 			newEnvCube.heuristic = newEnvCube.cost
 
-			// env.debugPrint(newEnvCube.internationalMove, newEnvCube.cube)
+			//	env.debugPrint(newEnvCube.internationalMove, newEnvCube.cube)
 			gridList = append(gridList, newEnvCube)
 		}
 	}
