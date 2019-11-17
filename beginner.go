@@ -11,21 +11,19 @@ const WHITE = 3
 const YELLOW = 4
 const RED = 5
 
-func (env *Env) firstlayer() {
-	//fmt.Println("Face Orange : ")
+func (env *Env) firstLayer() {
 	env.faceFirstLayer(ORANGE)
-	//fmt.Println("Face Green : ")
 	env.faceFirstLayer(GREEN)
-	//fmt.Println("Face Red : ")
 	env.faceFirstLayer(RED)
 	env.faceFirstLayer(BLUE)
 }
 
 func (env *Env) beginner() {
+	// the main documentation are from https://ruwix.com/the-rubiks-cube/how-to-solve-the-rubiks-cube-beginners-method/
 
-	env.first_cross() // POur gagner beaucoup de coup, possible de faire un A* en - de 10s
-	env.firstlayer()
-	env.secondlayer()
+	env.firstCross() // for win lot of turns,can make a A* (7 moves max, max 10s)
+	env.firstLayer()
+	env.secondLayer()
 	env.topcross()
 	env.topedges()
 	env.positiontopcorner()

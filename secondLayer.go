@@ -139,7 +139,7 @@ func (env *Env) inwrongplace(face int32, cube [6]int32) bool {
 	return false
 }
 
-func (env *Env) secondlayer() {
+func (env *Env) secondLayer() {
 	faceSecondLayer := [4]int32{ORANGE, GREEN, RED, BLUE}
 	var o bool
 	o = false
