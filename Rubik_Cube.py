@@ -68,7 +68,7 @@ class Cube():
         glPopMatrix()
 
 class EntireCube():
-    def __init__(self, N, scale, steps):
+    def __init__(self, N, scale, steps, ida):
         self.N = N
         cr = range(self.N)
         self.cubes = [Cube((x, y, z), self.N, scale) for x in cr for y in cr for z in cr]
@@ -76,6 +76,10 @@ class EntireCube():
         self.hist = ""
         self.reset = False
         self.solving = False
+        if ida:
+            self.ida = "-ida"
+        else:
+            self.ida = ""
         if len(self.steps):
             print("\nScrambling...")
 
@@ -98,9 +102,9 @@ class EntireCube():
     def solve(self):
         print("\nSolving...")
         if sys.platform == "win32":
-            args = ("./Rubik.exe", self.hist)
+            args = ("./Rubik.exe", self.ida, self.hist)
         else:
-            args = ("./Rubik", self.hist)
+            args = ("./Rubik", self.ida, self.hist)
         popen = subprocess.Popen(args, stdout=subprocess.PIPE)
         popen.wait()
         output = popen.stdout.read().decode()
@@ -289,7 +293,8 @@ def button(msg,x,y,action=None):
 
 @click.command()
 @click.argument("steps", default="")
-def main(steps):
+@click.option("-ida", is_flag=True)
+def main(steps, ida):
     if len(steps):
         steps = parse_steps(steps)
     else:
@@ -369,7 +374,7 @@ def main(steps):
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 )
 
     # Build Rubik's Cube and run loop
-    NewEntireCube = EntireCube(3, 1.5, steps)
+    NewEntireCube = EntireCube(3, 1.5, steps, ida)
     NewEntireCube.mainloop()
 
 if __name__ == '__main__':

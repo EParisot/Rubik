@@ -26,11 +26,16 @@ def scramble(group):
 
 @click.command()
 @click.argument("group", default="G0")
-def main(group):
+@click.option("-ida", is_flag=True)
+def main(group, ida):
     counts = []
     durations = []
     errors = 0
     success = 0
+    if ida:
+        ida = "-ida"
+    else:
+        ida = ""
     # Compile solver
     if not os.path.exists("Rubik") or not os.path.exists("Rubik.exe"):
         args = ("go", "build")
@@ -41,9 +46,9 @@ def main(group):
             mix = scramble(groups[group])
             logging.info("Solving...")
             if sys.platform == "win32":
-                args = ("./Rubik.exe", mix)
+                args = ("./Rubik.exe", ida, mix)
             else:
-                args = ("./Rubik", mix)
+                args = ("./Rubik", ida, mix)
             popen = subprocess.Popen(args, stdout=subprocess.PIPE)
             try:
                 start = time.time()
