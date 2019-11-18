@@ -86,7 +86,7 @@ func main() {
 		} else if arg == "-ida" {
 			idaStar = true
 		} else {
-			mix = string(args[0])
+			mix = string(arg)
 		}
 	}
 	env := Env{debug: debug}
