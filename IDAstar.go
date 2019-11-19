@@ -12,7 +12,7 @@ var result string
 
 func (env *Env) idAstar() {
 	moves = []string{"F", "R", "L", "U", "D", "B"}
-	max = []int{7, 13, 15, 17} // max dept limits
+	max = []int{10, 13, 15} // max dept limits
 	var closedList []CubeEnv
 	closedList = append(closedList, env.currentCube)
 	phase := 0
@@ -20,7 +20,7 @@ func (env *Env) idAstar() {
 	for {
 		tmpThres, _ := env.search(threshold, &closedList, &phase, 0)
 		if tmpThres == -1 {
-			result = parseOutput(result)
+			//result = parseOutput(result)
 			fmt.Println(result)
 			return
 		} else if tmpThres >= 10000 {
@@ -33,7 +33,7 @@ func (env *Env) idAstar() {
 func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth int) (int, *[]CubeEnv) {
 	// Handle dept limit
 	depth++
-	if depth >= max[*phase] {
+	if *phase < 3 && depth >= max[*phase] {
 		env.currentCube = env.startCube
 		result = ""
 		for i := 0; i < 10; i++ {
@@ -62,16 +62,13 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 		for _, step := range (*closedList)[1:len(*closedList)] {
 			result += step.internationalMove + " "
 		}
-		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
 		if env.debug {
 			fmt.Println("Phase0 DONE")
 			debugCube(currCube.cube)
 			debugPathIDA(*closedList, (*closedList)[len(*closedList)-1])
-			if len(*closedList) > 1 {
-				fmt.Print(" ")
-			}
 			fmt.Print("\n")
 		}
+		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
 	}
 	if *phase == 1 && isInG2(currCube) == 0 {
 		*phase = 2
@@ -80,16 +77,13 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 		for _, step := range (*closedList)[1:len(*closedList)] {
 			result += step.internationalMove + " "
 		}
-		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
 		if env.debug {
 			fmt.Println("Phase1 DONE")
 			debugCube(currCube.cube)
 			debugPathIDA(*closedList, (*closedList)[len(*closedList)-1])
-			if len(*closedList) > 1 {
-				fmt.Print(" ")
-			}
 			fmt.Print("\n")
 		}
+		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
 	}
 	if *phase == 2 && isInG3(currCube) == 0 {
 		*phase = 3
@@ -98,16 +92,13 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 		for _, step := range (*closedList)[1:len(*closedList)] {
 			result += step.internationalMove + " "
 		}
-		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
 		if env.debug {
 			fmt.Println("Phase2 DONE")
 			debugCube(currCube.cube)
 			debugPathIDA(*closedList, (*closedList)[len(*closedList)-1])
-			if len(*closedList) > 1 {
-				fmt.Print(" ")
-			}
 			fmt.Print("\n")
 		}
+		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
 	}
 	if isFinished(currCube) {
 		for i, step := range (*closedList)[1:len(*closedList)] {
@@ -129,8 +120,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 	}
 	//IDAstar
 	min := 100000
-	childsList := getMoves(currCube, *phase)
-	for _, child := range childsList {
+	for _, child := range getMoves(currCube, *phase) {
 		if !existInClosedList(child, *closedList) {
 			*closedList = append(*closedList, child)
 			result, closedList := env.search(threshold, closedList, phase, depth)

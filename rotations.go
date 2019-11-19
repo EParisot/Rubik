@@ -1,9 +1,7 @@
 package main
 
 func replaceBits(src int32, sLoc int, dest int32, dLoc int) int32 {
-	mask := -int32(0b1111<<dLoc) - 1
-	value := (src >> sLoc) & 0b1111
-	return (dest & mask) | (value << dLoc)
+	return (dest & (-int32(0b1111<<dLoc) - 1)) | ((src >> sLoc) & 0b1111 << dLoc)
 }
 
 func rotSide0(cube *[6]int32, way int) {

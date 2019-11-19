@@ -2,18 +2,18 @@ package main
 
 func getMoves(currCube CubeEnv, phase int) []CubeEnv {
 	var cubeList []CubeEnv
-	for face := 0; face <= 5; face++ {
+	for move := 0; move <= 5; move++ {
 		var newEnvCube CubeEnv
 		// Apply move(s) (Only use authorised moved in current phase)
-		newEnvCube.cube = rotate(face, 0, currCube.cube)
+		newEnvCube.cube = rotate(move, 0, currCube.cube)
 		var nb string
-		if (phase == 1 && (face == 0 || face == 5)) || // <F2 R L U D B2>
-			(phase == 2 && (face == 1 || face == 2 || face == 0 || face == 5)) || // <F2 R2 L2 U D B2>
+		if (phase == 1 && (move == 0 || move == 5)) || // <F2 R L U D B2>
+			(phase == 2 && (move == 1 || move == 2 || move == 0 || move == 5)) || // <F2 R2 L2 U D B2>
 			phase == 3 { // <F2 R2 L2 U2 D2 B2>
-			newEnvCube.cube = rotate(face, 0, newEnvCube.cube)
+			newEnvCube.cube = rotate(move, 0, newEnvCube.cube)
 			nb = "2"
 		}
-		newEnvCube.internationalMove = moves[face] + nb
+		newEnvCube.internationalMove = moves[move] + nb
 		newEnvCube.cost = currCube.cost + 1
 		newEnvCube.heuristic = globalHeuristic(newEnvCube, phase)
 		cubeList = append(cubeList, newEnvCube)
@@ -66,25 +66,7 @@ func isInG2(currCube CubeEnv) int {
 			}
 		}
 	}
-	var midEdges int
-	for _, face := range []int{0, 1, 2, 5} {
-		for _, facelet := range []int{0, 4} {
-			var oppositeFace int
-			if face == 0 {
-				oppositeFace = 5
-			} else if face == 1 {
-				oppositeFace = 2
-			} else if face == 2 {
-				oppositeFace = 1
-			} else {
-				oppositeFace = 0
-			}
-			if int(currCube.cube[face]>>uint(facelet*4))&15 == face || int(currCube.cube[face]>>uint(facelet*4))&15 == oppositeFace {
-				midEdges++
-			}
-		}
-	}
-	return 6 - int((topDownFacelets+midEdges)/4)
+	return 8 - int((topDownFacelets)/2)
 }
 
 // Fixed all topDown corners and edges orientation and corners parity
