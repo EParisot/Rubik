@@ -8,7 +8,7 @@ import (
 
 var moves []string
 var max []int
-var result string
+var result [5]string
 
 func (env *Env) idAstar() {
 	moves = []string{"F", "R", "L", "U", "D", "B"}
@@ -21,7 +21,10 @@ func (env *Env) idAstar() {
 		tmpThres, _ := env.search(threshold, &closedList, &phase, 0)
 		if tmpThres == -1 {
 			//result = parseOutput(result)
-			fmt.Println(result)
+			for _, res := range result {
+				fmt.Print(res)
+			}
+			fmt.Print("\n")
 			return
 		} else if tmpThres >= 10000 {
 			return
@@ -34,12 +37,14 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 	// Handle dept limit
 	depth++
 	if *phase < 3 && depth >= max[*phase] {
+		// reset cube and result
 		env.currentCube = env.startCube
-		result = ""
+		result = [5]string{}
+		// generate new random steps
 		for i := 0; i < 10; i++ {
 			randIdx := rand.Intn(6)
 			env.execStep(moves[randIdx])
-			result += moves[randIdx] + " "
+			result[0] += moves[randIdx] + " "
 		}
 		if env.debug {
 			fmt.Println("RESET AND MIX MORE")
@@ -56,12 +61,12 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 	}
 	// Phases transitions
 	if *phase == 0 && isInG1(currCube) == 0 {
+		for _, step := range (*closedList)[1:len(*closedList)] {
+			result[*phase] += step.internationalMove + " "
+		}
 		*phase = 1
 		currCube.cost = 0
 		threshold = isInG2(currCube)
-		for _, step := range (*closedList)[1:len(*closedList)] {
-			result += step.internationalMove + " "
-		}
 		if env.debug {
 			fmt.Println("Phase0 DONE")
 			debugCube(currCube.cube)
@@ -71,12 +76,12 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
 	}
 	if *phase == 1 && isInG2(currCube) == 0 {
+		for _, step := range (*closedList)[1:len(*closedList)] {
+			result[*phase] += step.internationalMove + " "
+		}
 		*phase = 2
 		currCube.cost = 0
 		threshold = isInG3(currCube)
-		for _, step := range (*closedList)[1:len(*closedList)] {
-			result += step.internationalMove + " "
-		}
 		if env.debug {
 			fmt.Println("Phase1 DONE")
 			debugCube(currCube.cube)
@@ -86,12 +91,12 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 		*closedList = (*closedList)[len(*closedList)-1 : len(*closedList)]
 	}
 	if *phase == 2 && isInG3(currCube) == 0 {
+		for _, step := range (*closedList)[1:len(*closedList)] {
+			result[*phase] += step.internationalMove + " "
+		}
 		*phase = 3
 		currCube.cost = 0
 		threshold = isInGc(currCube)
-		for _, step := range (*closedList)[1:len(*closedList)] {
-			result += step.internationalMove + " "
-		}
 		if env.debug {
 			fmt.Println("Phase2 DONE")
 			debugCube(currCube.cube)
@@ -102,11 +107,12 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 	}
 	if isFinished(currCube) {
 		for i, step := range (*closedList)[1:len(*closedList)] {
-			result += step.internationalMove
+			result[*phase] += step.internationalMove
 			if i < len(*closedList)-2 {
-				result += " "
+				result[*phase] += " "
 			}
 		}
+		*phase = 4
 		if env.debug {
 			fmt.Println("ALL DONE")
 			debugCube(currCube.cube)

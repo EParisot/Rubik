@@ -2,7 +2,7 @@ package main
 
 func getMoves(currCube CubeEnv, phase int) []CubeEnv {
 	var cubeList []CubeEnv
-	for move := 0; move <= 5; move++ {
+	for move := 0; move < 6; move++ {
 		var newEnvCube CubeEnv
 		// Apply move(s) (Only use authorised moved in current phase)
 		newEnvCube.cube = rotate(move, 0, currCube.cube)
