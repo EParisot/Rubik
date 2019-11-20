@@ -52,7 +52,7 @@ def main(group, ida):
             popen = subprocess.Popen(args, stdout=subprocess.PIPE)
             try:
                 start = time.time()
-                popen.wait(3*60)
+                popen.wait(60)
                 end = time.time()
                 output = popen.stdout.read().decode()
             except subprocess.TimeoutExpired:

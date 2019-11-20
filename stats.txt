@@ -35,6 +35,10 @@ Average solution length: 39
 Average compute time: 59.27s
 89 Success and 11 Timeouts, rate = 0.89
 
+(1min timeout)
+Average solution length: 42
+Average compute time: 23.46s
+74 Success and 26 Timeouts, rate = 0.74
 
 Beginner:
 
