@@ -63,7 +63,7 @@ func parseDoubles(output string) string {
 					outTab[i] = ""
 					outTab[i+1] = ""
 				}
-			} else if outTab[i][0] == outTab[i+1][0] {
+			} else if len(outTab[i]) > 0 && len(outTab[i+1]) > 0 && outTab[i][0] == outTab[i+1][0] {
 				if !strings.Contains(outTab[i], "2") && !strings.Contains(outTab[i+1], "2") {
 					if !strings.Contains(outTab[i], "'") && strings.Contains(outTab[i+1], "'") {
 						outTab[i] = ""
@@ -128,7 +128,7 @@ func parseDoubles(output string) string {
 func checkOver(output string) bool {
 	outTab := strings.Split(output, " ")
 	for i := 0; i < len(outTab)-1; i++ {
-		if outTab[i][0] == outTab[i+1][0] {
+		if len(outTab[i]) > 0 && len(outTab[i+1]) > 0 && outTab[i][0] == outTab[i+1][0] {
 			return false
 		}
 	}
@@ -147,7 +147,7 @@ func parseOutput(output string) string {
 func main() {
 	var mix string
 	var debug bool
-	var idaStar bool
+	var human bool
 	args := os.Args[1:]
 	if len(args) == 0 {
 		fmt.Println("Error : No arg")
@@ -156,8 +156,8 @@ func main() {
 	for _, arg := range args {
 		if arg == "-d" {
 			debug = true
-		} else if arg == "-ida" {
-			idaStar = true
+		} else if arg == "-h" {
+			human = true
 		} else {
 			mix = string(arg)
 		}
@@ -176,7 +176,7 @@ func main() {
 	// Shuffling
 	env.shuffle(steps)
 	// Solve
-	if !idaStar {
+	if human {
 		env.beginner()
 	} else {
 		env.idAstar()
