@@ -6,7 +6,7 @@ Summary: This project will make you write a program that resolves Rubik's Cubes 
 We implemented two algoritms:
 
 The default one is a Thistlethwaite's 4 phases algorithm. 
-But instead of using huge, pre-computed prunning tables, we implemented 4 heuristics, matching the 4 standard algorithm groups and provide sufficient estimation for an IDAstar (depthFirstSearch) search to perform quite well on random scrumbled cubes.
+But instead of using huge, pre-computed prunning tables, we implemented 4 heuristics matching the 4 standard algorithm groups and which could provide sufficient estimation for an IDAstar (depthFirstSearch), performing quite well on randomly scrumbled cubes.
 This implementation will find short solutions (20-50 steps), but may take from a few seconds to few minutes to return.
 
 <p align="center">
@@ -14,7 +14,7 @@ This implementation will find short solutions (20-50 steps), but may take from a
 </p>
 
 The second one is a "Human" algorithm.
-Based on "CFOP" method. It uses several algorithm to solve known configurations as it evolve to solution. 
+Based on "CFOP" method. It uses several algorithms to solve known configurations as it evolve to solution. 
 Although providing big solutions, the computational time is near from zero.
 
 <p align="center">
