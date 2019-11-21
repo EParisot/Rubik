@@ -37,23 +37,47 @@ func globalHeuristic(currCube CubeEnv, phase int) int {
 
 // fixes RL and UD Edges orientation
 func isInG1(currCube CubeEnv) int {
-	var latFacelets int
-	var topDownFacelets int
+	var latEdges int
+	var topDownEdges int
+	var faceFacelet int
 	for _, face := range []int{1, 2} {
 		for _, facelet := range []int{0, 2, 4, 6} {
 			if int(currCube.cube[face]>>uint(facelet*4))&15 != 3 && int(currCube.cube[face]>>uint(facelet*4))&15 != 4 {
-				latFacelets++
+				latEdges++
 			}
 		}
 	}
 	for _, face := range []int{3, 4} {
 		for _, facelet := range []int{0, 2, 4, 6} {
 			if int(currCube.cube[face]>>uint(facelet*4))&15 != 1 && int(currCube.cube[face]>>uint(facelet*4))&15 != 2 {
-				topDownFacelets++
+				topDownEdges++
 			}
 		}
 	}
-	return 4 - int((latFacelets+topDownFacelets)/4)
+	for _, face := range []int{0, 5} {
+		for _, facelet := range []int{0, 2, 4, 6} {
+			var compatibleFace1 int
+			var oppositeCompatibleFace1 int
+			var compatibleFace2 int
+			var oppositeCompatibleFace2 int
+			if facelet == 0 || facelet == 4 {
+				compatibleFace1 = 3
+				oppositeCompatibleFace1 = 4
+				compatibleFace2 = 0
+				oppositeCompatibleFace2 = 5
+			} else if facelet == 2 || facelet == 4 {
+				compatibleFace1 = 1
+				oppositeCompatibleFace1 = 2
+				compatibleFace2 = 0
+				oppositeCompatibleFace2 = 5
+			}
+			if int(currCube.cube[face]>>uint(facelet*4))&15 == compatibleFace1 || int(currCube.cube[face]>>uint(facelet*4))&15 == oppositeCompatibleFace1 ||
+				int(currCube.cube[face]>>uint(facelet*4))&15 == compatibleFace2 || int(currCube.cube[face]>>uint(facelet*4))&15 == oppositeCompatibleFace2 {
+				faceFacelet++
+			}
+		}
+	}
+	return 12 - int((latEdges+topDownEdges+faceFacelet)/2)
 }
 
 // Fixes UD facelets orientations and midEdges in midLayer

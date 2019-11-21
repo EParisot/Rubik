@@ -12,7 +12,7 @@ var result [5]string
 
 func (env *Env) idAstar() {
 	moves = []string{"F", "R", "L", "U", "D", "B"}
-	max = []int{10, 13, 15} // max dept limits
+	max = []int{13, 13, 15} // max dept limits
 	var closedList []CubeEnv
 	closedList = append(closedList, env.currentCube)
 	phase := 0
@@ -41,7 +41,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 		env.currentCube = env.startCube
 		result = [5]string{}
 		// generate new random steps
-		for i := 0; i < 10; i++ {
+		for i := 0; i < 5; i++ {
 			randIdx := rand.Intn(6)
 			env.execStep(moves[randIdx])
 			result[0] += moves[randIdx] + " "
