@@ -119,7 +119,7 @@ class EntireCube():
                 time.sleep(0.1)
         else:
             print("Error : No Solution")
-            time.sleep(0.1)
+            time.sleep(0.3)
         
 
     def mainloop(self):
@@ -236,8 +236,8 @@ class EntireCube():
             # Show buttons
             if len(self.steps) == 0 and ang_x % 360 == 0 and ang_y % 360 == 0:
                 if len(self.hist):
-                    button("Solve", -25.4, 7, action=self.solve)
-                button("Scramble", -24.5, 9.5, action=self.shuffle)
+                    button("Solve", -25.4, 7, self.solve, self.cubes)
+                button("Scramble", -24.5, 9.5, self.shuffle, self.cubes)
             # Print action on screen
             drawText(-1, 8, curr)
 
@@ -281,7 +281,7 @@ def drawText(x, y, textString, fore=(255,255,255,255), back=(0,0,0,255)):
     glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
     return glGetFloatv(GL_CURRENT_RASTER_POSITION), textSurface.get_width(), textSurface.get_height()
 
-def button(msg,x,y,action=None):
+def button(msg,x,y,action,cubes):
     pos, w, h = drawText(x, y, msg, back=(50,50,50,255))
     x = pos[0]
     y = display[1] - pos[1] - h
@@ -289,6 +289,15 @@ def button(msg,x,y,action=None):
     clicked = pygame.mouse.get_pressed()
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
         if clicked[0] == 1 and action != None:
+            
+            # Clean screen
+            glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+            for cube in cubes:
+                cube.draw(colors, surfaces, vertices, False, 0, *(0, 0, 0))
+            # Draw screen
+            pygame.display.flip()
+            pygame.time.wait(10)
+
             action()
 
 @click.command()
