@@ -3,16 +3,15 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"os"
 )
 
-var moves []string
-var max []int
+var moves [6]string
+var max [3]int
 var result [5]string
 
 func (env *Env) idAstar() {
-	moves = []string{"F", "R", "L", "U", "D", "B"}
-	max = []int{13, 13, 15} // max dept limits
+	moves = [6]string{"F", "R", "L", "U", "D", "B"}
+	max = [3]int{13, 13, 15} // max dept limits
 	var closedList []CubeEnv
 	closedList = append(closedList, env.currentCube)
 	phase := 0
@@ -20,13 +19,14 @@ func (env *Env) idAstar() {
 	for {
 		tmpThres, _ := env.search(threshold, &closedList, &phase, 0)
 		if tmpThres == -1 {
-			//result = parseOutput(result)
+			var finalResult string
 			for _, res := range result {
-				fmt.Print(res)
+				finalResult += res
 			}
-			fmt.Print("\n")
+			finalResult = parseOutput(finalResult)
+			fmt.Println(finalResult)
 			return
-		} else if tmpThres >= 10000 {
+		} else if tmpThres == -2 || tmpThres >= 10000 {
 			return
 		}
 		threshold = tmpThres
@@ -52,7 +52,7 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 			fmt.Println(result)
 		}
 		env.idAstar()
-		os.Exit(0)
+		return -2, closedList
 	}
 	// IDAstar threshold
 	currCube := (*closedList)[len(*closedList)-1]
@@ -130,8 +130,8 @@ func (env *Env) search(threshold int, closedList *[]CubeEnv, phase *int, depth i
 		if !existInClosedList(child, *closedList) {
 			*closedList = append(*closedList, child)
 			result, closedList := env.search(threshold, closedList, phase, depth)
-			if result == -1 {
-				return -1, closedList
+			if result == -1 || result == -2 {
+				return result, closedList
 			}
 			if result < min {
 				min = result

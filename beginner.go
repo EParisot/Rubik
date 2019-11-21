@@ -29,6 +29,7 @@ func (env *Env) beginner() {
 	env.positiontopcorner()
 	env.orientedlastcorner()
 	env.res = env.res[:len(env.res)-1]
+	env.res = parseOutput(env.res)
 	fmt.Println(env.res)
 
 }
