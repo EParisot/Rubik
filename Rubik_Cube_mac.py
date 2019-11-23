@@ -332,11 +332,7 @@ def main(steps, human):
     glRotatef(25, 1, 0, 0)
     glRotatef(-30, 0, 1, 0)
 
-    # Modern OpenGL API :
-
-    glEnable( GL_DEPTH_TEST )
-
-    '''# enable depth test (less or equal)
+    # enable depth test (less or equal)
     glEnable( GL_DEPTH_TEST )
     glDepthFunc( GL_LEQUAL )
 
@@ -345,7 +341,10 @@ def main(steps, human):
     glCullFace( GL_BACK )
     glFrontFace( GL_CW )
 
-    global face_vao, edge_vao
+
+    # Modern OpenGL API :
+    
+    '''global face_vao, edge_vao
 
     # define the vertex buffers vor the faces
     attribute_array = []
