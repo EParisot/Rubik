@@ -135,7 +135,6 @@ func checkOver(output string) bool {
 	return true
 }
 
-// TODO improve this
 func parseOutput(output string) string {
 	output = parseDoubles(output)
 	if checkOver(output) == false {
