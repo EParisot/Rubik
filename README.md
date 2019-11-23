@@ -43,6 +43,7 @@ Average compute time: 0.01s
 
 ### Python GUI:
 ```
+pip3 install -r requirements.txt
 python3 Rubik_Cube.py [-h] ["R2 D’ B’ D F2 R F2 R2 U L’ F2 U’ B’ L2 R D B’ R’ B2 L2 F2 L2 R2 U2 D2"]
 ```
 with -h : "human" algorithm
