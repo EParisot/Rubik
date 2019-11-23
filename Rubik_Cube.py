@@ -120,7 +120,7 @@ class EntireCube():
 
     def solve(self):
         print("\nSolving...")
-        if sys.platform == "win32":
+        if OS == "win32":
             args = ("./Rubik.exe", self.human, self.hist)
         else:
             args = ("./Rubik", self.human, self.hist)
