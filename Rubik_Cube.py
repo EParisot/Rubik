@@ -14,6 +14,8 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
+OS = sys.platform
+
 vertices = (( 1, -1, -1), ( 1,  1, -1), (-1,  1, -1), (-1, -1, -1), ( 1, -1,  1), ( 1,  1,  1), (-1, -1,  1), (-1,  1,  1))
 edges = ((0,1),(0,3),(0,4),(2,1),(2,3),(2,7),(6,3),(6,4),(6,7),(5,1),(5,4),(5,7))
 surfaces = ((0, 1, 2, 3), (3, 2, 7, 6), (6, 7, 5, 4), (4, 5, 1, 0), (1, 5, 7, 2), (4, 0, 3, 6))
@@ -42,8 +44,8 @@ class Cube():
             self.current_i[i] if dir > 0 else self.N - 1 - self.current_i[i] )
 
     def transformMat(self):
-        scaleA = [[s*self.scale for s in a] for a in self.rot]  
-        scaleT = [(p-(self.N-1)/2)*2.1*self.scale for p in self.current_i] 
+        scaleA = [[s*self.scale for s in a] for a in self.rot]
+        scaleT = [(p-(self.N-1)/2)*2.1*self.scale for p in self.current_i]
         return [*scaleA[0], 0, *scaleA[1], 0, *scaleA[2], 0, *scaleT, 1]
 
     def draw(self, col, surf, vert, animate, angle, axis, slice, dir):
@@ -51,19 +53,36 @@ class Cube():
         if animate and self.isAffected(axis, slice, dir):
             glRotatef( angle*dir, *[1 if i==axis else 0 for i in range(3)] )
         glMultMatrixf( self.transformMat() )
-        
-        global face_vao, edge_vao
 
-        # draw faces
-        glBindVertexArray( face_vao )
-        glDrawArrays( GL_QUADS, 0, 6*4 )
-        glBindVertexArray( 0 )
+        if OS == "darwin":
+            # Draw faces
+            glBegin(GL_QUADS)
+            for i in range(len(surf)):
+                glColor3fv(colors[i])
+                for j in surf[i]:
+                    glVertex3fv(vertices[j])
+            glEnd()
 
-        #draw edges
-        glColor3f( 0, 0, 0 )
-        glBindVertexArray( edge_vao )
-        glDrawElements( GL_LINES, 2*12, GL_UNSIGNED_INT, None )
-        glBindVertexArray( 0 )
+            # Draw edges
+            glBegin(GL_LINES)
+            glColor3fv((0,0,0))
+            for edge in edges:
+                for vertex in edge:
+                    glVertex3fv(vertices[vertex])
+            glEnd()
+        else:
+            global face_vao, edge_vao
+
+            # draw faces
+            glBindVertexArray( face_vao )
+            glDrawArrays( GL_QUADS, 0, 6*4 )
+            glBindVertexArray( 0 )
+
+            #draw edges
+            glColor3f( 0, 0, 0 )
+            glBindVertexArray( edge_vao )
+            glDrawElements( GL_LINES, 2*12, GL_UNSIGNED_INT, None )
+            glBindVertexArray( 0 )
 
         glPopMatrix()
 
@@ -120,11 +139,11 @@ class EntireCube():
         else:
             print("Error : No Solution")
             time.sleep(0.3)
-        
+
 
     def mainloop(self):
         rot_cube_map  = {K_UP: (-1, 0), K_DOWN: (1, 0), K_LEFT: (0, -1), K_RIGHT: (0, 1)}
-        rot_slice_map = {K_l: (0, 0, -1), K_r: (0, 2, 1), K_d: (1, 0, -1),K_u: (1, 2, 1), K_b: (2, 0, -1), K_f: (2, 2, 1)}  
+        rot_slice_map = {K_l: (0, 0, -1), K_r: (0, 2, 1), K_d: (1, 0, -1),K_u: (1, 2, 1), K_b: (2, 0, -1), K_f: (2, 2, 1)}
         rot_slice_map_prime = {K_l: (0, 0, 1), K_r: (0, 2, -1), K_d: (1, 0, 1), K_u: (1, 2, -1), K_b: (2, 0, 1), K_f: (2, 2, -1)}
         ang_x, ang_y, rot_cube = 0, 0, (0, 0)
         animate_rot, animate, animate_ang, animate_speed = False, False, 0, 5
@@ -133,7 +152,7 @@ class EntireCube():
         arg = ""
         curr = ""
         last = ""
-        
+
         while True:
             # Clean screen
             glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
@@ -232,7 +251,7 @@ class EntireCube():
             glTranslatef(0, 0, -40)
             glRotatef(ang_y, 0, 1, 0)
             glRotatef(ang_x, 1, 0, 0)
-            
+
             # Show buttons
             if len(self.steps) == 0 and ang_x % 360 == 0 and ang_y % 360 == 0:
                 if len(self.hist):
@@ -291,7 +310,7 @@ def button(msg,x,y,action,cubes):
     clicked = pygame.mouse.get_pressed()
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
         if clicked[0] == 1 and action != None:
-            
+
             # Clean screen
             glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
             for cube in cubes:
@@ -324,8 +343,6 @@ def main(steps, human):
     glTranslatef(-20, -15, 0)
     glRotatef(25, 1, 0, 0)
     glRotatef(-30, 0, 1, 0)
-   
-    # Modern OpenGL API :
 
     # enable depth test (less or equal)
     glEnable( GL_DEPTH_TEST )
@@ -336,53 +353,56 @@ def main(steps, human):
     glCullFace( GL_BACK )
     glFrontFace( GL_CW )
 
-    global face_vao, edge_vao
-    
-    # define the vertex buffers vor the faces
-    attribute_array = []
-    for face in range(len(surfaces)):
-        for vertex in surfaces[face ]:
-            attribute_array.append( vertices[vertex] )
-            attribute_array.append( colors[face] )
 
-    face_vbos = glGenBuffers(1)
-    glBindBuffer(GL_ARRAY_BUFFER, face_vbos)
-    glBufferData( GL_ARRAY_BUFFER, np.array( attribute_array, dtype=np.float32 ), GL_STATIC_DRAW )
-    glBindBuffer(GL_ARRAY_BUFFER, 0)
+    # Modern OpenGL API :
+    if OS != "darwin":
+        global face_vao, edge_vao
 
-    # define the vertex array object for the faces
-    face_vao = glGenVertexArrays( 1 )
-    glBindVertexArray( face_vao )
+        # define the vertex buffers vor the faces
+        attribute_array = []
+        for face in range(len(surfaces)):
+            for vertex in surfaces[face ]:
+                attribute_array.append( vertices[vertex] )
+                attribute_array.append( colors[face] )
 
-    glBindBuffer(GL_ARRAY_BUFFER, face_vbos)
-    glVertexPointer( 3, GL_FLOAT, 6*4, None )
-    glEnableClientState( GL_VERTEX_ARRAY )  
-    glColorPointer( 3, GL_FLOAT, 6*4, ctypes.cast(3*4, ctypes.c_void_p) )
-    glEnableClientState( GL_COLOR_ARRAY ) 
-    glBindBuffer(GL_ARRAY_BUFFER, 0) 
-    glBindVertexArray( 0 )
+        face_vbos = glGenBuffers(1)
+        glBindBuffer(GL_ARRAY_BUFFER, face_vbos)
+        glBufferData( GL_ARRAY_BUFFER, np.array( attribute_array, dtype=np.float32 ), GL_STATIC_DRAW )
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
 
-    # define the vertex buffer for the edges
-    edge_vbo = glGenBuffers(1)
-    glBindBuffer(GL_ARRAY_BUFFER, edge_vbo)
-    glBufferData( GL_ARRAY_BUFFER, np.array( vertices, dtype=np.float32 ), GL_STATIC_DRAW )
-    glBindBuffer(GL_ARRAY_BUFFER, 0)
+        # define the vertex array object for the faces
+        face_vao = glGenVertexArrays( 1 )
+        glBindVertexArray( face_vao )
 
-    # define the vertex array object for the edges
-    edge_vao = glGenVertexArrays( 1 )
-    glBindVertexArray( edge_vao )
+        glBindBuffer(GL_ARRAY_BUFFER, face_vbos)
+        glVertexPointer( 3, GL_FLOAT, 6*4, None )
+        glEnableClientState( GL_VERTEX_ARRAY )
+        glColorPointer( 3, GL_FLOAT, 6*4, ctypes.cast(3*4, ctypes.c_void_p) )
+        glEnableClientState( GL_COLOR_ARRAY )
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
+        glBindVertexArray( 0 )
 
-    glBindBuffer(GL_ARRAY_BUFFER, edge_vbo)
-    glVertexPointer( 3, GL_FLOAT, 0, None ) 
-    glEnableClientState( GL_VERTEX_ARRAY ) 
-    glBindBuffer(GL_ARRAY_BUFFER, 0) 
+        # define the vertex buffer for the edges
+        edge_vbo = glGenBuffers(1)
+        glBindBuffer(GL_ARRAY_BUFFER, edge_vbo)
+        glBufferData( GL_ARRAY_BUFFER, np.array( vertices, dtype=np.float32 ), GL_STATIC_DRAW )
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
 
-    edge_ibo = glGenBuffers(1)
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, edge_ibo )
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, np.array( edges, dtype=np.uint32 ), GL_STATIC_DRAW )
+        # define the vertex array object for the edges
+        edge_vao = glGenVertexArrays( 1 )
+        glBindVertexArray( edge_vao )
 
-    glBindVertexArray( 0 )
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 )
+        glBindBuffer(GL_ARRAY_BUFFER, edge_vbo)
+        glVertexPointer( 3, GL_FLOAT, 0, None )
+        glEnableClientState( GL_VERTEX_ARRAY )
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
+
+        edge_ibo = glGenBuffers(1)
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, edge_ibo )
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, np.array( edges, dtype=np.uint32 ), GL_STATIC_DRAW )
+
+        glBindVertexArray( 0 )
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 )
 
     # Build Rubik's Cube and run loop
     NewEntireCube = EntireCube(3, 1.5, steps, human)
