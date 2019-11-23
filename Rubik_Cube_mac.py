@@ -52,11 +52,20 @@ class Cube():
             glRotatef( angle*dir, *[1 if i==axis else 0 for i in range(3)] )
         glMultMatrixf( self.transformMat() )
 
+        # Draw faces
         glBegin(GL_QUADS)
         for i in range(len(surf)):
             glColor3fv(colors[i])
             for j in surf[i]:
                 glVertex3fv(vertices[j])
+        glEnd()
+
+        # Draw edges
+        glBegin(GL_LINES)
+        glColor3fv((0,0,0))
+        for edge in edges:
+            for vertex in edge:
+                glVertex3fv(vertices[vertex])
         glEnd()
 
         '''global face_vao, edge_vao
