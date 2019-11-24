@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func (env *Env) PutYellowCubieontheirface() {
 	for i := 0; i < 3; i++ {
 		if i == 1 {
@@ -168,10 +166,8 @@ func (env *Env) faceFirstLayer(face int32) {
 	var third bool
 
 	if env.isalreadyinplace(face, env.currentCube.cube) {
-		fmt.Println("ok")
 		return
 	}
-	fmt.Println("no")
 	// Cas orange face :
 	for i := 0; i <= 4; i++ {
 		for j := 0; j < 4; j++ {
