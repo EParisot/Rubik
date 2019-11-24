@@ -149,7 +149,7 @@ func main() {
 	var human bool
 	args := os.Args[1:]
 	if len(args) == 0 {
-		fmt.Println("Error : No arg")
+		fmt.Println("./Rubik[.exe] [-d] [-h] \"R2 D’ B’ D F2 R F2 R2 U L’ F2 U’ B’ L2 R D B’ R’ B2 L2 F2 L2 R2 U2 D2\"")
 		return
 	}
 	for _, arg := range args {
