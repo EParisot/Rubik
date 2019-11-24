@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func (env *Env) PutYellowCubieontheirface() {
 	for i := 0; i < 3; i++ {
 		if i == 1 {
@@ -137,11 +139,39 @@ func (env *Env) thridPossibleCorner(face int32, cube [6]int32) bool {
 	return threecolor
 }
 
+func (env *Env) isalreadyinplace(face int32, cube [6]int32) bool {
+	var result bool
+	if face == ORANGE {
+		result = ((cube[ORANGE]>>12)&15) == ORANGE &&
+			((cube[GREEN]>>4)&15) == GREEN &&
+			((cube[YELLOW]>>20)&15) == YELLOW
+	} else if face == GREEN {
+		result = ((cube[GREEN]>>12)&15) == GREEN &&
+			((cube[RED]>>20)&15) == RED &&
+			((cube[YELLOW]>>12)&15) == YELLOW
+	} else if face == RED {
+		result = ((cube[RED]>>28)&15) == RED &&
+			((cube[BLUE]>>4)&15) == BLUE &&
+			((cube[YELLOW]>>4)&15) == YELLOW
+	} else if face == BLUE {
+		result = ((cube[BLUE]>>12)&15) == BLUE &&
+			((cube[ORANGE]>>4)&15) == ORANGE &&
+			((cube[YELLOW]>>28)&15) == YELLOW
+	}
+	return result
+
+}
+
 func (env *Env) faceFirstLayer(face int32) {
 	var first bool
 	var second bool
 	var third bool
 
+	if env.isalreadyinplace(face, env.currentCube.cube) {
+		fmt.Println("ok")
+		return
+	}
+	fmt.Println("no")
 	// Cas orange face :
 	for i := 0; i <= 4; i++ {
 		for j := 0; j < 4; j++ {

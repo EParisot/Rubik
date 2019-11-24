@@ -1,5 +1,33 @@
 package main
 
+func (env *Env) topedgesorangeisPlaced() bool {
+	if ((env.currentCube.cube[ORANGE] >> 24) & 15) == ORANGE {
+		return true
+	}
+	return false
+}
+
+func (env *Env) topedgesgreenisPlaced() bool {
+	if ((env.currentCube.cube[GREEN] >> 24) & 15) == GREEN {
+		return true
+	}
+	return false
+}
+
+func (env *Env) topedgesredisPlaced() bool {
+	if ((env.currentCube.cube[RED] >> 8) & 15) == RED {
+		return true
+	}
+	return false
+}
+
+func (env *Env) topedgesblueisPlaced() bool {
+	if ((env.currentCube.cube[BLUE] >> 24) & 15) == BLUE {
+		return true
+	}
+	return false
+}
+
 func (env *Env) topedgesisFinnished() bool {
 	if ((env.currentCube.cube[ORANGE]>>24)&15) == ORANGE &&
 		((env.currentCube.cube[GREEN]>>24)&15) == GREEN &&
@@ -11,6 +39,19 @@ func (env *Env) topedgesisFinnished() bool {
 }
 
 func (env *Env) topedges() {
+	// try to place maximum before
+	for i := 0; i < 4; i++ {
+		if env.topedgesorangeisPlaced() && (env.topedgesgreenisPlaced() || env.topedgesredisPlaced() || env.topedgesblueisPlaced()) {
+			break
+		}
+		if env.topedgesgreenisPlaced() && (env.topedgesredisPlaced() || env.topedgesblueisPlaced()) {
+			break
+		}
+		if env.topedgesredisPlaced() && env.topedgesblueisPlaced() {
+			break
+		}
+		env.exec("U")
+	}
 	for true {
 		for i := 0; i < 4; i++ {
 			if ((env.currentCube.cube[ORANGE] >> 24) & 15) != ORANGE {

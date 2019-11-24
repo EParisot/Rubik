@@ -21,7 +21,7 @@ func (env *Env) firstLayer() {
 func (env *Env) beginner() {
 	// the main documentation are from https://ruwix.com/the-rubiks-cube/how-to-solve-the-rubiks-cube-beginners-method/
 
-	env.firstCross() // for win lot of turns,can make a A* (7 moves max, max 10s)
+	env.firstCross()
 	env.firstLayer()
 	env.secondLayer()
 	env.topcross()
