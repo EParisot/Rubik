@@ -15,7 +15,9 @@ This implementation will find short solutions (20-50 steps), but may take from a
 
 The second one is a "Human" algorithm.
 Based on "CFOP" method. It uses several algorithms to solve known configurations as it evolve to solution.
+
 See : https://ruwix.com/the-rubiks-cube/how-to-solve-the-rubiks-cube-beginners-method/
+
 Although providing big solutions, the computational time is near from zero.
 
 <p align="center">
