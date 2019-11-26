@@ -2,11 +2,8 @@ package main
 
 import (
 	"errors"
-	"fmt"
-	"os"
+	"strconv"
 	"strings"
-
-	"github.com/pkg/profile"
 )
 
 // CubeEnv : Cube representation
@@ -144,9 +141,9 @@ func parseOutput(output string) string {
 }
 
 func main() {
-	var mix string
+	//var mix string
 	var debug bool
-	var human bool
+	/*var human bool
 	args := os.Args[1:]
 	if len(args) == 0 {
 		fmt.Println("./Rubik[.exe] [-d] [-h] \"R2 D’ B’ D F2 R F2 R2 U L’ F2 U’ B’ L2 R D B’ R’ B2 L2 F2 L2 R2 U2 D2\"")
@@ -163,10 +160,10 @@ func main() {
 	}
 	if debug {
 		defer profile.Start(profile.ProfilePath(".")).Stop()
-	}
+	}*/
 	env := Env{debug: debug}
 	env.setCube()
-	// parsing
+	/*// parsing
 	steps, err := parseArgs(mix)
 	if err != nil {
 		fmt.Println(err)
@@ -179,5 +176,31 @@ func main() {
 		env.beginner()
 	} else {
 		env.idAstar()
+	}*/
+	moves = [6]string{"F", "R", "L", "U", "D", "B"}
+	debugCube(env.currentCube.cube)
+	resMap := make(map[string]int)
+	buildTableG1(env.currentCube.cube, 0, resMap)
+}
+
+func buildTableG1(currCube [6]int32, depth int, resMap map[string]int) {
+	if depth < 18 {
+		var newCube [6]int32
+		for i := 0; i < 6; i++ {
+			newCube = rotate(i, 0, currCube)
+			newCube = rotate(i, 0, newCube)
+			//fmt.Println(moves[i] + "2")
+			//fmt.Println(depth)
+			//debugCube(newCube)
+			var cubeStr string
+			for _, val := range newCube {
+				cubeStr += strconv.FormatInt(int64(val), 10)
+			}
+			//fmt.Println(cubeStr)
+			if _, ok := resMap[cubeStr]; ok == false {
+				resMap[cubeStr] = depth + 1
+				buildTableG1(newCube, depth+1, resMap)
+			}
+		}
 	}
 }
