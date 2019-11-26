@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -179,11 +180,14 @@ func main() {
 	}*/
 	moves = [6]string{"F", "R", "L", "U", "D", "B"}
 	debugCube(env.currentCube.cube)
-	resMap := make(map[string]int)
-	buildTableG1(env.currentCube.cube, 0, resMap)
+	buildTableG1(env.currentCube.cube, 0)
+	fmt.Println(count)
 }
 
-func buildTableG1(currCube [6]int32, depth int, resMap map[string]int) {
+var count int
+var resMap map[string]int
+
+func buildTableG1(currCube [6]int32, depth int) {
 	if depth < 18 {
 		var newCube [6]int32
 		for i := 0; i < 6; i++ {
@@ -199,7 +203,8 @@ func buildTableG1(currCube [6]int32, depth int, resMap map[string]int) {
 			//fmt.Println(cubeStr)
 			if _, ok := resMap[cubeStr]; ok == false {
 				resMap[cubeStr] = depth + 1
-				buildTableG1(newCube, depth+1, resMap)
+				count++
+				buildTableG1(newCube, depth+1)
 			}
 		}
 	}
