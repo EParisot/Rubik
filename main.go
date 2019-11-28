@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"strconv"
 	"strings"
 )
@@ -178,32 +180,121 @@ func main() {
 	} else {
 		env.idAstar()
 	}*/
+
 	moves = [6]string{"F", "R", "L", "U", "D", "B"}
-	debugCube(env.currentCube.cube)
-	buildTableG1(env.currentCube.cube, 0)
-	fmt.Println(count)
+	// Build G3
+	resMapG3 = make(map[[6]int32]int)
+	resMapG3Str = make(map[string]int)
+	buildTableG3(env.currentCube.cube, 0)
+	for k := range resMapG3 {
+		var cubeStr string
+		for _, val := range k {
+			cubeStr += strconv.FormatInt(int64(val), 10)
+		}
+		resMapG3Str[cubeStr] = resMapG3[k]
+	}
+	fmt.Println(len(resMapG3Str))
+	jsonString, err := json.Marshal(resMapG3Str)
+	check(err)
+	err = ioutil.WriteFile("G3.json", jsonString, 0644)
+	check(err)
+	fmt.Println("G3 Done")
+	// Build G2
+	resMapG2 = make(map[[6]int32]int)
+	resMapG2Str = make(map[string]int)
+	for k := range resMapG3 {
+		buildTableG2(k, 0)
+		delete(resMapG3, k)
+	}
+	for k := range resMapG2 {
+		var cubeStr string
+		for _, val := range k {
+			cubeStr += strconv.FormatInt(int64(val), 10)
+		}
+		resMapG2Str[cubeStr] = resMapG2[k]
+	}
+	fmt.Println(len(resMapG2Str))
+	jsonString, err = json.Marshal(resMapG2Str)
+	check(err)
+	err = ioutil.WriteFile("G2.json", jsonString, 0644)
+	check(err)
+	fmt.Println("G2 Done")
+	// Build G1
+	resMapG1 = make(map[[6]int32]int)
+	resMapG1Str = make(map[string]int)
+	for k := range resMapG2 {
+		buildTableG1(k, 0)
+		delete(resMapG2, k)
+	}
+	for k := range resMapG1 {
+		var cubeStr string
+		for _, val := range k {
+			cubeStr += strconv.FormatInt(int64(val), 10)
+		}
+		resMapG1Str[cubeStr] = resMapG1[k]
+		delete(resMapG1, k)
+	}
+	fmt.Println(len(resMapG1Str))
+	jsonString, err = json.Marshal(resMapG1Str)
+	check(err)
+	err = ioutil.WriteFile("G1.json", jsonString, 0644)
+	check(err)
+	fmt.Println("G1 Done")
 }
 
-var count int
-var resMap map[string]int
+var resMapG3 map[[6]int32]int
+var resMapG3Str map[string]int
+var resMapG2 map[[6]int32]int
+var resMapG2Str map[string]int
+var resMapG1 map[[6]int32]int
+var resMapG1Str map[string]int
 
-func buildTableG1(currCube [6]int32, depth int) {
-	if depth < 18 {
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
+func buildTableG3(currCube [6]int32, depth int) {
+	if depth < 5 {
 		var newCube [6]int32
 		for i := 0; i < 6; i++ {
 			newCube = rotate(i, 0, currCube)
 			newCube = rotate(i, 0, newCube)
-			//fmt.Println(moves[i] + "2")
-			//fmt.Println(depth)
-			//debugCube(newCube)
-			var cubeStr string
-			for _, val := range newCube {
-				cubeStr += strconv.FormatInt(int64(val), 10)
+			if _, ok := resMapG3[newCube]; ok == false {
+				resMapG3[newCube] = depth + 1
+				buildTableG3(newCube, depth+1)
 			}
-			//fmt.Println(cubeStr)
-			if _, ok := resMap[cubeStr]; ok == false {
-				resMap[cubeStr] = depth + 1
-				count++
+		}
+	}
+}
+
+func buildTableG2(currCube [6]int32, depth int) {
+	if depth < 8 {
+		var newCube [6]int32
+		for i := 0; i < 6; i++ {
+			newCube = rotate(i, 0, currCube)
+			if i != 3 && i != 4 {
+				newCube = rotate(i, 0, newCube)
+			}
+			if _, ok := resMapG2[newCube]; ok == false {
+				resMapG2[newCube] = depth + 1
+				buildTableG2(newCube, depth+1)
+			}
+		}
+	}
+}
+
+func buildTableG1(currCube [6]int32, depth int) {
+	if depth < 8 {
+		var newCube [6]int32
+		for i := 0; i < 6; i++ {
+			newCube = rotate(i, 0, currCube)
+			if i != 1 && i != 2 && i != 3 && i != 4 {
+				newCube = rotate(i, 0, newCube)
+			}
+			if _, ok := resMapG1[newCube]; ok == false {
+				resMapG1[newCube] = depth + 1
 				buildTableG1(newCube, depth+1)
 			}
 		}
